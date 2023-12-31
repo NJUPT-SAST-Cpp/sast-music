@@ -43,7 +43,7 @@ target_wrapper.*
 *.qmlproject.user.*
 
 # QtCreator CMake
-CMakeLists.txt.user*
+CMakeLists.txt.user
 
 # QtCreator 4.8< compilation database
 compile_commands.json
@@ -52,3 +52,11 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+# build
+build
+bin
+
+# IDE
+.vscode
+.idea
