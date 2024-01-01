@@ -6,6 +6,7 @@ Rectangle{
     property Item target
     property real noiseOpacity: 0.01
     property int blurRadius: 40
+    property int radius: 0
     clip: true
     FastBlur {
         id: blur
