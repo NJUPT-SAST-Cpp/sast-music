@@ -127,5 +127,97 @@ ApplicationWindow {
                 }
             }
         }
+
+        Rectangle {
+            anchors {
+                right: avatar.left
+                rightMargin: 15
+                verticalCenter: parent.verticalCenter
+            }
+            radius: 8
+            width: 200
+            height: 30
+            color: "#F2F2F4"
+            FluIcon {
+                id: icon_search
+                anchors {
+                    left: parent.left
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+                iconSource: FluentIcons.Search
+                iconColor: "#767676"
+            }
+            FluText {
+                anchors {
+                    left: icon_search.right
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+                text: "Search"
+                font.pixelSize: 16
+                font.family: "Barlow-Medium"
+                font.weight: 550
+                color: "#767676"
+            }
+        }
+
+        Clip {
+            id: avatar
+            anchors {
+                right: parent.right
+                rightMargin: 65
+                verticalCenter: parent.verticalCenter
+            }
+            width: 30
+            height: 30
+            radius: 15
+            Image {
+                anchors.fill: parent
+                source: "qrc:///res/img/avatar.svg"
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                color: item_mouse.containsMouse ? Qt.rgba(46/255, 46/255, 41/255, 0.28) : "transparent"
+            }
+
+            MouseArea {
+                id: item_mouse
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    menu.popup()
+                }
+            }
+        }
+
+        RadiusMenu {
+            id: menu
+            radius: 15
+            RadiusMenuItem {
+                iconSize: 20
+                iconUrl: "qrc:///res/img/settings.svg"
+                text: "Settings"
+                font.family: "Barlow-Medium"
+                font.bold: true
+            }
+            RadiusMenuItem {
+                iconSize: 20
+                iconUrl: "qrc:///res/img/logout.svg"
+                text: "Logout"
+                font.family: "Barlow-Medium"
+                font.bold: true
+            }
+            MenuSeparator{}
+            RadiusMenuItem {
+                iconSize: 20
+                iconUrl: "qrc:///res/img/github.svg"
+                text: "GitHub Repo"
+                font.family: "Barlow-Medium"
+                font.bold: true
+            }
+        }
     }
 }
