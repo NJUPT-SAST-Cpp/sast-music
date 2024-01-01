@@ -1,5 +1,25 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/main.qml</file>
+        <file>res/fonts/Barlow-Regular.ttf</file>
+        <file>res/fonts/Barlow-SemiBold.ttf</file>
+        <file>res/fonts/Barlow-Medium.ttf</file>
+        <file>res/fonts/Barlow-ExtraBold.ttf</file>
+        <file>res/fonts/Barlow-Bold.ttf</file>
+        <file>ui/page/T_library.qml</file>
+        <file>ui/page/T_home.qml</file>
+        <file>ui/page/T_explore.qml</file>
+        <file>res/img/sast_music.svg</file>
+        <file>res/icon/app.svg</file>
+        <file>res/icon/app.ico</file>
+        <file>ui/component/Blur.qml</file>
+        <file>res/img/noise.png</file>
+        <file>res/img/avatar.svg</file>
+        <file>ui/component/Clip.qml</file>
+        <file>res/img/logout.svg</file>
+        <file>res/img/settings.svg</file>
+        <file>ui/component/RadiusMenu.qml</file>
+        <file>ui/component/RadiusMenuItem.qml</file>
+        <file>res/img/github.svg</file>
     </qresource>
 </RCC>
