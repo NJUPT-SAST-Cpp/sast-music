@@ -7,6 +7,7 @@ on:
       - "!**.qml"
       - "!**.md"
       - "!**.cmake"
+      - ".github/**"
   workflow_dispatch:
 
 permissions: write-all
@@ -76,7 +77,7 @@ jobs:
           echo "Exec=sast-music" >> sast-music-appimage.desktop
           mv bin/release/sast_music bin/release/sast-music
           linuxdeploy-x86_64.AppImage --plugin=qt --output=appimage --desktop-file=sast-music-appimage.desktop --icon-file=app_icon.svg --executable=bin/release/sast-music --appdir AppDir
-          mv sast*.AppImage ${{ env.targetName }}_appimage_x86_64.AppImage
+          mv SAST_Music-*.AppImage ${{ env.targetName }}_appimage_x86_64.AppImage
       
       - name: Calculate SHA256
         run: |
