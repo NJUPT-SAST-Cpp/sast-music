@@ -10,10 +10,14 @@ ApplicationWindow {
     height: 850
     title: "SAST Music"
 
-    readonly property string activeColor: "#335eea"
+    readonly property color activeColor: "#335eea"
     readonly property string homePageUrl: "qrc:///ui/page/T_home.qml"
     readonly property string explorePageUrl: "qrc:///ui/page/T_explore.qml"
     readonly property string libraryPageUrl: "qrc:///ui/page/T_library.qml"
+    property string topPageUrl
+    property var undoStack: []
+    property var redoStack: []
+
 
     StackView {
         id: stackView
@@ -42,10 +46,39 @@ ApplicationWindow {
             } else {
                 stackView.push(pageUrl, { objectName: pageName });
             }
+            topPageUrl = pageUrl
+        }
+
+        function pushPage(url) {
+            pushOrPopToPage(url, url2Name(url))
+            undoStack.push(url)
+        }
+
+        function popPage() {
+            if (undoStack.length >= 2) {
+                redoStack.push(undoStack[undoStack.length - 1])
+                undoStack.pop()
+                topPageUrl = undoStack[undoStack.length - 1]
+                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+            }
+        }
+
+        function redoPage() {
+            if (redoStack.length >= 1) {
+                topPageUrl = redoStack[redoStack.length - 1]
+                redoStack.pop()
+                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+            }
+        }
+
+        function url2Name(url) {
+            if (url === homePageUrl) return "home"
+            if (url === explorePageUrl) return "explore"
+            if (url === libraryPageUrl) return "library"
         }
 
         Component.onCompleted: {
-            pushOrPopToPage(homePageUrl, "home");
+            pushPage(homePageUrl);
         }
     }
 
@@ -56,18 +89,26 @@ ApplicationWindow {
         blurRadius: 100
         color: Qt.rgba(1, 1, 1, 0.99)
         target: stackView
-        FluIconButton {
-            id: btn_back
+        Row {
+            spacing: 5
             anchors {
                 left: parent.left
                 leftMargin: 65
                 verticalCenter: parent.verticalCenter
             }
-            radius: 6
-            hoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-            iconSource: FluentIcons.ChevronLeftSmall
-            onClicked: {
-                stackView.pop()
+            FluIconButton {
+                id: btn_back
+                radius: 6
+                hoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
+                iconSource: FluentIcons.ChevronLeftSmall
+                onClicked: stackView.popPage()
+            }
+            FluIconButton {
+                id: btn_redo
+                radius: 6
+                hoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
+                iconSource: FluentIcons.ChevronRightSmall
+                onClicked: stackView.redoPage()
             }
         }
 
@@ -81,16 +122,11 @@ ApplicationWindow {
                 font.family: "Barlow-Bold"
                 font.pixelSize: 18
                 font.weight: 700
-                textColor: activeColor
+                textColor: topPageUrl === homePageUrl ? activeColor : "#000"
                 implicitHeight: 30
                 normalColor: Qt.rgba(0, 0, 0, 1)
                 backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: {
-                    stackView.pushOrPopToPage(homePageUrl, "home")
-                    btn_home.textColor = activeColor
-                    btn_explore.textColor = "#000"
-                    btn_library.textColor = "#000"
-                }
+                onClicked: stackView.pushPage(homePageUrl)
             }
 
             FluTextButton {
@@ -99,15 +135,11 @@ ApplicationWindow {
                 font.family: "Barlow-Bold"
                 font.pixelSize: 18
                 font.weight: 700
+                textColor: topPageUrl === explorePageUrl ? activeColor : "#000"
                 implicitHeight: 30
                 normalColor: Qt.rgba(0, 0, 0, 1)
                 backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: {
-                    stackView.pushOrPopToPage(explorePageUrl, "explore")
-                    btn_home.textColor = "#000"
-                    btn_explore.textColor = activeColor
-                    btn_library.textColor = "#000"
-                }
+                onClicked: stackView.pushPage(explorePageUrl)
             }
 
             FluTextButton {
@@ -116,15 +148,11 @@ ApplicationWindow {
                 font.family: "Barlow-Bold"
                 font.pixelSize: 18
                 font.weight: 700
+                textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
                 implicitHeight: 30
                 normalColor: Qt.rgba(0, 0, 0, 1)
                 backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: {
-                    stackView.pushOrPopToPage(libraryPageUrl, "library")
-                    btn_home.textColor = "#000"
-                    btn_explore.textColor = "#000"
-                    btn_library.textColor = activeColor
-                }
+                onClicked: stackView.pushPage(libraryPageUrl)
             }
         }
 
@@ -217,6 +245,9 @@ ApplicationWindow {
                 text: "GitHub Repo"
                 font.family: "Barlow-Medium"
                 font.bold: true
+                onClicked: {
+                    Qt.openUrlExternally("https://github.com/NJUPT-SAST-Cpp/sast-music")
+                }
             }
         }
     }
