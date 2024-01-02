@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>ui/main.qml</file>
+        <file>ui/MainWindow.qml</file>
         <file>res/fonts/Barlow-Regular.ttf</file>
         <file>res/fonts/Barlow-SemiBold.ttf</file>
         <file>res/fonts/Barlow-Medium.ttf</file>
@@ -21,5 +21,6 @@
         <file>ui/component/RadiusMenu.qml</file>
         <file>ui/component/RadiusMenuItem.qml</file>
         <file>res/img/github.svg</file>
+        <file>ui/component/ScrollablePage.qml</file>
     </qresource>
 </RCC>

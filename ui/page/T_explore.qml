@@ -1,10 +1,14 @@
 import QtQuick 2.15
+import QtQuick.Layouts
+import QtQuick.Controls
 import FluentUI
+import "../component"
 
-Flickable {
+ScrollablePage {
     objectName: "explore"
-    Text {
+
+    FluText {
         text: "Explore Page"
-        font.pixelSize: 30
+        font: FluTextStyle.Title
     }
 }
