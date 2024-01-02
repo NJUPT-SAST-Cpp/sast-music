@@ -53,6 +53,7 @@ jobs:
       - name: pakage
         if: startsWith(github.event.ref, 'refs/tags/')
         run: |
+          sudo find /Users/runner/work/FluentUI/Qt/6.5.3/macos/qml -name "*.dSYM" | xargs rm -r
           sudo macdeployqt bin/release/sast_music.app -qmldir=. -verbose=1 -dmg
        
       - uses: actions/upload-artifact@v2
