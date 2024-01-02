@@ -14,6 +14,7 @@ T.Menu {
     margins: 0
     overlap: 1
     spacing: 0
+    padding: 5
     delegate: RadiusMenuItem { }
     enter: Transition {
         NumberAnimation {
@@ -42,7 +43,7 @@ T.Menu {
         ScrollIndicator.vertical: ScrollIndicator {}
     }
     background: Rectangle {
-        implicitWidth: 150
+        implicitWidth: 135
         implicitHeight: 36
         color: Qt.rgba(1, 1, 1, 0.9)
         border.color: FluTheme.dark ? Window.active ? Qt.rgba(55/255,55/255,55/255,1):Qt.rgba(45/255,45/255,45/255,1) : Qt.rgba(226/255,229/255,234/255,1)

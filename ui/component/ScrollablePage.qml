@@ -37,7 +37,6 @@ Item {
                 timer_progress.start()
         }
     }
-
     FluStatusView {
         id: status_view
         Layout.fillWidth: true
@@ -54,9 +53,7 @@ Item {
         onErrorClicked: control.errorClicked()
         errorText: "oops, something wrong!"
         errorButtonText: "Reload"
-
         loadingItem: com_loading
-
         Component {
             id: com_loading
             FluArea {
@@ -115,14 +112,16 @@ Item {
             id: flickview
             clip: true
             anchors.fill: parent
-            anchors.topMargin: 60
             contentWidth: parent.width
-            contentHeight: container.height + 50
+            contentHeight: container.height + control.topMargin
             ScrollBar.vertical: FluScrollBar {
-                anchors.right: flickview.right
-                anchors.rightMargin: 2
+                anchors {
+                    right: flickview.right
+                    rightMargin: 2
+                    top: parent.top
+                    topMargin: 40
+                }
             }
-            boundsBehavior: Flickable.StopAtBounds
             ColumnLayout {
                 id: container
                 spacing: control.spacing

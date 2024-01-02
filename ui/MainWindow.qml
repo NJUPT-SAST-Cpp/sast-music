@@ -204,14 +204,14 @@ ApplicationWindow {
                 iconSize: 20
                 iconUrl: "qrc:///res/img/settings.svg"
                 text: "Settings"
-                font.family: "Barlow-Medium"
+                font.family: "Barlow-Bold"
                 font.bold: true
             }
             RadiusMenuItem {
                 iconSize: 20
                 iconUrl: "qrc:///res/img/logout.svg"
                 text: "Logout"
-                font.family: "Barlow-Medium"
+                font.family: "Barlow-Bold"
                 font.bold: true
             }
             MenuSeparator{}
@@ -219,7 +219,7 @@ ApplicationWindow {
                 iconSize: 20
                 iconUrl: "qrc:///res/img/github.svg"
                 text: "GitHub Repo"
-                font.family: "Barlow-Medium"
+                font.family: "Barlow-Bold"
                 font.bold: true
                 onClicked: {
                     Qt.openUrlExternally("https://github.com/NJUPT-SAST-Cpp/sast-music")

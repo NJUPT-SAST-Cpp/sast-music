@@ -34,22 +34,22 @@ T.MenuItem {
         Item {
             width: control.iconSize
             height: control.iconSize
-        Image{
-            id: img
-            width: control.iconSize
-            height: control.iconSize
-            source:control.iconUrl
-        }
-        ColorOverlay {
-            anchors.fill: parent
-            source: img
-            color: {
-                if(control.highlighted) {
-                    return "#335eea"
-                }
-                return "#000"
+            Image{
+                id: img
+                width: control.iconSize
+                height: control.iconSize
+                source:control.iconUrl
             }
-        }
+            ColorOverlay {
+                anchors.fill: parent
+                source: img
+                color: {
+                    if(control.highlighted) {
+                        return "#335eea"
+                    }
+                    return "#000"
+                }
+            }
         }
     }
     contentItem: Item{
@@ -74,6 +74,8 @@ T.MenuItem {
                 id:content_text
                 text: control.text
                 color: control.textColor
+                font.family: "Barlow-Bold"
+                font.bold: true
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
