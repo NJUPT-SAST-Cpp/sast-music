@@ -57,7 +57,9 @@ compile_commands.json
 build
 bin
 *.rc
+action-cli
 
 # IDE
 .vscode
 .idea
+.clangd
