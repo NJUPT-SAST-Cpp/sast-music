@@ -22,5 +22,8 @@
         <file>res/img/github.svg</file>
         <file>ui/component/ScrollablePage.qml</file>
         <file>ui/component/SearchBox.qml</file>
+        <file>app.ico</file>
+        <file>app.icns</file>
+        <file>app_icon.svg</file>
     </qresource>
 </RCC>
