@@ -1,8 +1,20 @@
+#include <qfontdatabase.h>
+
+#include <QFontDatabase>
 #include <QGuiApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[]) {
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+        Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Basic");
+    QGuiApplication::setOrganizationName("NJUPT-SAST-C++");
+    QGuiApplication::setOrganizationDomain("https://github.com/NJUPT-SAST");
+    QGuiApplication::setApplicationName("SAST Music");
+
     QGuiApplication app(argc, argv);
+    QGuiApplication::setWindowIcon(QIcon(QStringLiteral(":/res/icon/app.ico")));
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/ui/MainWindow.qml"));

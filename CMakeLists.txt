@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/.cmake/)
+include(GetGitRevisionDescription)
+
 project(sast_music VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -23,14 +26,18 @@ set(CMAKE_AUTORCC ON)
 set(FLUENTUI_BUILD_EXAMPLES OFF)
 add_subdirectory(libs/FluentUI)
 
-file(GLOB SOURCE_FILES
+file(GLOB_RECURSE SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/*.h
+    ${CMAKE_SOURCE_DIR}/src/*.hpp
     sast_music.qrc
 )
 
 file(GLOB_RECURSE SOURCE_IMPORT_PATHS
     ${CMAKE_SOURCE_DIR}/src/controller/*.h
     ${CMAKE_SOURCE_DIR}/src/controller/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/model/*.h
+    ${CMAKE_SOURCE_DIR}/src/model/*.cpp
 )
 
 foreach(filepath ${SOURCE_IMPORT_PATHS})
@@ -38,7 +45,42 @@ foreach(filepath ${SOURCE_IMPORT_PATHS})
     list(APPEND SOURCE_IMPORT_FILES ${filename})
 endforeach(filepath)
 
+set(VERSION_RC_PATH "")
+set(WIN32_MANIFEST_PATH "")
+
+if(WIN32)
+    set(VERSION_RC_PATH ${CMAKE_SOURCE_DIR}/SAST_Evento.rc)
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/.cmake/version_exe.rc.in
+        ${VERSION_RC_PATH}
+    )
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/.cmake/InstallerScript.iss.in
+        ${CMAKE_SOURCE_DIR}/action-cli/InstallerScript.iss
+    )
+    set(WIN32_MANIFEST_PATH ${CMAKE_SOURCE_DIR}/app.manifest)
+endif()
+
+if(APPLE)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER ${IDENTIFIER})
+    set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})
+    set(MACOSX_BUNDLE_COPYRIGHT ${COPYRIGHT})
+
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${spectral_VERSION})
+    set(MACOSX_BUNDLE_BUNDLE_VERSION ${spectral_VERSION})
+
+    set(ICON_NAME "app.icns")
+    set(${PROJECT_NAME}_MAC_ICON "${CMAKE_SOURCE_DIR}/${ICON_NAME}")
+    set(MACOSX_BUNDLE_ICON_FILE ${ICON_NAME})
+    set_property(SOURCE "${${PROJECT_NAME}_MAC_ICON}" PROPERTY
+        MACOSX_PACKAGE_LOCATION Resources)
+endif()
+
 qt_add_executable(sast_music MACOSX_BUNDLE
+    ${${PROJECT_NAME}_MAC_ICON}
+    ${SOURCE_FILES}
+    ${VERSION_RC_PATH}
+    ${WIN32_MANIFEST_PATH}
     ${SOURCE_FILES}
 )
 
@@ -48,9 +90,17 @@ qt_add_qml_module(sast_music
     SOURCES ${SOURCE_IMPORT_FILES}
 )
 
+target_include_directories(sast_music
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/model
+    ${CMAKE_SOURCE_DIR}/src/controller
+)
+
 set_target_properties(sast_music PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/.cmake/Info.plist.in"
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
