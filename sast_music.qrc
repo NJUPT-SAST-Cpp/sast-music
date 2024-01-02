@@ -21,5 +21,6 @@
         <file>ui/component/RadiusMenuItem.qml</file>
         <file>res/img/github.svg</file>
         <file>ui/component/ScrollablePage.qml</file>
+        <file>ui/component/SearchBox.qml</file>
     </qresource>
 </RCC>

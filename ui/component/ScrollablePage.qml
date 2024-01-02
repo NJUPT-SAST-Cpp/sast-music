@@ -115,8 +115,9 @@ Item {
             id: flickview
             clip: true
             anchors.fill: parent
+            anchors.topMargin: 60
             contentWidth: parent.width
-            contentHeight: container.implicitHeight
+            contentHeight: container.height + 50
             ScrollBar.vertical: FluScrollBar {
                 anchors.right: flickview.right
                 anchors.rightMargin: 2
@@ -136,6 +137,5 @@ Item {
                 width: parent.width
             }
         }
-        FluScrollablePage{}
     }
 }

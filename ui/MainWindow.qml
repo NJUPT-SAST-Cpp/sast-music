@@ -18,7 +18,6 @@ ApplicationWindow {
     property var undoStack: []
     property var redoStack: []
 
-
     StackView {
         id: stackView
         anchors.fill: parent
@@ -156,38 +155,15 @@ ApplicationWindow {
             }
         }
 
-        FluRectangle {
+        SearchBox {
             anchors {
                 right: avatar.left
                 rightMargin: 15
                 verticalCenter: parent.verticalCenter
             }
-            radius: [8, 8, 8, 8]
-            width: 200
-            height: 30
-            color: "#F2F2F4"
-            FluIcon {
-                id: icon_search
-                anchors {
-                    left: parent.left
-                    leftMargin: 10
-                    verticalCenter: parent.verticalCenter
-                }
-                iconSource: FluentIcons.Search
-                iconColor: "#767676"
-            }
-            FluText {
-                anchors {
-                    left: icon_search.right
-                    leftMargin: 10
-                    verticalCenter: parent.verticalCenter
-                }
-                text: "Search"
-                font.pixelSize: 16
-                font.family: "Barlow-Medium"
-                font.weight: 550
-                color: "#767676"
-            }
+            onCommit: (content) => {
+                        // TODO: post search request
+                      }
         }
 
         FluClip {
@@ -249,6 +225,12 @@ ApplicationWindow {
                     Qt.openUrlExternally("https://github.com/NJUPT-SAST-Cpp/sast-music")
                 }
             }
+        }
+
+        Pane {
+            z: -1
+            anchors.fill: parent
+            focusPolicy: Qt.ClickFocus
         }
     }
 }
