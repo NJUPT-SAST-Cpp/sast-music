@@ -12,10 +12,9 @@
         <file>res/img/sast_music.svg</file>
         <file>res/icon/app.svg</file>
         <file>res/icon/app.ico</file>
-        <file>ui/component/Blur.qml</file>
+        <file>ui/component/BlurRectangle.qml</file>
         <file>res/img/noise.png</file>
         <file>res/img/avatar.svg</file>
-        <file>ui/component/Clip.qml</file>
         <file>res/img/logout.svg</file>
         <file>res/img/settings.svg</file>
         <file>ui/component/RadiusMenu.qml</file>

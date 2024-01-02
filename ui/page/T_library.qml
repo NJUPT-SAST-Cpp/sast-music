@@ -9,11 +9,11 @@ ScrollablePage {
 
     Row {
         spacing: 10
-        Clip {
+        FluClip {
             id: avatar
             height: 46
             width: 46
-            radius: 23
+            radius: [23, 23, 23, 23]
             Image {
                 anchors.fill: parent
                 source: "qrc:///res/img/avatar.svg"

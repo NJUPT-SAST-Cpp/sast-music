@@ -82,7 +82,7 @@ ApplicationWindow {
         }
     }
 
-    Blur {
+    BlurRectangle {
         id: navigationBar
         width: parent.width
         height: 60
@@ -156,13 +156,13 @@ ApplicationWindow {
             }
         }
 
-        Rectangle {
+        FluRectangle {
             anchors {
                 right: avatar.left
                 rightMargin: 15
                 verticalCenter: parent.verticalCenter
             }
-            radius: 8
+            radius: [8, 8, 8, 8]
             width: 200
             height: 30
             color: "#F2F2F4"
@@ -190,7 +190,7 @@ ApplicationWindow {
             }
         }
 
-        Clip {
+        FluClip {
             id: avatar
             anchors {
                 right: parent.right
@@ -199,7 +199,7 @@ ApplicationWindow {
             }
             width: 30
             height: 30
-            radius: 15
+            radius: [15, 15, 15, 15]
             Image {
                 anchors.fill: parent
                 source: "qrc:///res/img/avatar.svg"
