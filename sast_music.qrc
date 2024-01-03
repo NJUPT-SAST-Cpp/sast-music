@@ -25,5 +25,36 @@
         <file>app.ico</file>
         <file>app.icns</file>
         <file>app_icon.svg</file>
+        <file>res/img/netease-music.png</file>
+        <file>res/img/heart.svg</file>
+        <file>res/img/heart-solid.svg</file>
+        <file>ui/component/IconButton.qml</file>
+        <file>res/img/arrow-down.svg</file>
+        <file>res/img/arrow-left.svg</file>
+        <file>res/img/arrow-right.svg</file>
+        <file>res/img/arrow-up-alt.svg</file>
+        <file>res/img/arrow-up.svg</file>
+        <file>res/img/dropdown.svg</file>
+        <file>res/img/fm.svg</file>
+        <file>res/img/list.svg</file>
+        <file>res/img/lock.svg</file>
+        <file>res/img/login.svg</file>
+        <file>res/img/mail.svg</file>
+        <file>res/img/mobile.svg</file>
+        <file>res/img/more.svg</file>
+        <file>res/img/next.svg</file>
+        <file>res/img/pause.svg</file>
+        <file>res/img/play.svg</file>
+        <file>res/img/plus.svg</file>
+        <file>res/img/previous.svg</file>
+        <file>res/img/repeat-1.svg</file>
+        <file>res/img/repeat.svg</file>
+        <file>res/img/shuffle.svg</file>
+        <file>res/img/sort-up.svg</file>
+        <file>res/img/volume-half.svg</file>
+        <file>res/img/volume-mute.svg</file>
+        <file>res/img/volume.svg</file>
+        <file>res/img/x.svg</file>
+        <file>ui/component/MusicSlider.qml</file>
     </qresource>
 </RCC>

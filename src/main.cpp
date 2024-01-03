@@ -1,6 +1,3 @@
-#include <qfontdatabase.h>
-
-#include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
@@ -25,6 +22,5 @@ int main(int argc, char *argv[]) {
         },
         Qt::QueuedConnection);
     engine.load(url);
-
     return app.exec();
 }

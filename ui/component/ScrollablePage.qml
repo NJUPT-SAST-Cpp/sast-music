@@ -41,7 +41,7 @@ Item {
         id: status_view
         Layout.fillWidth: true
         objectName: "explore"
-        anchors{
+        anchors {
             left: parent.left
             right: parent.right
             top: parent.top
@@ -66,39 +66,39 @@ Item {
                 paddings: 0
                 border.width: 0
                 radius: 0
-                color:control.color
+                color: control.color
                 Layout.fillWidth: true
-                ColumnLayout{
+                ColumnLayout {
                     anchors {
                         top: parent.top
                         topMargin: control.topLoadingMargin
                     }
-                    FluClip{
+                    FluClip {
                         id: clip
                         width: status_view.width
                         height: 4
-                        Rectangle{
-                            id:rect_back
+                        Rectangle {
+                            id: rect_back
                             width: clip.width * control.progress
-                            height: control.progress === 1 ? 0: clip.height
+                            height: control.progress === 1 ? 0 : clip.height
                             radius: 1
                             color: control.activeColor
                             anchors.bottom: clip.bottom
-                            Behavior on height{
+                            Behavior on height {
                                 enabled: control.progress === 1
                                 SequentialAnimation {
                                     PauseAnimation {
                                         duration: 400
                                     }
-                                    NumberAnimation{
+                                    NumberAnimation {
                                         duration: 100
                                         from: 4
                                         to: 0
                                     }
                                 }
                             }
-                            Behavior on width{
-                                NumberAnimation{
+                            Behavior on width {
+                                NumberAnimation {
                                     duration: 167
                                 }
                             }
@@ -122,14 +122,17 @@ Item {
                     topMargin: 40
                 }
             }
+            boundsBehavior: Flickable.StopAtBounds
             ColumnLayout {
                 id: container
                 spacing: control.spacing
                 anchors {
                     top: parent.top
+                    bottom: parent.bottom
                     left: parent.left
                     right: parent.right
                     topMargin: control.topMargin
+                    bottomMargin: control.topMargin
                     leftMargin: control.leftRightMargin
                     rightMargin: control.leftRightMargin
                 }
