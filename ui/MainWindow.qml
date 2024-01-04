@@ -130,42 +130,24 @@ ApplicationWindow {
             anchors.centerIn: parent
             spacing: 30
 
-            FluTextButton {
+            TextButton {
                 id: btn_home
                 text: "HOME"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
                 textColor: topPageUrl === homePageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: backgroundColor
                 onClicked: stackView.pushPage(homePageUrl)
             }
 
-            FluTextButton {
+            TextButton {
                 id: btn_explore
                 text: "EXPLORE"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
                 textColor: topPageUrl === explorePageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: backgroundColor
                 onClicked: stackView.pushPage(explorePageUrl)
             }
 
-            FluTextButton {
+            TextButton {
                 id: btn_library
                 text: "LIBRARY"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
                 textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: backgroundColor
                 onClicked: stackView.pushPage(libraryPageUrl)
             }
         }
