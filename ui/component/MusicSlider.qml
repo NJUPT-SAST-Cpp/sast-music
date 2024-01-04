@@ -32,7 +32,7 @@ T.Slider {
         color: "#fff"
         visible: handleVisible
         FluShadow {
-            radius: 10
+            radius: parent.radius
         }
     }
     background: Rectangle {

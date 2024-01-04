@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts
 import FluentUI
 import "./component"
 
@@ -335,7 +336,8 @@ ApplicationWindow {
             iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
             anchors {
                 left: image_song.right
-                leftMargin: 20 + (text_song.implicitWidth > text_singer.implicitWidth ? text_song.implicitWidth : text_singer.implicitWidth)
+                leftMargin: 20 + Math.max(text_song.implicitWidth,
+                                          text_singer.implicitWidth)
                 verticalCenter: parent.verticalCenter
             }
             onClicked: {
@@ -384,6 +386,10 @@ ApplicationWindow {
             }
             id: btn_arrow_up
             iconUrl: "qrc:///res/img/arrow-up.svg"
+            onClicked: {
+                animationup.start()
+                rec_lyrics.y = 0
+            }
         }
 
         MusicSlider {
@@ -450,5 +456,330 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    Rectangle {
+        id: rec_lyrics
+        width: parent.width
+        height: parent.height
+        y: window.height
+        z: 20
+        Image {
+            id: img_bg
+            anchors.fill: parent
+            source: "qrc:///res/img/background.png"
+            cache: true
+        }
+        FluAcrylic {
+            anchors.fill: parent
+            target: img_bg
+            blurRadius: 100
+            tintOpacity: 0
+            tintColor: Qt.rgba(0, 0, 0, 0.28)
+        }
+        FluLoader {
+            anchors.fill: parent
+            sourceComponent: com_pure_music
+        }
+        Component {
+            id: com_pure_music
+            Item {
+                width: rec_lyrics.width
+                height: rec_lyrics.height
+                FluClip {
+                    id: song_img
+                    width: window.height * 0.5
+                    height: width
+                    radius: [10, 10, 10, 10]
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        top: parent.top
+                        topMargin: 100 * window.height / 720
+                    }
+                    Image {
+                        id: img
+                        anchors.fill: parent
+                        source: "qrc:///res/img/background.png"
+                        cache: true
+                    }
+                    FluShadow {
+                        radius: 10
+                    }
+                }
+                IconButton {
+                    id: btn_plus
+                    iconUrl: "qrc:///res/img/plus.svg"
+                    anchors {
+                        top: song_img.bottom
+                        topMargin: 35
+                        right: song_img.right
+                    }
+                    width: 34
+                    height: 34
+                    iconWidth: 18
+                    iconHeight: 18
+                    iconColor: "#fff"
+                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                }
+                IconButton {
+                    id: btn_liked
+                    property bool liked: false
+                    width: 34
+                    height: 34
+                    iconWidth: 18
+                    iconHeight: 18
+                    iconColor: "#fff"
+                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
+                    anchors {
+                        top: btn_plus.top
+                        right: btn_plus.left
+                        rightMargin: 8
+                    }
+                    onClicked: {
+                        liked = !liked
+                    }
+                }
+                MusicSlider {
+                    id: slider_volume
+                    anchors {
+                        verticalCenter: btn_plus.verticalCenter
+                        right: btn_liked.left
+                        rightMargin: 8
+                    }
+                    value: 20
+                    width: 84
+                    active: true
+                    activeColor: Qt.rgba(1, 1, 1, 0.7)
+                    handleVisible: item_mouse_slider_volume.containsMouse
+                }
+                MouseArea {
+                    id: item_mouse_slider_volume
+                    propagateComposedEvents: true
+                    width: 85
+                    height: 15
+                    anchors {
+                        right: slider_volume.right
+                        top: song_img.bottom
+                        topMargin: 46
+                    }
+                    onClicked: mouse => mouse.accepted = false
+                    onPressAndHold: mouse => mouse.accepted = false
+                    onPressed: mouse => mouse.accepted = false
+                    onReleased: mouse => mouse.accepted = false
+                    hoverEnabled: true
+                }
+                IconButton {
+                    id: btn_volume
+                    property bool mute: false
+                    property int value: 0
+                    width: 34
+                    height: 34
+                    iconWidth: 18
+                    iconHeight: 18
+                    iconColor: "#fff"
+                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    iconUrl: mute ? "qrc:///res/img/volume-mute.svg" : (slider_volume.value > 50 ? "qrc:///res/img/volume.svg" : "qrc:///res/img/volume-half.svg")
+                    anchors {
+                        verticalCenter: slider_volume.verticalCenter
+                        right: item_mouse_slider_volume.left
+                        rightMargin: 8
+                    }
+                    onClicked: {
+                        if (!mute) {
+                            value = slider_volume.value
+                            slider_volume.value = 0
+                        } else {
+                            slider_volume.value = value
+                        }
+                        mute = !mute
+                    }
+                }
+                Text {
+                    id: text_song
+                    text: "Song"
+                    font.family: "Barlow-Bold"
+                    font.pixelSize: 22
+                    font.weight: 500
+                    color: Qt.rgba(1, 1, 1, 0.95)
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                    anchors {
+                        left: song_img.left
+                        right: btn_volume.left
+                        rightMargin: 8
+                        top: song_img.bottom
+                        topMargin: 20
+                    }
+                }
+                Text {
+                    id: text_singer
+                    text: "Singer"
+                    font.family: "Barlow-Medium"
+                    font.pixelSize: 14
+                    font.weight: 500
+                    color: Qt.rgba(1, 1, 1, 0.7)
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                    anchors {
+                        left: song_img.left
+                        right: btn_volume.left
+                        rightMargin: 8
+                        top: text_song.bottom
+                        topMargin: 5
+                    }
+                }
+                Text {
+                    id: text_start_time
+                    anchors {
+                        left: song_img.left
+                        top: text_singer.bottom
+                        topMargin: 22
+                    }
+                    text: "0:38"
+                    font.family: "Barlow-Medium"
+                    font.pixelSize: 14
+                    font.weight: 500
+                    color: Qt.rgba(1, 1, 1, 0.7)
+                }
+                Text {
+                    id: text_end_time
+                    anchors {
+                        right: song_img.right
+                        top: text_singer.bottom
+                        topMargin: 22
+                    }
+                    text: "4:09"
+                    font.family: "Barlow-Medium"
+                    font.pixelSize: 14
+                    font.weight: 500
+                    color: Qt.rgba(1, 1, 1, 0.7)
+                }
+                MusicSlider {
+                    id: slider_progress
+                    value: 20
+                    anchors {
+                        verticalCenter: text_start_time.verticalCenter
+                        left: text_start_time.right
+                        right: text_end_time.left
+                        leftMargin: 8
+                        rightMargin: 8
+                    }
+                    handleVisible: item_mouse_slider_progress.containsMouse
+                    active: true
+                    activeColor: "#fff"
+                }
+                MouseArea {
+                    id: item_mouse_slider_progress
+                    propagateComposedEvents: true
+                    height: 15
+                    anchors {
+                        left: slider_progress.left
+                        right: slider_progress.right
+                        top: text_singer.bottom
+                        topMargin: 19
+                    }
+                    onClicked: mouse => mouse.accepted = false
+                    onPressAndHold: mouse => mouse.accepted = false
+                    onPressed: mouse => mouse.accepted = false
+                    onReleased: mouse => mouse.accepted = false
+                    hoverEnabled: true
+                }
+                RowLayout {
+                    anchors {
+                        horizontalCenter: song_img.horizontalCenter
+                        top: text_start_time.bottom
+                        topMargin: 18
+                    }
+                    spacing: 16
+                    IconButton {
+                        iconUrl: "qrc:///res/img/repeat.svg"
+                        iconColor: "#fff"
+                        iconWidth: 16
+                        iconHeight: 16
+                        hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    }
+                    IconButton {
+                        iconUrl: "qrc:///res/img/previous.svg"
+                        width: 38
+                        height: 38
+                        iconWidth: 22
+                        iconHeight: 22
+                        iconColor: "#fff"
+                        hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    }
+                    IconButton {
+                        id: btn_play
+                        property bool playing: true
+                        width: 48
+                        height: 48
+                        radius: 10
+                        iconWidth: 30
+                        iconHeight: 30
+                        iconColor: "#fff"
+                        hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                        iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
+                        onClicked: {
+                            playing = !playing
+                        }
+                        Layout.alignment: Qt.AlignCenter
+                    }
+                    IconButton {
+                        iconUrl: "qrc:///res/img/next.svg"
+                        width: 38
+                        height: 38
+                        iconWidth: 22
+                        iconHeight: 22
+                        iconColor: "#fff"
+                        hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    }
+                    IconButton {
+                        iconUrl: "qrc:///res/img/shuffle.svg"
+                        iconColor: "#fff"
+                        iconWidth: 16
+                        iconHeight: 16
+                        hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    }
+                }
+            }
+        }
+        IconButton {
+            anchors {
+                right: parent.right
+                top: parent.top
+                rightMargin: 20
+                topMargin: 20
+            }
+            width: 44
+            height: 44
+            iconSource: FluentIcons.ChevronDownSmall
+            iconSize: 18
+            hoverColor: Qt.rgba(1, 1, 1, 0.08)
+            iconColor: hovered ? "#fff" : Qt.rgba(1, 1, 1, 0.28)
+            onClicked: {
+                animationdown.start()
+                rec_lyrics.y = Qt.binding(() => {
+                                              return window.height
+                                          })
+            }
+        }
+    }
+    NumberAnimation {
+        id: animationdown
+        target: rec_lyrics
+        property: "y"
+        from: 0
+        to: window.height
+        duration: 400
+        easing.type: Easing.InOutQuad
+    }
+    NumberAnimation {
+        id: animationup
+        target: rec_lyrics
+        property: "y"
+        from: window.height
+        to: 0
+        duration: 400
+        easing.type: Easing.InOutQuad
     }
 }

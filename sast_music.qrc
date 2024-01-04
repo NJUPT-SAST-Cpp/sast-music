@@ -57,5 +57,6 @@
         <file>res/img/x.svg</file>
         <file>ui/component/MusicSlider.qml</file>
         <file>ui/component/TextButton.qml</file>
+        <file>res/img/background.png</file>
     </qresource>
 </RCC>

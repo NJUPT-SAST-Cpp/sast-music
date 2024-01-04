@@ -8,7 +8,9 @@ ScrollablePage {
     objectName: "explore"
 
     FluText {
-        text: "Explore Page"
-        font: FluTextStyle.Title
+        text: "Explore"
+        font.family: "Barlow-Bold"
+        font.weight: 700
+        font.pixelSize: 56
     }
 }

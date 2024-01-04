@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import FluentUI
 
 Item {
@@ -11,22 +12,51 @@ Item {
     property int iconWidth: 16
     property int iconHeight: 16
     property color hoverColor: Qt.rgba(209 / 255, 209 / 255, 214 / 255, 0.28)
+    property color iconColor
+    property int iconSize
+    property int iconSource
+    property alias hovered: btn.hovered
     property int duration: 2
     signal clicked
     FluIconButton {
+        id: btn
         width: parent.width
         height: parent.height
         radius: control.radius
         anchors.centerIn: parent
-        iconDelegate: Image {
-            width: iconWidth
-            height: iconHeight
-            sourceSize.width: iconWidth
-            sourceSize.height: iconHeight
-            fillMode: Image.PreserveAspectFit
-            source: iconUrl
-            Layout.alignment: Qt.AlignCenter
+        iconDelegate: iconUrl ? com_url : com_icon
+        pressedColor: hoverColor
+        Component {
+            id: com_url
+            Item {
+                width: iconWidth
+                height: iconHeight
+                Layout.alignment: Qt.AlignCenter
+                Image {
+                    id: img
+                    anchors.fill: parent
+                    sourceSize.width: iconWidth
+                    sourceSize.height: iconHeight
+                    fillMode: Image.PreserveAspectFit
+                    source: iconUrl
+                }
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: img
+                    color: control.iconColor
+                }
+            }
         }
+        Component {
+            id: com_icon
+            FluIcon {
+                id: icon
+                iconSource: control.iconSource
+                iconSize: control.iconSize
+                iconColor: control.iconColor
+            }
+        }
+
         hoverColor: control.hoverColor
         Behavior on width {
             NumberAnimation {
