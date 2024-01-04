@@ -388,7 +388,12 @@ ApplicationWindow {
             iconUrl: "qrc:///res/img/arrow-up.svg"
             onClicked: {
                 animationup.start()
-                rec_lyrics.y = 0
+            }
+            Connections {
+                target: animationup
+                function onFinished() {
+                    rec_lyrics.y = 0
+                }
             }
         }
 
@@ -758,15 +763,21 @@ ApplicationWindow {
             iconColor: hovered ? "#fff" : Qt.rgba(1, 1, 1, 0.28)
             onClicked: {
                 animationdown.start()
-                rec_lyrics.y = Qt.binding(() => {
-                                              return window.height
-                                          })
+            }
+            Connections {
+                target: animationdown
+                function onFinished() {
+                    rec_lyrics.y = Qt.binding(() => {
+                                                  return window.height
+                                              })
+                }
             }
         }
     }
     NumberAnimation {
         id: animationdown
         target: rec_lyrics
+
         property: "y"
         from: 0
         to: window.height
