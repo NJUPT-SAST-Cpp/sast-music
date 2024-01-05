@@ -22,7 +22,7 @@ signals:
     void volumeChanged();
 
 private:
-    explicit VolumeViewModel(QObject *parent = nullptr);
+    explicit VolumeViewModel(QObject* parent = nullptr);
 
     int m_volume = 100;
 };
