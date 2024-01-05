@@ -58,5 +58,8 @@
         <file>ui/component/MusicSlider.qml</file>
         <file>ui/component/TextButton.qml</file>
         <file>res/img/background.png</file>
+        <file>ui/item/NavigationBar.qml</file>
+        <file>ui/item/PlayerBar.qml</file>
+        <file>ui/item/LyricsRect.qml</file>
     </qresource>
 </RCC>
