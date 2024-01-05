@@ -34,10 +34,8 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 
 file(GLOB_RECURSE SOURCE_IMPORT_PATHS
-    ${CMAKE_SOURCE_DIR}/src/controller/*.h
-    ${CMAKE_SOURCE_DIR}/src/controller/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/model/*.h
-    ${CMAKE_SOURCE_DIR}/src/model/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/ViewModel/*.h
+    ${CMAKE_SOURCE_DIR}/src/ViewModel/*.cpp
 )
 
 foreach(filepath ${SOURCE_IMPORT_PATHS})
@@ -93,8 +91,7 @@ qt_add_qml_module(sast_music
 target_include_directories(sast_music
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/model
-    ${CMAKE_SOURCE_DIR}/src/controller
+    ${CMAKE_SOURCE_DIR}/src/ViewModel
 )
 
 set_target_properties(sast_music PROPERTIES
