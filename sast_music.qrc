@@ -61,5 +61,8 @@
         <file>ui/item/NavigationBar.qml</file>
         <file>ui/item/PlayerBar.qml</file>
         <file>ui/item/LyricsRect.qml</file>
+        <file>ui/page/T_settings.qml</file>
+        <file>ui/page/T_login.qml</file>
+        <file>ui/page/T_searchResult.qml</file>
     </qresource>
 </RCC>

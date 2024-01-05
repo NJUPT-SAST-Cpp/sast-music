@@ -15,6 +15,20 @@ BlurRectangle {
     blurRadius: 100
     target: stackView
 
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            animationup.start()
+        }
+    }
+
+    Connections {
+        target: animationup
+        function onFinished() {
+            rec_lyrics.y = 0
+        }
+    }
+
     FluClip {
         id: image_song
         radius: [3, 3, 3, 3]
@@ -125,12 +139,6 @@ BlurRectangle {
         iconUrl: "qrc:///res/img/arrow-up.svg"
         onClicked: {
             animationup.start()
-        }
-        Connections {
-            target: animationup
-            function onFinished() {
-                rec_lyrics.y = 0
-            }
         }
     }
 

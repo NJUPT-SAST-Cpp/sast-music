@@ -125,6 +125,9 @@ BlurRectangle {
             text: "Settings"
             font.family: "Barlow-Bold"
             font.bold: true
+            onClicked: {
+                stackView.pushPage("qrc:///ui/page/T_settings.qml")
+            }
         }
         RadiusMenuItem {
             iconSize: 20

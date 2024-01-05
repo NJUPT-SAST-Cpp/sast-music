@@ -88,6 +88,12 @@ ApplicationWindow {
                 return "explore"
             if (url === libraryPageUrl)
                 return "library"
+            if (url === "qrc:///ui/page/T_settings.qml")
+                return "settings"
+            if (url === "qrc:///ui/page/T_login.qml")
+                return "login"
+            if (url === "qrc:///ui/page/T_searchResult.qml")
+                return "searchResult"
         }
 
         Component.onCompleted: {
