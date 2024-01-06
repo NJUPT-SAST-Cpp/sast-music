@@ -1,13 +1,13 @@
 #include "VolumeViewModel.h"
 
-VolumeViewModel::VolumeViewModel(QObject *parent) : QObject{parent} {}
+VolumeViewModel::VolumeViewModel(QObject* parent) : QObject{parent} {}
 
-VolumeViewModel *VolumeViewModel::getInstance() {
+VolumeViewModel* VolumeViewModel::getInstance() {
     static VolumeViewModel instance;
     return &instance;
 }
 
-VolumeViewModel *VolumeViewModel::create(QQmlEngine *, QJSEngine *) {
+VolumeViewModel* VolumeViewModel::create(QQmlEngine*, QJSEngine*) {
     auto instance = getInstance();
     QJSEngine::setObjectOwnership(instance, QQmlEngine::CppOwnership);
     return instance;
@@ -18,7 +18,8 @@ int VolumeViewModel::volume() const {
 }
 
 void VolumeViewModel::setVolume(int newVolume) {
-    if (m_volume == newVolume) return;
+    if (m_volume == newVolume)
+        return;
     m_volume = newVolume;
     emit volumeChanged();
 }

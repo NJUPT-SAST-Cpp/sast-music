@@ -27,4 +27,4 @@ private:
     int m_volume = 100;
 };
 
-#endif  // VOLUMEVIEWMODEL_H
+#endif // VOLUMEVIEWMODEL_H
