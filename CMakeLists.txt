@@ -17,7 +17,7 @@ else()
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/release)
 endif()
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -103,7 +103,9 @@ set_target_properties(sast_music PROPERTIES
 )
 
 target_link_libraries(sast_music
-    PRIVATE Qt6::Quick
+    PRIVATE
+    Qt6::Quick
+    Qt6::Multimedia
 )
 
 include(GNUInstallDirs)

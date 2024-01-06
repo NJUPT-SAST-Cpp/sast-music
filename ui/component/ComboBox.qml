@@ -13,7 +13,7 @@ FluComboBox {
     width: Math.max(implicitWidth, 192)
     font.family: "Barlow"
     font.weight: 600
-    font.pixelSize: 13
+    font.pixelSize: 10
     focusPolicy: Qt.StrongFocus
     background: Rectangle {
         implicitHeight: height
@@ -21,7 +21,7 @@ FluComboBox {
         width: control.width
         height: control.height
         visible: !control.flat || control.down
-        radius: 10
+        radius: 12
         FluFocusRectangle {
             visible: control.visualFocus
             radius: 4
@@ -94,7 +94,9 @@ FluComboBox {
             visible: control.down || control.highlighted || control.visualFocus
         }
         Component.onCompleted: {
-            control.implicitWidth = width
+            control.implicitWidth = Qt.binding(() => {
+                                                   return width
+                                               })
         }
     }
     popup: T.Popup {

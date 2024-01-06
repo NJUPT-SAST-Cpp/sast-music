@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import FluentUI
+import sast_music
 import "../component"
 
 ScrollablePage {
@@ -102,7 +103,7 @@ ScrollablePage {
 
     Text {
         Layout.topMargin: 48
-        text: "Sound Quality"
+        text: "Sound"
         font.family: "Barlow"
         font.weight: 600
         font.pixelSize: 26
@@ -133,7 +134,7 @@ ScrollablePage {
 
     Row {
         Layout.topMargin: 24
-        spacing: 720 - text_output_deviece.implicitWidth - comboBox_output_deviece.implicitWidth
+        spacing: 720 - text_output_deviece.implicitWidth - comboBox_output_deviece.width
         Text {
             id: text_output_deviece
             text: "Audio Output Deviece"
@@ -145,7 +146,17 @@ ScrollablePage {
         }
         ComboBox {
             id: comboBox_output_deviece
-            model: [" Default ", " XXX ", " Speaker", " 1000-XM4 ", " HDMI"]
+            width: 450
+            textRole: "name"
+            model: OutputDeviceViewModel
+            currentIndex: OutputDeviceViewModel.currentIndex
+            Component.onCompleted: {
+                currentIndex = find(
+                            OutputDeviceViewModel.getDefaultDeviceName())
+            }
+            onCurrentIndexChanged: {
+                OutputDeviceViewModel.currentIndex = currentIndex
+            }
         }
     }
 
