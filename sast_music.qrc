@@ -64,5 +64,9 @@
         <file>ui/page/T_settings.qml</file>
         <file>ui/page/T_login.qml</file>
         <file>ui/page/T_searchResult.qml</file>
+        <file>res/img/svip.png</file>
+        <file>res/img/vip.png</file>
+        <file>ui/component/ComboBox.qml</file>
+        <file>ui/component/ToggleSwitch.qml</file>
     </qresource>
 </RCC>

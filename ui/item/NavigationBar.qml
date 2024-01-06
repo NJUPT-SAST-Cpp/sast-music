@@ -18,6 +18,14 @@ BlurRectangle {
     height: 60
     blurRadius: 100
     target: stackView
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            forceActiveFocus()
+        }
+    }
+
     Row {
         spacing: 5
         anchors {
@@ -148,11 +156,5 @@ BlurRectangle {
                             "https://github.com/NJUPT-SAST-Cpp/sast-music")
             }
         }
-    }
-
-    Pane {
-        z: -1
-        anchors.fill: parent
-        focusPolicy: Qt.ClickFocus
     }
 }

@@ -10,7 +10,8 @@ Item {
     property color backgroundHoverColor: Qt.rgba(209 / 255, 209 / 255,
                                                  214 / 255, 0.28)
     property color backgroundNormalColor: "transparent"
-    property int duration: 2
+    property int duration: 20
+    property bool hoverAnimation: false
     signal clicked
     Component.onCompleted: {
         width = btn.implicitWidth
@@ -41,6 +42,13 @@ Item {
                 duration: control.duration
             }
         }
+        onHoveredChanged: {
+            if (hoverAnimation) {
+                implicitHeight = btn.hovered ? implicitHeight * 1.05 : implicitHeight / 1.05
+                implicitWidth = btn.hovered ? implicitWidth * 1.05 : implicitWidth / 1.05
+                control.fontSize = btn.hovered ? control.fontSize * 1.05 : control.fontSize / 1.05
+            }
+        }
         onPressed: {
             implicitHeight = implicitHeight * 0.95
             implicitWidth = implicitWidth * 0.95
@@ -50,6 +58,20 @@ Item {
             implicitHeight = implicitHeight / 0.95
             implicitWidth = implicitWidth / 0.95
             control.fontSize = control.fontSize / 0.95
+        }
+        background: Rectangle {
+            implicitWidth: 28
+            implicitHeight: 28
+            radius: 10
+            color: {
+                if (!enabled) {
+                    return backgroundDisableColor
+                }
+                if (btn.hovered) {
+                    return backgroundHoverColor
+                }
+                return backgroundNormalColor
+            }
         }
     }
     Behavior on fontSize {

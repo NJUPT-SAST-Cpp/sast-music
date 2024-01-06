@@ -113,13 +113,13 @@ Item {
             clip: true
             anchors.fill: parent
             contentWidth: parent.width
-            contentHeight: container.height + control.topMargin
+            contentHeight: container.implicitHeight + control.topMargin * 2
             ScrollBar.vertical: FluScrollBar {
                 anchors {
                     right: flickview.right
                     rightMargin: 2
                     top: parent.top
-                    topMargin: 40
+                    topMargin: 45
                 }
             }
             boundsBehavior: Flickable.StopAtBounds
