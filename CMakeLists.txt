@@ -23,6 +23,7 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 set(CMAKE_AUTORCC ON)
 
+set(FLUENTUI_BUILD_STATIC_LIB ON)
 set(FLUENTUI_BUILD_EXAMPLES OFF)
 add_subdirectory(libs/FluentUI)
 

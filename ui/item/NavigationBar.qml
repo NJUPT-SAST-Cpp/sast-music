@@ -139,10 +139,17 @@ BlurRectangle {
         }
         RadiusMenuItem {
             iconSize: 20
-            iconUrl: "qrc:///res/img/logout.svg"
-            text: "Logout"
+            iconUrl: UserViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
+            text: UserViewModel.isLogin ? "Logout" : "Login"
             font.family: "Barlow-Bold"
             font.bold: true
+            onClicked: {
+                if (!UserViewModel.isLogin) {
+                    stackView.pushPage("qrc:///ui/page/T_login.qml")
+                    return
+                }
+                // TODO: popup dialog
+            }
         }
         MenuSeparator {}
         RadiusMenuItem {

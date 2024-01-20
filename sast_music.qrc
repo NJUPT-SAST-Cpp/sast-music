@@ -68,5 +68,6 @@
         <file>res/img/vip.png</file>
         <file>ui/component/ComboBox.qml</file>
         <file>ui/component/ToggleSwitch.qml</file>
+        <file>ui/page/T_palyList.qml</file>
     </qresource>
 </RCC>

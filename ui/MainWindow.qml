@@ -94,6 +94,8 @@ ApplicationWindow {
                 return "login"
             if (url === "qrc:///ui/page/T_searchResult.qml")
                 return "searchResult"
+            if (url === "qrc:///ui/page/T_playList.qml")
+                return "playList"
         }
 
         Component.onCompleted: {
