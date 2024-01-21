@@ -43,8 +43,8 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.5.0'
-        modules: 'qt5compat qtwebsockets qthttpserver qtshadertools'
+        version: '6.6.1'
+        modules: 'qt5compat qtwebsockets qthttpserver qtshadertools qtmultimedia'
         cache: 'true'
         cache-key-prefix: 'install-qt-action'
         ignore: '.github|Qt|libs'
