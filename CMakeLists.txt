@@ -23,8 +23,10 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 set(CMAKE_AUTORCC ON)
 
-set(FLUENTUI_BUILD_STATIC_LIB ON)
 set(FLUENTUI_BUILD_EXAMPLES OFF)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND LINUX)
+    set(FLUENTUI_QML_PLUGIN_DIRECTORY /usr/lib/qt6/qml/FluentUI)
+endif()
 add_subdirectory(libs/FluentUI)
 
 file(GLOB_RECURSE SOURCE_FILES
