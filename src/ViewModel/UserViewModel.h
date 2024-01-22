@@ -21,7 +21,6 @@ signals:
 
 private:
     bool isLogin = false;
-
 };
 
 #endif // USERVIEWMODEL_H

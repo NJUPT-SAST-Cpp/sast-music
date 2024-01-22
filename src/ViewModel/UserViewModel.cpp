@@ -2,13 +2,11 @@
 
 UserViewModel::UserViewModel(QObject* parent) : QObject{parent} {}
 
-bool UserViewModel::getIsLogin() const
-{
+bool UserViewModel::getIsLogin() const {
     return isLogin;
 }
 
-void UserViewModel::setIsLogin(bool newIsLogin)
-{
+void UserViewModel::setIsLogin(bool newIsLogin) {
     if (isLogin == newIsLogin)
         return;
     isLogin = newIsLogin;
