@@ -17,13 +17,16 @@ else()
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/release)
 endif()
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick Multimedia)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
 set(CMAKE_AUTORCC ON)
 
 set(FLUENTUI_BUILD_EXAMPLES OFF)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND LINUX)
+    set(FLUENTUI_QML_PLUGIN_DIRECTORY /usr/lib/qt6/qml/FluentUI)
+endif()
 add_subdirectory(libs/FluentUI)
 
 file(GLOB_RECURSE SOURCE_FILES
@@ -34,10 +37,8 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 
 file(GLOB_RECURSE SOURCE_IMPORT_PATHS
-    ${CMAKE_SOURCE_DIR}/src/controller/*.h
-    ${CMAKE_SOURCE_DIR}/src/controller/*.cpp
-    ${CMAKE_SOURCE_DIR}/src/model/*.h
-    ${CMAKE_SOURCE_DIR}/src/model/*.cpp
+    ${CMAKE_SOURCE_DIR}/src/ViewModel/*.h
+    ${CMAKE_SOURCE_DIR}/src/ViewModel/*.cpp
 )
 
 foreach(filepath ${SOURCE_IMPORT_PATHS})
@@ -93,8 +94,7 @@ qt_add_qml_module(sast_music
 target_include_directories(sast_music
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/model
-    ${CMAKE_SOURCE_DIR}/src/controller
+    ${CMAKE_SOURCE_DIR}/src/ViewModel
 )
 
 set_target_properties(sast_music PROPERTIES
@@ -106,7 +106,9 @@ set_target_properties(sast_music PROPERTIES
 )
 
 target_link_libraries(sast_music
-    PRIVATE Qt6::Quick
+    PRIVATE
+    Qt6::Quick
+    Qt6::Multimedia
 )
 
 include(GNUInstallDirs)

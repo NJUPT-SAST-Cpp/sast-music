@@ -1,22 +1,30 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts
 import FluentUI
+import sast_music
 import "./component"
+import "./item"
 
 ApplicationWindow {
     id: window
     visible: true
     width: 1400
     height: 850
+    minimumWidth: 1050
+    minimumHeight: 720
     title: "SAST Music"
 
     readonly property color activeColor: "#335eea"
+    readonly property color backgroundColor: Qt.rgba(209 / 255, 209 / 255,
+                                                     214 / 255, 0.28)
     readonly property string homePageUrl: "qrc:///ui/page/T_home.qml"
     readonly property string explorePageUrl: "qrc:///ui/page/T_explore.qml"
     readonly property string libraryPageUrl: "qrc:///ui/page/T_library.qml"
     property string topPageUrl
     property var undoStack: []
     property var redoStack: []
+    property int volumeValue: 100
 
     StackView {
         id: stackView
@@ -25,25 +33,28 @@ ApplicationWindow {
         function isPageInStack(pageName) {
             for (var i = 0; i < stackView.depth; ++i) {
                 if (stackView.get(i).objectName === pageName) {
-                    return true;
+                    return true
                 }
             }
-            return false;
+            return false
         }
 
         // This function pops pages until the target page is on top
         function popToTargetPage(targetPageName) {
-            while (stackView.depth > 1 && stackView.currentItem.objectName !== targetPageName) {
-                stackView.pop();
+            while (stackView.depth > 1
+                   && stackView.currentItem.objectName !== targetPageName) {
+                stackView.pop()
             }
         }
 
         // This function pushes a new page or pops to an existing instance of the page
         function pushOrPopToPage(pageUrl, pageName) {
             if (isPageInStack(pageName)) {
-                popToTargetPage(pageName);
+                popToTargetPage(pageName)
             } else {
-                stackView.push(pageUrl, { objectName: pageName });
+                stackView.push(pageUrl, {
+                                   "objectName": pageName
+                               })
             }
             topPageUrl = pageUrl
         }
@@ -71,166 +82,104 @@ ApplicationWindow {
         }
 
         function url2Name(url) {
-            if (url === homePageUrl) return "home"
-            if (url === explorePageUrl) return "explore"
-            if (url === libraryPageUrl) return "library"
+            if (url === homePageUrl)
+                return "home"
+            if (url === explorePageUrl)
+                return "explore"
+            if (url === libraryPageUrl)
+                return "library"
+            if (url === "qrc:///ui/page/T_settings.qml")
+                return "settings"
+            if (url === "qrc:///ui/page/T_login.qml")
+                return "login"
+            if (url === "qrc:///ui/page/T_searchResult.qml")
+                return "searchResult"
+            if (url === "qrc:///ui/page/T_playList.qml")
+                return "playList"
         }
 
         Component.onCompleted: {
-            pushPage(homePageUrl);
+            pushPage(homePageUrl)
         }
     }
 
-    BlurRectangle {
-        id: navigationBar
+    NavigationBar {
+        stackView: stackView
         width: parent.width
-        height: 60
-        blurRadius: 100
-        color: Qt.rgba(1, 1, 1, 0.99)
-        target: stackView
-        Row {
-            spacing: 5
-            anchors {
-                left: parent.left
-                leftMargin: 65
-                verticalCenter: parent.verticalCenter
-            }
-            FluIconButton {
-                id: btn_back
-                radius: 6
-                hoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                iconSource: FluentIcons.ChevronLeftSmall
-                onClicked: stackView.popPage()
-            }
-            FluIconButton {
-                id: btn_redo
-                radius: 6
-                hoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                iconSource: FluentIcons.ChevronRightSmall
-                onClicked: stackView.redoPage()
-            }
+        topPageUrl: window.topPageUrl
+    }
+
+    PlayerBar {
+        id: playerBar
+        stackView: stackView
+        animationup: animationup
+        volumeValue: window.volumeValue
+        rec_lyrics: rec_lyrics
+        width: parent.width
+        anchors {
+            bottom: parent.bottom
         }
+    }
 
-        Row {
-            anchors.centerIn: parent
-            spacing: 30
-
-            FluTextButton {
-                id: btn_home
-                text: "HOME"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
-                textColor: topPageUrl === homePageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: stackView.pushPage(homePageUrl)
-            }
-
-            FluTextButton {
-                id: btn_explore
-                text: "EXPLORE"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
-                textColor: topPageUrl === explorePageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: stackView.pushPage(explorePageUrl)
-            }
-
-            FluTextButton {
-                id: btn_library
-                text: "LIBRARY"
-                font.family: "Barlow-Bold"
-                font.pixelSize: 18
-                font.weight: 700
-                textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
-                implicitHeight: 30
-                normalColor: Qt.rgba(0, 0, 0, 1)
-                backgroundHoverColor: Qt.rgba(209/255, 209/255, 214/255, 0.28)
-                onClicked: stackView.pushPage(libraryPageUrl)
-            }
+    MusicSlider {
+        id: progress
+        width: parent.width
+        height: 2
+        radius: 0
+        active: true
+        handleVisible: item_mouse_progress.containsMouse
+        normalColor: "#e6e6e6"
+        tooltipEnabled: true
+        tipText: "1:32"
+        anchors {
+            bottom: playerBar.top
         }
+    }
 
-        SearchBox {
-            anchors {
-                right: avatar.left
-                rightMargin: 15
-                verticalCenter: parent.verticalCenter
-            }
-            onCommit: (content) => {
-                        // TODO: post search request
-                      }
+    MouseArea {
+        id: item_mouse_progress
+        hoverEnabled: true
+        propagateComposedEvents: true
+        height: 20
+        z: progress.z + 1
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            bottomMargin: 55
         }
+        onClicked: mouse => mouse.accepted = false
+        onPressAndHold: mouse => mouse.accepted = false
+        onPressed: mouse => mouse.accepted = false
+        onReleased: mouse => mouse.accepted = false
+    }
 
-        FluClip {
-            id: avatar
-            anchors {
-                right: parent.right
-                rightMargin: 65
-                verticalCenter: parent.verticalCenter
-            }
-            width: 30
-            height: 30
-            radius: [15, 15, 15, 15]
-            Image {
-                anchors.fill: parent
-                source: "qrc:///res/img/avatar.svg"
-                fillMode: Image.PreserveAspectFit
-            }
+    LyricsRect {
+        id: rec_lyrics
+        width: parent.width
+        height: parent.height
+        y: window.height
+        windowHeight: window.height
+        volumeValue: window.volumeValue
+        animationdown: animationdown
+    }
 
-            Rectangle {
-                anchors.fill: parent
-                color: item_mouse.containsMouse ? Qt.rgba(46/255, 46/255, 41/255, 0.28) : "transparent"
-            }
-
-            MouseArea {
-                id: item_mouse
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
-                    menu.popup()
-                }
-            }
-        }
-
-        RadiusMenu {
-            id: menu
-            radius: 15
-            RadiusMenuItem {
-                iconSize: 20
-                iconUrl: "qrc:///res/img/settings.svg"
-                text: "Settings"
-                font.family: "Barlow-Bold"
-                font.bold: true
-            }
-            RadiusMenuItem {
-                iconSize: 20
-                iconUrl: "qrc:///res/img/logout.svg"
-                text: "Logout"
-                font.family: "Barlow-Bold"
-                font.bold: true
-            }
-            MenuSeparator{}
-            RadiusMenuItem {
-                iconSize: 20
-                iconUrl: "qrc:///res/img/github.svg"
-                text: "GitHub Repo"
-                font.family: "Barlow-Bold"
-                font.bold: true
-                onClicked: {
-                    Qt.openUrlExternally("https://github.com/NJUPT-SAST-Cpp/sast-music")
-                }
-            }
-        }
-
-        Pane {
-            z: -1
-            anchors.fill: parent
-            focusPolicy: Qt.ClickFocus
-        }
+    NumberAnimation {
+        id: animationdown
+        target: rec_lyrics
+        property: "y"
+        from: 0
+        to: window.height
+        duration: 400
+        easing.type: Easing.InOutQuad
+    }
+    NumberAnimation {
+        id: animationup
+        target: rec_lyrics
+        property: "y"
+        from: window.height
+        to: 0
+        duration: 400
+        easing.type: Easing.InOutQuad
     }
 }

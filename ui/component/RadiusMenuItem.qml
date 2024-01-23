@@ -7,12 +7,12 @@ import Qt5Compat.GraphicalEffects
 import FluentUI
 
 T.MenuItem {
-    property Component iconDelegate : com_icon
+    property Component iconDelegate: com_icon
     property int iconSpacing: 5
     property string iconUrl
     property int iconSize: 16
     property color textColor: {
-        if(control.highlighted){
+        if (control.highlighted) {
             return "#335eea"
         }
         return "#000"
@@ -20,31 +20,35 @@ T.MenuItem {
     id: control
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding,
-                             implicitIndicatorHeight + topPadding + bottomPadding)
+    implicitHeight: Math.max(
+                        implicitBackgroundHeight + topInset + bottomInset,
+                        implicitContentHeight + topPadding + bottomPadding,
+                        implicitIndicatorHeight + topPadding + bottomPadding)
     padding: 6
     spacing: 6
     icon.width: 24
     icon.height: 24
     icon.color: control.palette.windowText
     height: visible ? implicitHeight : 0
-    Component{
-        id:com_icon
+    Component {
+        id: com_icon
         Item {
             width: control.iconSize
             height: control.iconSize
-            Image{
+            Image {
                 id: img
-                width: control.iconSize
+                sourceSize.width: control.iconSize
+                sourceSize.height: control.iconSize
+                fillMode: Image.PreserveAspectFit
                 height: control.iconSize
-                source:control.iconUrl
+                width: control.iconSize
+                source: control.iconUrl
             }
             ColorOverlay {
                 anchors.fill: parent
                 source: img
                 color: {
-                    if(control.highlighted) {
+                    if (control.highlighted) {
                         return "#335eea"
                     }
                     return "#000"
@@ -52,26 +56,29 @@ T.MenuItem {
             }
         }
     }
-    contentItem: Item{
-        Row{
+    contentItem: Item {
+        Row {
             spacing: control.iconSpacing
-            readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
-            readonly property real indicatorPadding: control.checkable && control.indicator ? control.indicator.width + control.spacing : 0
-            anchors{
+            readonly property real arrowPadding: control.subMenu
+                                                 && control.arrow ? control.arrow.width
+                                                                    + control.spacing : 0
+            readonly property real indicatorPadding: control.checkable
+                                                     && control.indicator ? control.indicator.width + control.spacing : 0
+            anchors {
                 verticalCenter: parent.verticalCenter
                 left: parent.left
-                leftMargin: (!control.mirrored ? indicatorPadding : arrowPadding)+5
+                leftMargin: (!control.mirrored ? indicatorPadding : arrowPadding) + 5
                 right: parent.right
-                rightMargin: (control.mirrored ? indicatorPadding : arrowPadding)+5
+                rightMargin: (control.mirrored ? indicatorPadding : arrowPadding) + 5
             }
-            FluLoader{
-                id:loader_icon
+            Loader {
+                id: loader_icon
                 sourceComponent: iconDelegate
                 anchors.verticalCenter: parent.verticalCenter
                 visible: status === Loader.Ready
             }
             FluText {
-                id:content_text
+                id: content_text
                 text: control.text
                 color: control.textColor
                 font.family: "Barlow-Bold"
@@ -99,12 +106,12 @@ T.MenuItem {
         y: 1
         width: control.width - 2
         height: control.height - 2
-        Rectangle{
+        Rectangle {
             anchors.fill: parent
             anchors.margins: 3
             radius: 10
-            color:{
-                if(control.highlighted){
+            color: {
+                if (control.highlighted) {
                     return "#eaeffd"
                 }
                 return FluTheme.itemNormalColor

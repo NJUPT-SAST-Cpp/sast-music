@@ -1,7 +1,14 @@
 Language:	                        Cpp
-BasedOnStyle:                       Google
+BasedOnStyle:                     LLVM
 IndentWidth:	                    4
 AccessModifierOffset:	            -4
 AllowShortFunctionsOnASingleLine:	Empty
 TabWidth:	                        4
-UseTab:	                            Never
+UseTab:	                          Never
+PointerAlignment:	                Left
+ColumnLimit:	                    120
+AlwaysBreakTemplateDeclarations:	true
+BreakStringLiterals:              false
+IndentCaseLabels:	                false
+IndentWrappedFunctionNames:	      true
+MaxEmptyLinesToKeep:	            1
