@@ -10,9 +10,9 @@ BlurRectangle {
     readonly property color backgroundColor: Qt.rgba(209 / 255, 209 / 255,
                                                      214 / 255, 0.28)
     readonly property color activeColor: "#335eea"
-    readonly property string homePageUrl: "qrc:///ui/page/T_home.qml"
-    readonly property string explorePageUrl: "qrc:///ui/page/T_explore.qml"
-    readonly property string libraryPageUrl: "qrc:///ui/page/T_library.qml"
+    readonly property string homePageUrl: "qrc:///ui/page/Home.qml"
+    readonly property string explorePageUrl: "qrc:///ui/page/Explore.qml"
+    readonly property string libraryPageUrl: "qrc:///ui/page/Library.qml"
     property Item stackView
     property string topPageUrl
     height: 60
@@ -134,7 +134,7 @@ BlurRectangle {
             font.family: "Barlow-Bold"
             font.bold: true
             onClicked: {
-                stackView.pushPage("qrc:///ui/page/T_settings.qml")
+                stackView.pushPage("qrc:///ui/page/Settings.qml")
             }
         }
         RadiusMenuItem {
@@ -145,7 +145,7 @@ BlurRectangle {
             font.bold: true
             onClicked: {
                 if (!UserViewModel.isLogin) {
-                    stackView.pushPage("qrc:///ui/page/T_login.qml")
+                    stackView.pushPage("qrc:///ui/page/Login.qml")
                     return
                 }
                 // TODO: popup dialog

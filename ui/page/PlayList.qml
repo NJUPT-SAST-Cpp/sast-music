@@ -91,7 +91,7 @@ ScrollablePage {
             maximumLineCount: 1
             font.family: "Barlow-Bold"
             font.pixelSize: 12
-            color: "#73706c"
+            color: "#3057d7"
             anchors {
                 left: now_play_image_song.right
                 leftMargin: 10
@@ -118,11 +118,19 @@ ScrollablePage {
         Text {
             id: now_play_text_time
             text: "4:12"
-            color: play_list_root.playingSelected && !play_list_root.currentSelectedItem ? "#3057d7" : "black"
+            color: "#3057d7"
             anchors {
                 right: parent.right
                 rightMargin: 20
                 verticalCenter: parent.verticalCenter
+            }
+        }
+        MouseArea {
+            id: now_play_mouseArea
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked: {
+                // TODO
             }
         }
 
@@ -131,9 +139,10 @@ ScrollablePage {
             property bool liked: false
             width: 40
             height: 40
-            iconWidth: 25
-            iconHeight: 25
+            iconWidth: 15
+            iconHeight: 15
             iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
+            iconColor: "#3057d7"
             anchors {
                 right: now_play_text_time.left
                 rightMargin: 20
@@ -141,16 +150,6 @@ ScrollablePage {
             }
             onClicked: {
                 liked = !liked
-            }
-        }
-
-        MouseArea {
-            id: now_play_mouseArea
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: {
-                play_list_root.playingSelected = !play_list_root.playingSelected;
-                play_list_root.currentSelectedItem = null;
             }
         }
     }
@@ -167,13 +166,13 @@ ScrollablePage {
 
     ListView {
         id: playList
-        width: 1300
         implicitHeight: contentHeight
+        height: implicitHeight
+        interactive: false
         spacing: 10
         Layout.topMargin: 10
+        Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter
-        clip: true
-
         model: 20
 
         delegate: Item {
@@ -280,14 +279,22 @@ ScrollablePage {
                     verticalCenter: parent.verticalCenter
                 }
             }
+            MouseArea {
+                id: mouseArea
+                hoverEnabled: true
+                anchors.fill: parent
+                onClicked: {
+                    play_list_root.currentSelectedItem = index;
+                }
+            }
 
             IconButton {
                 id: btn_like
                 property bool liked: false
                 width: 40
                 height: 40
-                iconWidth: 25
-                iconHeight: 25
+                iconWidth: 15
+                iconHeight: 15
                 iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
                 anchors {
                     right: text_time.left
@@ -307,24 +314,14 @@ ScrollablePage {
                     rightMargin: 10
                     verticalCenter: parent.verticalCenter
                 }
-
                 width: 40
                 height: 40
                 radius: 10
-                iconWidth: 20
-                iconHeight: 25
+                iconWidth: 10
+                iconHeight: 15
                 iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
                 onClicked: {
                     playing = !playing
-                }
-            }
-
-            MouseArea {
-                id: mouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked: {
-                    play_list_root.currentSelectedItem = index;
                 }
             }
         }

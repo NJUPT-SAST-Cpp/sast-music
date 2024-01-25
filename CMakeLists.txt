@@ -33,7 +33,6 @@ file(GLOB_RECURSE SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/src/*.h
     ${CMAKE_SOURCE_DIR}/src/*.hpp
-    sast_music.qrc
 )
 
 file(GLOB_RECURSE SOURCE_IMPORT_PATHS
@@ -89,6 +88,8 @@ qt_add_qml_module(sast_music
     URI sast_music
     VERSION 1.0
     SOURCES ${SOURCE_IMPORT_FILES}
+    RESOURCES res.qrc
+    RESOURCES qml.qrc
 )
 
 target_include_directories(sast_music

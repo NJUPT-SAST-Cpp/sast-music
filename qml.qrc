@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/component/BlurRectangle.qml</file>
+        <file>ui/component/ComboBox.qml</file>
+        <file>ui/component/IconButton.qml</file>
+        <file>ui/component/MusicSlider.qml</file>
+        <file>ui/component/RadiusMenu.qml</file>
+        <file>ui/component/RadiusMenuItem.qml</file>
+        <file>ui/component/ScrollablePage.qml</file>
+        <file>ui/component/SearchBox.qml</file>
+        <file>ui/component/TextButton.qml</file>
+        <file>ui/component/ToggleSwitch.qml</file>
+        <file>ui/item/LyricsRect.qml</file>
+        <file>ui/item/NavigationBar.qml</file>
+        <file>ui/item/PlayerBar.qml</file>
+        <file>ui/page/Explore.qml</file>
+        <file>ui/page/Home.qml</file>
+        <file>ui/page/Library.qml</file>
+        <file>ui/page/Login.qml</file>
+        <file>ui/page/PlayList.qml</file>
+        <file>ui/page/SearchResult.qml</file>
+        <file>ui/page/Settings.qml</file>
+        <file>ui/MainWindow.qml</file>
+    </qresource>
+</RCC>
