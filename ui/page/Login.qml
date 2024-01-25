@@ -53,7 +53,7 @@ ScrollablePage {
     Text {
         id: text_LoginTip
         text: "打开网易云音乐APP扫码登录"
-        font.family: "Microsoft YaHei"
+        font.family: "Barlow"
         font.pixelSize: 18
         font.bold: false
         Layout.alignment: Qt.AlignHCenter
