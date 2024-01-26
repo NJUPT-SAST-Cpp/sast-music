@@ -205,7 +205,7 @@ ScrollablePage {
         }
         ComboBox {
             id: comboBox_cache_limit
-            model: [" None ", " 500MB ", " 1GB ", " 2GB ", " 4GB ", " 8GB "]
+            model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
             currentIndex: 5
         }
     }
@@ -214,7 +214,7 @@ ScrollablePage {
         spacing: 720 - text_cache_num.implicitWidth - btn_clear_cache.width
         Text {
             id: text_cache_num
-            text: "Cached 263 songs (6.76 GB)"
+            text: "Cached 263 songs (6.76 GiB)"
             font.family: "Barlow"
             font.weight: 500
             font.pixelSize: 16
