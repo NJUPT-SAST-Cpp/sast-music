@@ -12,6 +12,25 @@ NeteaseCloudMusic::CloudMusicClient::CloudMusicClient() {
 }
 
 NeteaseCloudMusic::CloudMusicClient::~CloudMusicClient() {}
+
+QNetworkReply* NeteaseCloudMusic::CloudMusicClient::createReply(const QByteArray& verb,
+                                                                const QNetworkRequest& requestInfo,
+                                                                const QByteArray& body) {
+    if (verb.compare("POST", Qt::CaseInsensitive) == 0) {
+        return manager.post(requestInfo, body);
+    } else if (verb.compare("PUT", Qt::CaseInsensitive) == 0) {
+        return manager.put(requestInfo, body);
+    } else if (verb.compare("DELETE", Qt::CaseInsensitive) == 0) {
+        assert(body.isEmpty());
+        return manager.deleteResource(requestInfo);
+    } else if (verb.compare("GET", Qt::CaseInsensitive) == 0) {
+        assert(body.isEmpty());
+        return manager.get(requestInfo);
+    } else {
+        return manager.sendCustomRequest(requestInfo, verb, body);
+    }
+}
+
 void NeteaseCloudMusic::CloudMusicClient::newLoginQRCode(std::function<void(Result<LoginQRCodeEntity>)> callback) {
     auto url = QUrl("https://music.163.com/weapi/login/qrcode/unikey");
     auto data = QJsonDocument(QJsonObject{

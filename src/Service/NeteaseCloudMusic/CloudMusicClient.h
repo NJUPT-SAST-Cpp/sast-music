@@ -19,6 +19,7 @@ class CloudMusicClient : public QObject {
     Q_OBJECT
 private:
     QNetworkAccessManager manager;
+    QNetworkReply* createReply(const QByteArray& verb, const QNetworkRequest& requestInfo, const QByteArray& body);
 
 public:
     CloudMusicClient();
@@ -30,27 +31,17 @@ public:
             callback(Result<QJsonObject>(requestResult.takeErr()));
             return;
         }
-        auto [request, body] = requestResult.unwrap();
+        auto [requestInfo, body] = requestResult.unwrap();
         QNetworkReply* reply;
-        auto createReply = [&]() -> QNetworkReply* {
-            if (verb.compare("POST", Qt::CaseInsensitive) == 0) {
-                return manager.post(request, body);
-            } else if (verb.compare("PUT", Qt::CaseInsensitive) == 0) {
-                return manager.put(request, body);
-            } else if (verb.compare("DELETE", Qt::CaseInsensitive) == 0) {
-                assert(body.isEmpty());
-                return manager.deleteResource(request);
-            } else if (verb.compare("GET", Qt::CaseInsensitive) == 0) {
-                assert(body.isEmpty());
-                return manager.get(request);
-            } else {
-                return manager.sendCustomRequest(request, verb, body);
-            }
-        };
         if (manager.thread() == QThread::currentThread()) {
-            reply = createReply();
+            reply = createReply(verb, requestInfo, body);
         } else {
-            QMetaObject::invokeMethod(&manager, createReply, Qt::BlockingQueuedConnection, &reply);
+            QMetaObject::invokeMethod(
+                &manager,
+                [this, &verb, requestInfo = std::move(requestInfo), body = std::move(body)] {
+                    return createReply(verb, requestInfo, body);
+                },
+                Qt::BlockingQueuedConnection, &reply);
         }
         connect(reply, &QNetworkReply::finished, [=] {
             auto content = reply->readAll();
