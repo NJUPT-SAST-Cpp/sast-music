@@ -86,3 +86,45 @@ public:
         }
     }
 };
+
+template <>
+class Result<void> {
+private:
+    std::optional<ErrorInfo> data;
+
+public:
+    Result() : data(std::nullopt) {}
+    Result(ErrorInfo&& data) : data(std::move(data)) {}
+    Result(const ErrorInfo& data) : data(data) {}
+    Result(const Result& other) : data(other.data) {}
+    Result(Result&& other) noexcept : data(std::move(other.data)) {}
+    Result& operator=(const Result& other) {
+        data = other.data;
+        return *this;
+    }
+    Result& operator=(Result&& other) noexcept {
+        data = std::move(other.data);
+        return *this;
+    }
+    ~Result() = default;
+    bool isOk() const {
+        return !data.has_value();
+    }
+    bool isErr() const {
+        return data.has_value();
+    }
+    const ErrorInfo& unwrapErr() const {
+        return data.value();
+    }
+    ErrorInfo&& takeErr() {
+        return std::move(data.value());
+    }
+    template <typename F>
+    void unwrapOrElse(F&& def) const {
+        if (isOk()) {
+            return;
+        } else {
+            return std::forward<F>(def)();
+        }
+    }
+};
