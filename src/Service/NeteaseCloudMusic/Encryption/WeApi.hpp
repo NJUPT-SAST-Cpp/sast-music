@@ -65,18 +65,19 @@ public:
             return encSecKeyResult.takeErr();
         }
         auto encSecKey = encSecKeyResult.unwrap().toHex();
+
+        params.replace("/", "%2F");
+        params.replace("+", "%2B");
+        params.replace("=", "%3D");
+
+        auto urlQuery = QStringLiteral("params=%1&encSecKey=%2").arg(params, encSecKey);
+
         if (verb.compare("POST", Qt::CaseInsensitive) == 0) {
-            QUrlQuery query;
             request.setUrl(url);
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-            query.addQueryItem("params", params);
-            query.addQueryItem("encSecKey", encSecKey);
-            return std::make_tuple(request, query.toString(QUrl::FullyEncoded).toUtf8());
+            return std::make_tuple(request, urlQuery.toUtf8());
         } else {
-            QUrlQuery query(url);
-            query.addQueryItem("params", params);
-            query.addQueryItem("encSecKey", encSecKey);
-            request.setUrl(url.toString(QUrl::RemoveQuery) + "?" + query.toString(QUrl::FullyEncoded));
+            request.setUrl(url.toString(QUrl::RemoveQuery) + "?" + urlQuery);
             return std::make_tuple(request, QByteArray());
         }
     }
