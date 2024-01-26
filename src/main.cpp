@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
     // Construct cloud music client after setting organization name and domain
     // to make sure QSerttings can work properly
     NeteaseCloudMusic::CloudMusicClient::getInstance()->setCookieJar(new PersistentCookieJar());
+    NeteaseCloudMusic::CloudMusicClient::getInstance()->checkAnonimousToken([](Result<void>) {});
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/ui/MainWindow.qml"));

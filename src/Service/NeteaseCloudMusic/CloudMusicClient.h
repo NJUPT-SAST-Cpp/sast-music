@@ -87,5 +87,6 @@ public:
     void setCookieJar(QNetworkCookieJar* cookieJar);
     void newLoginQRCode(std::function<void(Result<LoginQRCodeEntity>)> callback);
     void loginQRCodePolling(QStringView key, std::function<void(Result<LoginQRCodePollingEntity>)> callback);
+    void checkAnonimousToken(std::function<void(Result<void>)> callback);
 };
 } // namespace NeteaseCloudMusic

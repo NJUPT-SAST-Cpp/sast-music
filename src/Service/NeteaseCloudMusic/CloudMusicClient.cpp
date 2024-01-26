@@ -1,6 +1,7 @@
 #include "CloudMusicClient.h"
 #include "Encryption/Encryption.hpp"
 #include "Encryption/WeApi.hpp"
+#include <QCryptographicHash>
 #include <QNetworkProxy>
 NeteaseCloudMusic::CloudMusicClient* NeteaseCloudMusic::CloudMusicClient::getInstance() {
     static CloudMusicClient instance;
@@ -93,5 +94,46 @@ void NeteaseCloudMusic::CloudMusicClient::loginQRCodePolling(
         callback(Result<LoginQRCodePollingEntity>(LoginQRCodePollingEntity{
             std::move(status),
         }));
+    });
+}
+
+namespace NeteaseCloudMusic {
+static QString encodeDeviceId(QByteArray deviceId) {
+    QByteArray key = "3go8&$833h0k(2)2";
+    QByteArray encodedId;
+    for (size_t i = 0; i < deviceId.size(); i++) {
+        encodedId += deviceId[i] ^ key[i % key.size()];
+    }
+    // calculate md5
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    hash.addData(encodedId);
+    encodedId = hash.result().toBase64();
+
+    return QString((deviceId + " " + encodedId).toBase64());
+}
+} // namespace NeteaseCloudMusic
+
+void NeteaseCloudMusic::CloudMusicClient::checkAnonimousToken(std::function<void(Result<void>)> callback) {
+    auto url = QUrl("https://music.163.com/weapi/register/anonimous");
+    auto cookies = manager.cookieJar()->cookiesForUrl(url);
+    auto musicUCookie = std::find_if(cookies.begin(), cookies.end(),
+                                     [](const QNetworkCookie& cookie) { return cookie.name() == "MUSIC_U"; });
+    if (musicUCookie != cookies.end()) {
+        return callback(Result<void>());
+    }
+    auto musicACookie = std::find_if(cookies.begin(), cookies.end(),
+                                     [](const QNetworkCookie& cookie) { return cookie.name() == "MUSIC_A"; });
+    if (musicACookie != cookies.end()) {
+        return callback(Result<void>());
+    }
+    QByteArray deviceId = "NMUSIC";
+    auto data = QJsonDocument(QJsonObject{
+        {"username", encodeDeviceId(deviceId)},
+    });
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        if (result.isErr()) {
+            return callback(Result<void>(result.takeErr()));
+        }
+        callback(Result<void>());
     });
 }
