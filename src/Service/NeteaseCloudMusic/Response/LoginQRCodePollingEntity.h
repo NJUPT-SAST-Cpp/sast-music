@@ -1,4 +1,5 @@
 #pragma once
+namespace NeteaseCloudMusic {
 enum class LoginQRCodePollingStatus {
     WaitingForScan,
     WaitingForConfirm,
@@ -9,3 +10,4 @@ enum class LoginQRCodePollingStatus {
 struct LoginQRCodePollingEntity {
     LoginQRCodePollingStatus status;
 };
+}
