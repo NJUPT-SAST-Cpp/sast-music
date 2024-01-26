@@ -2,6 +2,11 @@
 #include "Encryption/Encryption.hpp"
 #include "Encryption/WeApi.hpp"
 #include <QNetworkProxy>
+NeteaseCloudMusic::CloudMusicClient* NeteaseCloudMusic::CloudMusicClient::getInstance() {
+    static CloudMusicClient instance;
+    return &instance;
+}
+
 NeteaseCloudMusic::CloudMusicClient::CloudMusicClient() {
     // FIXME: proxy for debug
     QNetworkProxy proxy;
@@ -29,6 +34,10 @@ QNetworkReply* NeteaseCloudMusic::CloudMusicClient::createReply(const QByteArray
     } else {
         return manager.sendCustomRequest(requestInfo, verb, body);
     }
+}
+
+void NeteaseCloudMusic::CloudMusicClient::setCookieJar(QNetworkCookieJar* cookieJar) {
+    manager.setCookieJar(cookieJar);
 }
 
 void NeteaseCloudMusic::CloudMusicClient::newLoginQRCode(std::function<void(Result<LoginQRCodeEntity>)> callback) {

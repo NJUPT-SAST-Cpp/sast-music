@@ -22,6 +22,7 @@ private:
     QNetworkReply* createReply(const QByteArray& verb, const QNetworkRequest& requestInfo, const QByteArray& body);
 
 public:
+    static CloudMusicClient* getInstance();
     CloudMusicClient();
     ~CloudMusicClient();
     template <typename TEncryption, typename TCallback>
@@ -82,6 +83,8 @@ public:
         });
     }
 
+    // Note: CloudMusicClient takes ownership of the cookieJar object.
+    void setCookieJar(QNetworkCookieJar* cookieJar);
     void newLoginQRCode(std::function<void(Result<LoginQRCodeEntity>)> callback);
     void loginQRCodePolling(QStringView key, std::function<void(Result<LoginQRCodePollingEntity>)> callback);
 };
