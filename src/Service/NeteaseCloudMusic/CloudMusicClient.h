@@ -2,6 +2,7 @@
 #include "Response/LoginQRCodeEntity.h"
 #include "Response/LoginQRCodePollingEntity.h"
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QObject>
