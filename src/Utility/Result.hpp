@@ -15,7 +15,21 @@ class ErrorInfo {
 public:
     ErrorKind kind;
     QString message;
-    ErrorInfo(ErrorKind kind, QString message) : kind(kind), message(std::move(message)) {}
+    ErrorInfo(ErrorKind kind, const QString& message) : kind(kind), message(message) {}
+    ErrorInfo(ErrorKind kind, QString&& message) : kind(kind), message(std::move(message)) {}
+    ErrorInfo(const ErrorInfo& other) : kind(other.kind), message(other.message) {}
+    ErrorInfo(ErrorInfo&& other) noexcept : kind(other.kind), message(std::move(other.message)) {}
+    ErrorInfo& operator=(const ErrorInfo& other) {
+        kind = other.kind;
+        message = other.message;
+        return *this;
+    }
+    ErrorInfo& operator=(ErrorInfo&& other) noexcept {
+        kind = other.kind;
+        message = std::move(other.message);
+        return *this;
+    }
+    ~ErrorInfo() = default;
 };
 template <typename T>
 class Result {
