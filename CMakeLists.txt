@@ -28,6 +28,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND LINUX)
     set(FLUENTUI_QML_PLUGIN_DIRECTORY /usr/lib/qt6/qml/FluentUI)
 endif()
 add_subdirectory(libs/FluentUI)
+add_subdirectory(libs/mbedtls)
 
 file(GLOB_RECURSE SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
@@ -36,6 +37,8 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 
 file(GLOB_RECURSE SOURCE_IMPORT_PATHS
+    ${CMAKE_SOURCE_DIR}/src/Service/NeteaseCloudMusic/*.h
+    ${CMAKE_SOURCE_DIR}/src/Service/NeteaseCloudMusic/*.cpp
     ${CMAKE_SOURCE_DIR}/src/ViewModel/*.h
     ${CMAKE_SOURCE_DIR}/src/ViewModel/*.cpp
 )
@@ -110,6 +113,7 @@ target_link_libraries(sast_music
     PRIVATE
     Qt6::Quick
     Qt6::Multimedia
+    MbedTLS::mbedcrypto
 )
 
 include(GNUInstallDirs)
