@@ -64,11 +64,13 @@ public:
     const ErrorInfo& unwrapErr() const {
         return std::get<ErrorInfo>(data);
     }
-    T&& take() {
-        return std::move(std::get<T>(data));
+    T take() {
+        T ret = std::move(std::get<T>(data));
+        return ret;
     }
-    ErrorInfo&& takeErr() {
-        return std::move(std::get<ErrorInfo>(data));
+    ErrorInfo takeErr() {
+        ErrorInfo ret = std::move(std::get<ErrorInfo>(data));
+        return ret;
     }
     T unwrapOr(T&& def) const {
         if (isOk()) {
@@ -116,8 +118,9 @@ public:
     const ErrorInfo& unwrapErr() const {
         return data.value();
     }
-    ErrorInfo&& takeErr() {
-        return std::move(data.value());
+    ErrorInfo takeErr() {
+        ErrorInfo ret = std::move(data.value());
+        return ret;
     }
     template <typename F>
     void unwrapOrElse(F&& def) const {
