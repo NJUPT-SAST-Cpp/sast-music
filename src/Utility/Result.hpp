@@ -1,10 +1,10 @@
 #pragma once
+#include <QDebug>
 #include <QString>
 #include <optional>
 #include <type_traits>
 #include <utility>
 #include <variant>
-
 enum class ErrorKind {
     NetworkError,
     JsonParseError,
@@ -131,3 +131,54 @@ public:
         }
     }
 };
+
+inline QDebug operator<<(QDebug debug, const ErrorKind& it) {
+    QDebugStateSaver saver(debug);
+    switch (it) {
+    case ErrorKind::NetworkError:
+        debug.noquote() << "NetworkError";
+        break;
+    case ErrorKind::JsonParseError:
+        debug.noquote() << "JsonParseError";
+        break;
+    case ErrorKind::EncryptionError:
+        debug.noquote() << "EncryptionError";
+        break;
+    case ErrorKind::ApiError:
+        debug.noquote() << "ApiError";
+        break;
+    default:
+        debug.noquote() << "Error" << (int)it;
+        break;
+    }
+    return debug;
+}
+
+inline QDebug operator<<(QDebug debug, const ErrorInfo& it) {
+    QDebugStateSaver saver(debug);
+    debug.noquote().nospace() << '<' << it.kind << QStringLiteral(": ") << it.message << '>';
+    return debug;
+}
+
+template <
+    typename T,
+    std::enable_if_t<!std::is_void_v<decltype(*static_cast<QDebug*>(nullptr) << *static_cast<T*>(nullptr))>, int> = 0>
+QDebug operator<<(QDebug debug, const Result<T>& it) {
+    QDebugStateSaver saver(debug);
+    if (it.isOk()) {
+        debug.noquote().nospace() << QStringLiteral("Ok(") << it.unwrap() << ')';
+    } else {
+        debug.noquote().nospace() << QStringLiteral("Err(") << it.unwrapErr() << ')';
+    }
+    return debug;
+}
+
+inline QDebug operator<<(QDebug debug, const Result<void>& it) {
+    QDebugStateSaver saver(debug);
+    if (it.isOk()) {
+        debug.noquote().nospace() << QStringLiteral("Ok()");
+    } else {
+        debug.noquote().nospace() << QStringLiteral("Err(") << it.unwrapErr() << ')';
+    }
+    return debug;
+}
