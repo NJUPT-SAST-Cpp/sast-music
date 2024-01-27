@@ -29,6 +29,8 @@ public:
 
     Q_INVOKABLE QString getDefaultDeviceName() const;
 
+    Q_INVOKABLE void loadAudioOutputDevices();
+
     qsizetype getCurrentIndex() const;
     void setCurrentIndex(qsizetype newCurrentIndex);
 

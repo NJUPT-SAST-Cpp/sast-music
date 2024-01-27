@@ -17,7 +17,12 @@ void OutputDeviceViewModel::setCurrentIndex(qsizetype newCurrentIndex) {
 QString OutputDeviceViewModel::getDefaultDeviceName() const {
     if (!flag)
         return QMediaDevices::defaultAudioOutput().description();
-    return devices[getCurrentIndex()].description();
+    return devices[currentIndex].description();
+}
+
+void OutputDeviceViewModel::loadAudioOutputDevices() {
+    devices = QMediaDevices::audioOutputs();
+    emit dataChanged(index(0), index(devices.count()));
 }
 
 OutputDeviceViewModel* OutputDeviceViewModel::getInstance() {
@@ -43,7 +48,7 @@ int OutputDeviceViewModel::rowCount(const QModelIndex& parent) const {
 QVariant OutputDeviceViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-    const auto& element = devices[index.row()];
+    auto element = devices[index.row()];
     switch (role) {
     case DeviceName:
         return element.description();

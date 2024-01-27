@@ -18,9 +18,9 @@ ApplicationWindow {
     readonly property color activeColor: "#335eea"
     readonly property color backgroundColor: Qt.rgba(209 / 255, 209 / 255,
                                                      214 / 255, 0.28)
-    readonly property string homePageUrl: "qrc:///ui/page/T_home.qml"
-    readonly property string explorePageUrl: "qrc:///ui/page/T_explore.qml"
-    readonly property string libraryPageUrl: "qrc:///ui/page/T_library.qml"
+    readonly property string homePageUrl: "qrc:///ui/page/Home.qml"
+    readonly property string explorePageUrl: "qrc:///ui/page/Explore.qml"
+    readonly property string libraryPageUrl: "qrc:///ui/page/Library.qml"
     property string topPageUrl
     property var undoStack: []
     property var redoStack: []
@@ -88,13 +88,13 @@ ApplicationWindow {
                 return "explore"
             if (url === libraryPageUrl)
                 return "library"
-            if (url === "qrc:///ui/page/T_settings.qml")
+            if (url === "qrc:///ui/page/Settings.qml")
                 return "settings"
-            if (url === "qrc:///ui/page/T_login.qml")
+            if (url === "qrc:///ui/page/Login.qml")
                 return "login"
-            if (url === "qrc:///ui/page/T_searchResult.qml")
+            if (url === "qrc:///ui/page/SearchResult.qml")
                 return "searchResult"
-            if (url === "qrc:///ui/page/T_playList.qml")
+            if (url === "qrc:///ui/page/PlayList.qml")
                 return "playList"
         }
 

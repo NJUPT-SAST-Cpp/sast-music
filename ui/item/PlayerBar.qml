@@ -187,7 +187,7 @@ BlurRectangle {
         IconButton {
             iconUrl: "qrc:///res/img/list.svg"
             onClicked: {
-                stackView.pushPage("qrc:///ui/page/T_palyList.qml")
+                stackView.pushPage("qrc:///ui/page/PlayList.qml")
             }
         }
         IconButton {

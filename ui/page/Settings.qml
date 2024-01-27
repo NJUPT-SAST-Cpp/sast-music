@@ -134,10 +134,10 @@ ScrollablePage {
 
     Row {
         Layout.topMargin: 24
-        spacing: 720 - text_output_deviece.implicitWidth - comboBox_output_deviece.width
+        spacing: 720 - text_output_device.implicitWidth - comboBox_output_device.width
         Text {
-            id: text_output_deviece
-            text: "Audio Output Deviece"
+            id: text_output_device
+            text: "Audio Output device"
             font.family: "Barlow"
             font.weight: 500
             font.pixelSize: 16
@@ -145,12 +145,13 @@ ScrollablePage {
             anchors.verticalCenter: parent.verticalCenter
         }
         ComboBox {
-            id: comboBox_output_deviece
+            id: comboBox_output_device
             width: 450
             textRole: "name"
             model: OutputDeviceViewModel
             currentIndex: OutputDeviceViewModel.currentIndex
             Component.onCompleted: {
+                OutputDeviceViewModel.loadAudioOutputDevices()
                 currentIndex = find(
                             OutputDeviceViewModel.getDefaultDeviceName())
             }
@@ -175,10 +176,10 @@ ScrollablePage {
     }
     Row {
         Layout.topMargin: 24
-        spacing: 720 - text_automically_cache_songs.implicitWidth
-                 - btn_automically_cache_songs.width
+        spacing: 720 - text_automatically_cache_songs.implicitWidth
+                 - btn_automatically_cache_songs.width
         Text {
-            id: text_automically_cache_songs
+            id: text_automatically_cache_songs
             text: "Automatically cache songs"
             font.family: "Barlow"
             font.weight: 500
@@ -187,7 +188,7 @@ ScrollablePage {
             anchors.verticalCenter: parent.verticalCenter
         }
         ToggleSwitch {
-            id: btn_automically_cache_songs
+            id: btn_automatically_cache_songs
         }
     }
     Row {
@@ -204,7 +205,7 @@ ScrollablePage {
         }
         ComboBox {
             id: comboBox_cache_limit
-            model: [" None ", " 500MB ", " 1GB ", " 2GB ", " 4GB ", " 8GB "]
+            model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
             currentIndex: 5
         }
     }
@@ -213,7 +214,7 @@ ScrollablePage {
         spacing: 720 - text_cache_num.implicitWidth - btn_clear_cache.width
         Text {
             id: text_cache_num
-            text: "Cached 263 songs (6.76 GB)"
+            text: "Cached 263 songs (6.76 GiB)"
             font.family: "Barlow"
             font.weight: 500
             font.pixelSize: 16

@@ -58,8 +58,19 @@ build
 bin
 *.rc
 action-cli
+cmake-build-*
+out
 
 # IDE
 .vscode
 .idea
 .clangd
+
+# MacOS Finder files.
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+
+# CMake Presets
+CMakeUserPresets.json
