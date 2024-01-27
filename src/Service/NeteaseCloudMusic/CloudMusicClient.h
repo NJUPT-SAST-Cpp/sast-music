@@ -2,6 +2,10 @@
 #include "Response/LoginQRCodeEntity.h"
 #include "Response/LoginQRCodePollingEntity.h"
 #include "Response/LoginStatusEntity.h"
+#include "Response/ManyPlaylistEntity.h"
+#include "Response/ManySongInfoEntity.h"
+#include "Response/PlaylistDetailEntity.h"
+#include "Response/SubscriptionCountEntity.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
@@ -90,5 +94,10 @@ public:
     void loginQRCodePolling(QStringView key, std::function<void(Result<LoginQRCodePollingEntity>)> callback);
     void checkAnonimousToken(std::function<void(Result<void>)> callback);
     void getLoginStatus(std::function<void(Result<LoginStatusEntity>)> callback);
+    void getUserSubscriptionCount(std::function<void(Result<SubscriptionCountEntity>)> callback);
+    void getUserPlaylist(UserId uid, int limit, int offset, bool includeVideo,
+                         std::function<void(Result<ManyPlaylistEntity>)> callback);
+    void getPlaylistDetail(PlaylistId id, std::function<void(Result<PlaylistDetailEntity>)> callback);
+    void getSongsDetail(const QList<SongId>& songIds, std::function<void(Result<ManySongInfoEntity>)> callback);
 };
 } // namespace NeteaseCloudMusic

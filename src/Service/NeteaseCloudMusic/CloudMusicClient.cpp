@@ -109,3 +109,57 @@ void NeteaseCloudMusic::CloudMusicClient::getLoginStatus(std::function<void(Resu
         callback(result.andThen(Deserializer<LoginStatusEntity>::from));
     });
 }
+
+void NeteaseCloudMusic::CloudMusicClient::getUserSubscriptionCount(
+    std::function<void(Result<SubscriptionCountEntity>)> callback) {
+    auto url = QUrl("https://music.163.com/weapi/subcount");
+    auto data = QJsonDocument(QJsonObject{});
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<SubscriptionCountEntity>::from));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::getUserPlaylist(UserId uid, int limit, int offset, bool includeVideo,
+                                                          std::function<void(Result<ManyPlaylistEntity>)> callback) {
+    auto url = QUrl("https://music.163.com/weapi/user/playlist");
+    auto data = QJsonDocument(QJsonObject{
+        {"uid", static_cast<qint64>(uid)},
+        {"limit", limit},
+        {"offset", offset},
+        {"includeVideo", includeVideo},
+    });
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<ManyPlaylistEntity>::from));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::getPlaylistDetail(
+    PlaylistId id, std::function<void(Result<PlaylistDetailEntity>)> callback) {
+    auto url = QUrl("https://music.163.com/weapi/v6/playlist/detail");
+    auto data = QJsonDocument(QJsonObject{
+        {"id", static_cast<qint64>(id)},
+        {"n", 100000},
+        {"s", 8},
+    });
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<PlaylistDetailEntity>::from));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::getSongsDetail(const QList<SongId>& songIds,
+                                                         std::function<void(Result<ManySongInfoEntity>)> callback) {
+
+    auto url = QUrl("https://music.163.com/weapi/v3/song/detail");
+    QJsonArray c;
+    for (auto& songId : songIds) {
+        c.append(QJsonObject{
+            {"id", static_cast<qint64>(songId)},
+        });
+    }
+    auto data = QJsonDocument(QJsonObject{
+        {"c", QString::fromUtf8(QJsonDocument{c}.toJson(QJsonDocument::Compact))},
+    });
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<ManySongInfoEntity>::from));
+    });
+}
