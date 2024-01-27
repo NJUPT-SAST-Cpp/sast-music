@@ -1,4 +1,5 @@
 #include "CloudMusicClient.h"
+#include "Deserializer.hpp"
 #include "Encryption/Encryption.hpp"
 #include "Encryption/WeApi.hpp"
 #include <QCryptographicHash>
@@ -47,16 +48,7 @@ void NeteaseCloudMusic::CloudMusicClient::newLoginQRCode(std::function<void(Resu
         {"type", 1},
     });
     request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
-        if (result.isErr()) {
-            return callback(Result<LoginQRCodeEntity>(result.takeErr()));
-        }
-        auto entity = result.unwrap();
-        auto key = entity["unikey"].toString();
-        auto qrCodeData = QString("https://music.163.com/login?codekey=" + key);
-        callback(Result<LoginQRCodeEntity>(LoginQRCodeEntity{
-            std::move(key),
-            std::move(qrCodeData),
-        }));
+        callback(result.andThen(Deserializer<LoginQRCodeEntity>::from));
     });
 }
 
@@ -68,32 +60,7 @@ void NeteaseCloudMusic::CloudMusicClient::loginQRCodePolling(
         {"type", 1},
     });
     request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
-        if (result.isErr()) {
-            return callback(Result<LoginQRCodePollingEntity>(result.takeErr()));
-        }
-        auto entity = result.unwrap();
-        auto code = entity["code"].toInt();
-        LoginQRCodePollingStatus status;
-        switch (code) {
-        case 800:
-            status = LoginQRCodePollingStatus::Timeout;
-            break;
-        case 801:
-            status = LoginQRCodePollingStatus::WaitingForScan;
-            break;
-        case 802:
-            status = LoginQRCodePollingStatus::WaitingForConfirm;
-            break;
-        case 803:
-            status = LoginQRCodePollingStatus::Success;
-            break;
-        default:
-            status = LoginQRCodePollingStatus::Unknown;
-            break;
-        }
-        callback(Result<LoginQRCodePollingEntity>(LoginQRCodePollingEntity{
-            std::move(status),
-        }));
+        callback(result.andThen(Deserializer<LoginQRCodePollingEntity>::from));
     });
 }
 
@@ -131,9 +98,14 @@ void NeteaseCloudMusic::CloudMusicClient::checkAnonimousToken(std::function<void
         {"username", encodeDeviceId(deviceId)},
     });
     request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
-        if (result.isErr()) {
-            return callback(Result<void>(result.takeErr()));
-        }
-        callback(Result<void>());
+        callback(result.map([](QJsonObject) {}));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::getLoginStatus(std::function<void(Result<LoginStatusEntity>)> callback) {
+    auto url = QUrl("https://music.163.com/weapi/w/nuser/account/get");
+    auto data = QJsonDocument(QJsonObject{});
+    request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<LoginStatusEntity>::from));
     });
 }

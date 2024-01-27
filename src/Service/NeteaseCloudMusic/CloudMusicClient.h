@@ -1,6 +1,7 @@
 #pragma once
 #include "Response/LoginQRCodeEntity.h"
 #include "Response/LoginQRCodePollingEntity.h"
+#include "Response/LoginStatusEntity.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
@@ -88,5 +89,6 @@ public:
     void newLoginQRCode(std::function<void(Result<LoginQRCodeEntity>)> callback);
     void loginQRCodePolling(QStringView key, std::function<void(Result<LoginQRCodePollingEntity>)> callback);
     void checkAnonimousToken(std::function<void(Result<void>)> callback);
+    void getLoginStatus(std::function<void(Result<LoginStatusEntity>)> callback);
 };
 } // namespace NeteaseCloudMusic

@@ -10,6 +10,7 @@ enum class ErrorKind {
     JsonParseError,
     EncryptionError,
     ApiError,
+    JsonDeserializeError,
 };
 class ErrorInfo {
 public:
@@ -87,6 +88,27 @@ public:
             return std::forward<F>(def)();
         }
     }
+    template <typename F>
+    auto map(F&& f) const -> Result<decltype(f(std::declval<T>()))> {
+        if (isOk()) {
+            if constexpr (std::is_void_v<decltype(f(std::declval<T>()))>) {
+                f(std::get<T>(data));
+                return {};
+            } else {
+                return {f(std::get<T>(data))};
+            }
+        } else {
+            return {std::get<ErrorInfo>(data)};
+        }
+    }
+    template <typename F>
+    auto andThen(F&& f) const -> decltype(f(std::declval<T>())) {
+        if (isOk()) {
+            return f(std::get<T>(data));
+        } else {
+            return {std::get<ErrorInfo>(data)};
+        }
+    }
 };
 
 template <>
@@ -130,6 +152,22 @@ public:
             return std::forward<F>(def)();
         }
     }
+    template <typename F>
+    auto map(F&& f) const -> Result<decltype(f())> {
+        if (isOk()) {
+            return {f()};
+        } else {
+            return {std::get<ErrorInfo>(data)};
+        }
+    }
+    template <typename F>
+    auto andThen(F&& f) const -> decltype(f()) {
+        if (isOk()) {
+            return f();
+        } else {
+            return {std::get<ErrorInfo>(data)};
+        }
+    }
 };
 
 inline QDebug operator<<(QDebug debug, const ErrorKind& it) {
@@ -146,6 +184,9 @@ inline QDebug operator<<(QDebug debug, const ErrorKind& it) {
         break;
     case ErrorKind::ApiError:
         debug.noquote() << "ApiError";
+        break;
+    case ErrorKind::JsonDeserializeError:
+        debug.noquote() << "JsonDeserializeError";
         break;
     default:
         debug.noquote() << "Error" << (int)it;
