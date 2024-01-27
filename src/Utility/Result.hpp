@@ -157,7 +157,7 @@ public:
         if (isOk()) {
             return {f()};
         } else {
-            return {std::get<ErrorInfo>(data)};
+            return {data.value()};
         }
     }
     template <typename F>
@@ -165,7 +165,7 @@ public:
         if (isOk()) {
             return f();
         } else {
-            return {std::get<ErrorInfo>(data)};
+            return {data.value()};
         }
     }
 };
