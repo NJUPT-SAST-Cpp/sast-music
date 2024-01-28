@@ -59,19 +59,23 @@ public:
     bool isErr() const {
         return std::holds_alternative<ErrorInfo>(data);
     }
-    const T& unwrap() const {
+    const T& unwrap() const& {
         return std::get<T>(data);
     }
-    const ErrorInfo& unwrapErr() const {
+    T& unwrap() & {
+        return std::get<T>(data);
+    }
+    T&& unwrap() && {
+        return std::get<T>(std::move(data));
+    }
+    const ErrorInfo& unwrapErr() const& {
         return std::get<ErrorInfo>(data);
     }
-    T take() {
-        T ret = std::move(std::get<T>(data));
-        return ret;
+    ErrorInfo& unwrapErr() & {
+        return std::get<ErrorInfo>(data);
     }
-    ErrorInfo takeErr() {
-        ErrorInfo ret = std::move(std::get<ErrorInfo>(data));
-        return ret;
+    ErrorInfo&& unwrapErr() && {
+        return std::get<ErrorInfo>(std::move(data));
     }
     T unwrapOr(T&& def) const {
         if (isOk()) {
@@ -137,12 +141,14 @@ public:
     bool isErr() const {
         return data.has_value();
     }
-    const ErrorInfo& unwrapErr() const {
+    const ErrorInfo& unwrapErr() const& {
         return data.value();
     }
-    ErrorInfo takeErr() {
-        ErrorInfo ret = std::move(data.value());
-        return ret;
+    ErrorInfo& unwrapErr() & {
+        return data.value();
+    }
+    ErrorInfo&& unwrapErr() && {
+        return std::move(data).value();
     }
     template <typename F>
     void unwrapOrElse(F&& def) const {

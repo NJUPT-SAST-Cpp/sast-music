@@ -29,9 +29,9 @@ public:
         makeRequest(const QByteArray& verb, const QUrl& url, QNetworkCookieJar* cookieJar, const QJsonDocument& data) {
         auto requestResult = EncryptionBase::prepareRequest(verb, url, cookieJar, data);
         if (requestResult.isErr()) {
-            return requestResult.takeErr();
+            return std::move(requestResult).unwrapErr();
         }
-        auto request = requestResult.take();
+        auto request = std::move(requestResult).unwrap();
         request.setRawHeader(
             "User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.69");
@@ -46,18 +46,18 @@ public:
 
         auto enc1 = aesCbcEncrypt(dataBytes, WeApiDetails::presetKey, WeApiDetails::defaultIv);
         if (enc1.isErr()) {
-            return enc1.takeErr();
+            return std::move(enc1).unwrapErr();
         }
         auto enc2 = aesCbcEncrypt(enc1.unwrap().toBase64(), secretKey, WeApiDetails::defaultIv);
         if (enc2.isErr()) {
-            return enc2.takeErr();
+            return std::move(enc2).unwrapErr();
         }
 
         auto params = enc2.unwrap().toBase64();
         std::reverse(secretKey.begin(), secretKey.end());
         auto encSecKeyResult = encryptWithPublicKey(WeApiDetails::publicKey, secretKey);
         if (encSecKeyResult.isErr()) {
-            return encSecKeyResult.takeErr();
+            return std::move(encSecKeyResult).unwrapErr();
         }
         auto encSecKey = encSecKeyResult.unwrap().toHex();
 

@@ -38,9 +38,9 @@ struct Deserializer<QList<T>> {
         for (const auto& v : arr) {
             auto t = Deserializer<T>::from(v);
             if (t.isOk()) {
-                list.push_back(t.take());
+                list.push_back(std::move(t).unwrap());
             } else {
-                return t.takeErr();
+                return std::move(t).unwrapErr();
             }
         }
         return list;
@@ -201,9 +201,9 @@ struct Deserializer<LoginStatusEntity> {
         } else if (obj["account"].isObject()) {
             auto t = Deserializer<AccoutInfoEntity>::from(obj["account"]);
             if (t.isOk()) {
-                account = t.take();
+                account = std::move(t).unwrap();
             } else {
-                return t.takeErr();
+                return std::move(t).unwrapErr();
             }
         } else {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: account is not object"};
@@ -213,9 +213,9 @@ struct Deserializer<LoginStatusEntity> {
         } else if (obj["profile"].isObject()) {
             auto t = Deserializer<ProfileInfoEntity>::from(obj["profile"]);
             if (t.isOk()) {
-                profile = t.take();
+                profile = std::move(t).unwrap();
             } else {
-                return t.takeErr();
+                return std::move(t).unwrapErr();
             }
         } else {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: profile is not object"};
@@ -326,15 +326,15 @@ struct Deserializer<PlaylistEntity> {
         }
         auto creator = Deserializer<ProfileInfoEntity>::from(obj["creator"]);
         if (creator.isErr()) {
-            return creator.takeErr();
+            return std::move(creator).unwrapErr();
         }
         auto tags = Deserializer<QStringList>::from(obj["tags"]);
         if (tags.isErr()) {
-            return tags.takeErr();
+            return std::move(tags).unwrapErr();
         }
         return PlaylistEntity{
             obj["subscribed"].toBool(),
-            creator.take(),
+            std::move(creator).unwrap(),
             obj["subscribedCount"].toInteger(),
             obj["cloudTrackCount"].toInteger(),
             QDateTime::fromMSecsSinceEpoch(obj["trackUpdateTime"].toInteger()),
@@ -348,7 +348,7 @@ struct Deserializer<PlaylistEntity> {
             static_cast<UserId>(obj["userId"].toInteger()),
             obj["name"].toString(),
             static_cast<PlaylistId>(obj["id"].toInteger()),
-            tags.take(),
+            std::move(tags).unwrap(),
         };
     }
 };
@@ -368,11 +368,11 @@ struct Deserializer<ManyPlaylistEntity> {
         }
         auto playlist = Deserializer<QList<PlaylistEntity>>::from(obj["playlist"]);
         if (playlist.isErr()) {
-            return playlist.takeErr();
+            return std::move(playlist).unwrapErr();
         }
         return ManyPlaylistEntity{
             obj["more"].toBool(),
-            playlist.take(),
+            playlist.unwrap(),
         };
     }
 };
@@ -463,22 +463,22 @@ struct Deserializer<SongInfoEntity> {
         }
         auto aliases = Deserializer<QStringList>::from(obj["alia"]);
         if (aliases.isErr()) {
-            return aliases.takeErr();
+            return std::move(aliases).unwrapErr();
         }
         auto artists = Deserializer<QList<ArtistInfoEntity>>::from(obj["ar"]);
         if (artists.isErr()) {
-            return artists.takeErr();
+            return std::move(artists).unwrapErr();
         }
         auto album = Deserializer<AlbumInfoEntity>::from(obj["al"]);
         if (album.isErr()) {
-            return album.takeErr();
+            return std::move(album).unwrapErr();
         }
         return SongInfoEntity{
             static_cast<SongId>(obj["id"].toInteger()),
             obj["name"].toString(),
-            aliases.take(),
-            artists.take(),
-            album.take(),
+            std::move(aliases).unwrap(),
+            std::move(artists).unwrap(),
+            std::move(album).unwrap(),
         };
     }
 };
@@ -519,7 +519,7 @@ struct Deserializer<PlaylistDetailEntity> {
         auto playlist = obj["playlist"].toObject();
         auto simple = Deserializer<PlaylistEntity>::from(playlist);
         if (simple.isErr()) {
-            return simple.takeErr();
+            return std::move(simple).unwrapErr();
         }
         if (!playlist.contains("trackIds") || !playlist["trackIds"].isArray()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: trackIds is not array"};
@@ -529,16 +529,16 @@ struct Deserializer<PlaylistDetailEntity> {
         }
         auto trackIds = Deserializer<QList<TrackIdEntity>>::from(playlist["trackIds"]);
         if (trackIds.isErr()) {
-            return trackIds.takeErr();
+            return std::move(trackIds).unwrapErr();
         }
         auto tracks = Deserializer<QList<SongInfoEntity>>::from(playlist["tracks"]);
         if (tracks.isErr()) {
-            return tracks.takeErr();
+            return std::move(tracks).unwrapErr();
         }
         return PlaylistDetailEntity{
-            simple.take(),
-            trackIds.take(),
-            tracks.take(),
+            std::move(simple).unwrap(),
+            std::move(trackIds).unwrap(),
+            std::move(tracks).unwrap(),
         };
     }
 };
@@ -556,10 +556,10 @@ struct Deserializer<ManySongInfoEntity> {
         }
         auto songs = Deserializer<QList<SongInfoEntity>>::from(obj["songs"]);
         if (songs.isErr()) {
-            return songs.takeErr();
+            return std::move(songs).unwrapErr();
         }
         return ManySongInfoEntity{
-            songs.take(),
+            std::move(songs).unwrap(),
         };
     }
 };
@@ -627,10 +627,10 @@ struct Deserializer<ManySongUrlInfoEntity> {
         }
         auto data = Deserializer<QList<SongUrlInfoEntity>>::from(obj["data"]);
         if (data.isErr()) {
-            return data.takeErr();
+            return std::move(data).unwrapErr();
         }
         return ManySongUrlInfoEntity{
-            data.take(),
+            std::move(data).unwrap(),
         };
     }
 };
@@ -652,10 +652,10 @@ struct Deserializer<DailySongsEntity> {
         }
         auto dailySongs = Deserializer<QList<SongInfoEntity>>::from(data["dailySongs"]);
         if (dailySongs.isErr()) {
-            return dailySongs.takeErr();
+            return std::move(dailySongs).unwrapErr();
         }
         return DailySongsEntity{
-            dailySongs.take(),
+            std::move(dailySongs).unwrap(),
         };
     }
 };

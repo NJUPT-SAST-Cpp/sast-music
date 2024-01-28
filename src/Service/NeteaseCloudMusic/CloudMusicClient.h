@@ -36,10 +36,10 @@ public:
     void request(const QByteArray& verb, const QUrl& url, const QJsonDocument& data, TCallback callback) {
         auto requestResult = TEncryption::makeRequest(verb, url, manager.cookieJar(), data);
         if (requestResult.isErr()) {
-            callback(Result<QJsonObject>(requestResult.takeErr()));
+            callback(Result<QJsonObject>(std::move(requestResult).unwrapErr()));
             return;
         }
-        auto [requestInfo, body] = requestResult.unwrap();
+        auto [requestInfo, body] = std::move(requestResult).unwrap();
         QNetworkReply* reply;
         if (manager.thread() == QThread::currentThread()) {
             reply = createReply(verb, requestInfo, body);
@@ -61,10 +61,10 @@ public:
             Result<QByteArray> decryptedResult =
                 TEncryption::decryptResponse(reply->rawHeader("Content-Type"), std::move(content));
             if (decryptedResult.isErr()) {
-                callback(Result<QJsonObject>(decryptedResult.takeErr()));
+                callback(Result<QJsonObject>(std::move(decryptedResult).unwrapErr()));
                 return;
             }
-            auto jsonResult = QJsonDocument::fromJson(decryptedResult.unwrap());
+            auto jsonResult = QJsonDocument::fromJson(std::move(decryptedResult).unwrap());
             if (jsonResult.isNull()) {
                 callback(Result<QJsonObject>(ErrorInfo{ErrorKind::JsonParseError, "Failed to parse JSON"}));
                 return;

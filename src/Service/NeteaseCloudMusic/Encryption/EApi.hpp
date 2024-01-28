@@ -19,9 +19,9 @@ public:
         makeRequest(const QByteArray& verb, const QUrl& url, QNetworkCookieJar* cookieJar, const QJsonDocument& data) {
         auto requestResult = EncryptionBase::prepareRequest(verb, url, cookieJar, data);
         if (requestResult.isErr()) {
-            return requestResult.takeErr();
+            return std::move(requestResult).unwrapErr();
         }
-        auto request = requestResult.unwrap();
+        auto request = std::move(requestResult).unwrap();
 
         auto cookies = cookieJar->cookiesForUrl(url);
         auto dataObject = data.object();
@@ -56,7 +56,7 @@ public:
         auto encodedData = urlPath + "-36cd479b6b5-" + dataBytes + "-36cd479b6b5-" + digest;
         auto params = aesEcbEncrypt(encodedData, EApiDetails::eapiKey);
         if (params.isErr()) {
-            return params.takeErr();
+            return std::move(params).unwrapErr();
         }
 
         // update cookies
@@ -72,9 +72,9 @@ public:
         if (verb.compare("POST", Qt::CaseInsensitive) == 0) {
             request.setUrl(url);
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-            return std::make_tuple(request, "params=" + params.take().toHex());
+            return std::make_tuple(request, "params=" + params.unwrap().toHex());
         } else {
-            request.setUrl(QStringLiteral("%1?params=%2").arg(url.toString(QUrl::RemoveQuery), params.take().toHex()));
+            request.setUrl(QStringLiteral("%1?params=%2").arg(url.toString(QUrl::RemoveQuery), params.unwrap().toHex()));
             return std::make_tuple(request, QByteArray());
         }
     }
