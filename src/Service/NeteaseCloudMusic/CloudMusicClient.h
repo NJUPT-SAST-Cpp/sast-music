@@ -4,6 +4,7 @@
 #include "Response/LoginStatusEntity.h"
 #include "Response/ManyPlaylistEntity.h"
 #include "Response/ManySongInfoEntity.h"
+#include "Response/ManySongUrlInfoEntity.h"
 #include "Response/PlaylistDetailEntity.h"
 #include "Response/SubscriptionCountEntity.h"
 #include <QJsonDocument>
@@ -56,7 +57,8 @@ public:
             if (networkError != QNetworkReply::NoError) {
                 callback(Result<QJsonObject>(ErrorInfo{ErrorKind::NetworkError, reply->errorString()}));
             }
-            Result<QByteArray> decryptedResult = TEncryption::decryptResponse(std::move(content));
+            Result<QByteArray> decryptedResult =
+                TEncryption::decryptResponse(reply->rawHeader("Content-Type"), std::move(content));
             if (decryptedResult.isErr()) {
                 callback(Result<QJsonObject>(decryptedResult.takeErr()));
                 return;
@@ -99,5 +101,7 @@ public:
                          std::function<void(Result<ManyPlaylistEntity>)> callback);
     void getPlaylistDetail(PlaylistId id, std::function<void(Result<PlaylistDetailEntity>)> callback);
     void getSongsDetail(const QList<SongId>& songIds, std::function<void(Result<ManySongInfoEntity>)> callback);
+    void getSongsUrl(const QList<SongId>& songIds, QStringView level,
+                     std::function<void(Result<ManySongUrlInfoEntity>)> callback);
 };
 } // namespace NeteaseCloudMusic

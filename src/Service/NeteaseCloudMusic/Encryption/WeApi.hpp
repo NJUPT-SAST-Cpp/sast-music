@@ -77,7 +77,8 @@ public:
         }
     }
 
-    static Result<QByteArray> decryptResponse(QByteArray&& data) {
+    static Result<QByteArray> decryptResponse(const QByteArray& contentType, QByteArray&& data) {
+        Q_UNUSED(contentType);
         return data;
     }
 };

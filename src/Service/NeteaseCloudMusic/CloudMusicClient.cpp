@@ -1,5 +1,6 @@
 #include "CloudMusicClient.h"
 #include "Deserializer.hpp"
+#include "Encryption/EApi.hpp"
 #include "Encryption/Encryption.hpp"
 #include "Encryption/WeApi.hpp"
 #include <QCryptographicHash>
@@ -158,5 +159,23 @@ void NeteaseCloudMusic::CloudMusicClient::getSongsDetail(const QList<SongId>& so
     });
     request<WeApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
         callback(result.andThen(Deserializer<ManySongInfoEntity>::from));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::getSongsUrl(const QList<SongId>& songIds, QStringView level,
+                                                      std::function<void(Result<ManySongUrlInfoEntity>)> callback) {
+    auto cookieJar = manager.cookieJar();
+    auto url = QUrl("https://interface.music.163.com/eapi/song/enhance/player/url/v1");
+    QJsonArray ids;
+    for (auto& songId : songIds) {
+        ids.append(static_cast<qint64>(songId));
+    }
+    auto data = QJsonDocument(QJsonObject{
+        {"ids", QString::fromUtf8(QJsonDocument{ids}.toJson(QJsonDocument::Compact))},
+        {"level", level.toString()},
+        {"encodeType", "aac"},
+    });
+    request<EApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<ManySongUrlInfoEntity>::from));
     });
 }

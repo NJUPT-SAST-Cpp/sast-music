@@ -7,10 +7,12 @@
 #include "Response/LoginStatusEntity.h"
 #include "Response/ManyPlaylistEntity.h"
 #include "Response/ManySongInfoEntity.h"
+#include "Response/ManySongUrlInfoEntity.h"
 #include "Response/PlaylistDetailEntity.h"
 #include "Response/PlaylistEntity.h"
 #include "Response/ProfileInfoEntity.h"
 #include "Response/SongInfoEntity.h"
+#include "Response/SongUrlInfoEntity.h"
 #include "Response/SubscriptionCountEntity.h"
 #include "Response/TrackIdEntity.h"
 #include <QJsonArray>
@@ -557,6 +559,77 @@ struct Deserializer<ManySongInfoEntity> {
         }
         return ManySongInfoEntity{
             songs.take(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<SongUrlInfoEntity> {
+    static Result<SongUrlInfoEntity> from(const QJsonValue& value) {
+        // only a few fields are deserialized
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("id") || !obj["id"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: id is not number"};
+        }
+        if (!obj.contains("url") || !obj["url"].isString()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: url is not string"};
+        }
+        if (!obj.contains("br") || !obj["br"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: br is not number"};
+        }
+        if (!obj.contains("size") || !obj["size"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: size is not number"};
+        }
+        if (!obj.contains("md5") || !obj["md5"].isString()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: md5 is not string"};
+        }
+        if (!obj.contains("type") || !obj["type"].isString()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: type is not string"};
+        }
+        if (!obj.contains("level") || !obj["level"].isString()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: level is not string"};
+        }
+        if (!obj.contains("payed") || !obj["payed"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: payed is not number"};
+        }
+        if (!obj.contains("time") || !obj["time"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: time is not number"};
+        }
+        return SongUrlInfoEntity{
+            static_cast<SongId>(obj["id"].toInteger()),
+            obj["url"].toString(),
+            obj["br"].toInteger(),
+            obj["size"].toInteger(),
+            obj["md5"].toString(),
+            obj["type"].toString(),
+            obj["level"].toString(),
+            obj["payed"].toInt() != 0,
+            obj["time"].toInteger(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<ManySongUrlInfoEntity> {
+    static Result<ManySongUrlInfoEntity> from(const QJsonValue& value) {
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("data") || !obj["data"].isArray()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: data is not array"};
+        }
+        auto data = Deserializer<QList<SongUrlInfoEntity>>::from(obj["data"]);
+        if (data.isErr()) {
+            return data.takeErr();
+        }
+        return ManySongUrlInfoEntity{
+            data.take(),
         };
     }
 };

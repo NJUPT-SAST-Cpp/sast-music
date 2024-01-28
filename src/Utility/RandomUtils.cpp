@@ -17,3 +17,8 @@ QString generateRandomBase62String(qsizetype length) {
     return generateRandomString(length,
                                 QStringLiteral("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"));
 }
+
+int randomInt(int min, int max) {
+    std::uniform_int_distribution<int> distribution(min, max);
+    return distribution(randomEngine);
+}
