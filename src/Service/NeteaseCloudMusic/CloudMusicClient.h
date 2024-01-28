@@ -1,4 +1,5 @@
 #pragma once
+#include "Response/DailySongsEntity.h"
 #include "Response/LoginQRCodeEntity.h"
 #include "Response/LoginQRCodePollingEntity.h"
 #include "Response/LoginStatusEntity.h"
@@ -103,5 +104,6 @@ public:
     void getSongsDetail(const QList<SongId>& songIds, std::function<void(Result<ManySongInfoEntity>)> callback);
     void getSongsUrl(const QList<SongId>& songIds, QStringView level,
                      std::function<void(Result<ManySongUrlInfoEntity>)> callback);
+    void getDailySongs(std::function<void(Result<DailySongsEntity>)> callback);
 };
 } // namespace NeteaseCloudMusic

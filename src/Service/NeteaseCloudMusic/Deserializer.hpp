@@ -2,6 +2,7 @@
 #include "Response/AccoutInfoEntity.h"
 #include "Response/AlbumInfoEntity.h"
 #include "Response/ArtistInfoEntity.h"
+#include "Response/DailySongsEntity.h"
 #include "Response/LoginQRCodeEntity.h"
 #include "Response/LoginQRCodePollingEntity.h"
 #include "Response/LoginStatusEntity.h"
@@ -630,6 +631,31 @@ struct Deserializer<ManySongUrlInfoEntity> {
         }
         return ManySongUrlInfoEntity{
             data.take(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<DailySongsEntity> {
+    static Result<DailySongsEntity> from(const QJsonValue& value) {
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("data") || !obj["data"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: data is not object"};
+        }
+        auto data = obj["data"].toObject();
+        if (!data.contains("dailySongs") || !data["dailySongs"].isArray()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: data.dailySongs is not array"};
+        }
+        auto dailySongs = Deserializer<QList<SongInfoEntity>>::from(data["dailySongs"]);
+        if (dailySongs.isErr()) {
+            return dailySongs.takeErr();
+        }
+        return DailySongsEntity{
+            dailySongs.take(),
         };
     }
 };

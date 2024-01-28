@@ -179,3 +179,11 @@ void NeteaseCloudMusic::CloudMusicClient::getSongsUrl(const QList<SongId>& songI
         callback(result.andThen(Deserializer<ManySongUrlInfoEntity>::from));
     });
 }
+
+void NeteaseCloudMusic::CloudMusicClient::getDailySongs(std::function<void(Result<DailySongsEntity>)> callback) {
+    auto url = QUrl("https://music.163.com/eapi/v3/discovery/recommend/songs");
+    auto data = QJsonDocument(QJsonObject{});
+    request<EApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<DailySongsEntity>::from));
+    });
+}
