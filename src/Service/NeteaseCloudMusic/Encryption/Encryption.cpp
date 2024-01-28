@@ -1,11 +1,8 @@
 #include "Encryption.hpp"
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <Utility/CookieUtils.h>
 #include <Utility/RandomUtils.h>
-static bool containsCookie(const QList<QNetworkCookie>& cookies, const QString& name) {
-    return std::find_if(cookies.begin(), cookies.end(),
-                        [&](const QNetworkCookie& cookie) { return cookie.name() == name; }) != cookies.end();
-}
 Result<QNetworkRequest> NeteaseCloudMusic::EncryptionBase::prepareRequest(const QByteArray& verb, const QUrl& url,
                                                                           QNetworkCookieJar* cookieJar,
                                                                           const QJsonDocument& data) {

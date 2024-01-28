@@ -9,6 +9,7 @@
 #include <QNetworkRequest>
 #include <QUrl>
 #include <QUrlQuery>
+#include <Utility/CookieUtils.h>
 #include <Utility/EncryptionUtils.h>
 #include <Utility/RandomUtils.h>
 namespace NeteaseCloudMusic {
@@ -36,14 +37,8 @@ public:
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.69");
 
         auto cookies = cookieJar->cookiesForUrl(url);
-        auto csrfCookie = std::find_if(cookies.begin(), cookies.end(),
-                                       [](const QNetworkCookie& cookie) { return cookie.name() == "__csrf"; });
-        QByteArray csrf;
-        if (csrfCookie != cookies.end()) {
-            csrf = csrfCookie->value();
-        }
         auto dataObject = data.object();
-        dataObject.insert("csrf_token", QJsonValue(QString::fromUtf8(csrf)));
+        dataObject.insert("csrf_token", QJsonValue(getCookieOrDefault(cookies, "__csrf", "")));
 
         auto dataBytes = QJsonDocument{dataObject}.toJson(QJsonDocument::Compact);
 

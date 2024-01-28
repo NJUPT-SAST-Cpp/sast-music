@@ -4,6 +4,7 @@
 #include "Encryption/WeApi.hpp"
 #include <QCryptographicHash>
 #include <QNetworkProxy>
+#include <Utility/CookieUtils.h>
 NeteaseCloudMusic::CloudMusicClient* NeteaseCloudMusic::CloudMusicClient::getInstance() {
     static CloudMusicClient instance;
     return &instance;
@@ -83,14 +84,10 @@ static QString encodeDeviceId(QByteArray deviceId) {
 void NeteaseCloudMusic::CloudMusicClient::checkAnonimousToken(std::function<void(Result<void>)> callback) {
     auto url = QUrl("https://music.163.com/weapi/register/anonimous");
     auto cookies = manager.cookieJar()->cookiesForUrl(url);
-    auto musicUCookie = std::find_if(cookies.begin(), cookies.end(),
-                                     [](const QNetworkCookie& cookie) { return cookie.name() == "MUSIC_U"; });
-    if (musicUCookie != cookies.end()) {
+    if (containsCookie(cookies, "MUSIC_U")) {
         return callback(Result<void>());
     }
-    auto musicACookie = std::find_if(cookies.begin(), cookies.end(),
-                                     [](const QNetworkCookie& cookie) { return cookie.name() == "MUSIC_A"; });
-    if (musicACookie != cookies.end()) {
+    if (containsCookie(cookies, "MUSIC_A")) {
         return callback(Result<void>());
     }
     QByteArray deviceId = "NMUSIC";
