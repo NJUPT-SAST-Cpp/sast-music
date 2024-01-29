@@ -62,7 +62,7 @@ ScrollablePage {
             case 2:
                 return "登录成功";
             case 4:
-                return "二维码已失效，请刷新。";
+                return "二维码已失效，请刷新";
             default:
                 return "未知错误";
             }
