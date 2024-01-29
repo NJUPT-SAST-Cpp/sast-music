@@ -212,20 +212,8 @@ ApplicationWindow {
     FluContentDialog {
         id: dialog_close
         title: "Confirmed Close?"
-        property int buttonFlags: FluContentDialogType.NegativeButton
-                                  | FluContentDialogType.NeutralButton
-                                  | FluContentDialogType.PositiveButton
-
-        FluCheckBox {
-            id: checkBox
-            anchors {
-                left: parent.left
-                leftMargin: 20
-                verticalCenter: parent.verticalCenter
-            }
-            text: "Remember my choice"
-        }
-
+        buttonFlags: FluContentDialogType.NegativeButton | FluContentDialogType.NeutralButton
+                     | FluContentDialogType.PositiveButton
         positiveText: "exit"
         negativeText: "minimize to tray"
         neutralText: "cancel"
@@ -238,6 +226,15 @@ ApplicationWindow {
             if (checkBox.checked)
                 settings.setValue("closeAppIndex", 2)
             window.hide()
+        }
+        FluCheckBox {
+            id: checkBox
+            anchors {
+                left: parent.left
+                leftMargin: 20
+                verticalCenter: parent.verticalCenter
+            }
+            text: "Remember my choice"
         }
     }
 
@@ -309,14 +306,11 @@ ApplicationWindow {
     }
 
     function getSettingsValue(item, defaultItem) {
-        console.log(item + " " + defaultItem + " " + settings.value(
-                        item, defaultItem))
         return settings.value(item, defaultItem)
     }
 
     function setSettingsValue(item, itemVaue) {
         settings.setValue(item, itemVaue)
-        console.log(settings.value(item))
     }
 
     Settings {
