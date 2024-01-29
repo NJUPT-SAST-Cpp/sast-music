@@ -25,5 +25,6 @@
         <file>ui/page/PrivateRadar.qml</file>
         <file>ui/item/MusicBlock.qml</file>
         <file>ui/item/PlayListCover.qml</file>
+        <file>ui/item/SystemTray.qml</file>
     </qresource>
 </RCC>
