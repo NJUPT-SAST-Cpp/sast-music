@@ -238,6 +238,8 @@ ApplicationWindow {
             return "songListInfo"
         if (url === "qrc:///ui/page/PrivateRader.qml")
             return "privateRadar"
+        if (url === "qrc:///ui/page/LikedSongs.qml")
+            return "likedSongs"
     }
 
     function getSettingsValue(item, defaultItem) {

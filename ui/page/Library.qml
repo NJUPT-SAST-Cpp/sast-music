@@ -101,6 +101,9 @@ ScrollablePage {
                 id: liked_song_mousearea
                 hoverEnabled: true
                 anchors.fill: parent
+                onClicked: {
+                    MainWindow.window.pushPage("qrc:///ui/page/LikedSongs.qml")
+                }
             }
             Rectangle {
                 id: liked_song_btn_rectangle
