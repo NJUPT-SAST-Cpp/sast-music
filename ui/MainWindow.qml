@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts
+import Qt.labs.platform
+import QtCore
 import FluentUI
 import sast_music
 import "./component"
@@ -137,6 +139,121 @@ ApplicationWindow {
         easing.type: Easing.InOutQuad
     }
 
+    SystemTrayIcon {
+        id: system_tray
+        visible: true
+        icon.source: "qrc:///res/icon/app.ico"
+        tooltip: "SAST Music"
+        menu: Menu {
+            MenuItem {
+                text: "显示主面板"
+                onTriggered: {
+                    window.show()
+                }
+            }
+            MenuSeparator {}
+            MenuItem {
+                icon.source: "qrc:///res/img/play.svg"
+                text: "播放"
+                onTriggered: {
+
+                    // TODO
+                }
+            }
+            MenuItem {
+                icon.source: "qrc:///res/img/previous.svg"
+                text: "上一首"
+                onTriggered: {
+
+                    // TODO
+                }
+            }
+            MenuItem {
+                icon.source: "qrc:///res/img/next.svg"
+                text: "下一首"
+                onTriggered: {
+
+                    // TODO
+                }
+            }
+            MenuItem {
+                icon.source: "qrc:///res/img/repeat.svg"
+                text: "循环播放"
+                onTriggered: {
+
+                    // TODO
+                }
+            }
+            MenuItem {
+                icon.source: "qrc:///res/img/heart.svg"
+                text: "喜欢"
+                onTriggered: {
+
+                    // TODO
+                }
+            }
+            MenuItem {
+                icon.source: "qrc:///res/img/logout.svg"
+                text: "退出"
+                onTriggered: {
+                    Qt.exit(0)
+                }
+            }
+        }
+        onActivated: reason => {
+                         if (reason === SystemTrayIcon.Trigger) {
+                             window.show()
+                             window.raise()
+                             window.requestActivate()
+                         }
+                     }
+    }
+
+    FluContentDialog {
+        id: dialog_close
+        title: "Confirmed Close?"
+        property int buttonFlags: FluContentDialogType.NegativeButton
+                                  | FluContentDialogType.NeutralButton
+                                  | FluContentDialogType.PositiveButton
+
+        FluCheckBox {
+            id: checkBox
+            anchors {
+                left: parent.left
+                leftMargin: 20
+                verticalCenter: parent.verticalCenter
+            }
+            text: "Remember my choice"
+        }
+
+        positiveText: "exit"
+        negativeText: "minimize to tray"
+        neutralText: "cancel"
+        onPositiveClicked: {
+            if (checkBox.checked)
+                settings.setValue("closeAppIndex", 1)
+            Qt.exit(0)
+        }
+        onNegativeClicked: {
+            if (checkBox.checked)
+                settings.setValue("closeAppIndex", 2)
+            window.hide()
+        }
+    }
+
+    onClosing: event => {
+                   var closeApp = settings.value("closeAppIndex", 0)
+                   if (closeApp == 0) {
+                       settings.setValue("closeAppIndex", 0)
+                       dialog_close.open()
+                   } else if (closeApp == 1) {
+                       Qt.exit(0)
+                   } else if (closeApp == 2) {
+                       window.hide()
+                   }
+                   event.accepted = false
+               }
+
     function isPageInStack(pageName) {
         for (var i = 0; i < stackView.depth; ++i) {
             if (stackView.get(i).objectName === pageName) {
@@ -189,5 +306,26 @@ ApplicationWindow {
             return "songListInfo"
         if (url === "qrc:///ui/page/PrivateRader.qml")
             return "privateRadar"
+    }
+
+    function getSettingsValue(item, defaultItem) {
+        console.log(item + " " + defaultItem + " " + settings.value(
+                        item, defaultItem))
+        return settings.value(item, defaultItem)
+    }
+
+    function setSettingsValue(item, itemVaue) {
+        settings.setValue(item, itemVaue)
+        console.log(settings.value(item))
+    }
+
+    Settings {
+        id: settings
+        property int musicQualityIndex
+        property bool showTranslationOption
+        property bool cacheOption
+        property int cacheMemoryIndex
+        property int fontSizeIndex
+        property int closeAppIndex
     }
 }

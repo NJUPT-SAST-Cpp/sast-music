@@ -1,9 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtCore
 import FluentUI
 import sast_music
 import "../component"
+import "../"
 
 ScrollablePage {
     objectName: "settings"
@@ -129,6 +131,17 @@ ScrollablePage {
         ComboBox {
             id: comboBox_music_quality
             model: [" Low - 128Kbps ", " Medium - 192Kbps ", " High - 320Kbps ", " Lossless - FLAC ", " Hi - Res "]
+            currentIndex: MainWindow.window.getSettingsValue(
+                              "musicQualityIndex", 2)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("musicQualityIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("musicQualityIndex",
+                                                       2) == 2)
+                    MainWindow.window.setSettingsValue("musicQualityIndex", 2)
+            }
         }
     }
 
@@ -189,6 +202,16 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_automatically_cache_songs
+            onClicked: {
+                MainWindow.window.setSettingsValue("cacheOption", checked)
+            }
+            checked: MainWindow.window.getSettingsValue("cacheOption",
+                                                        true) == "true"
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("cacheOption",
+                                                       true) === true)
+                    MainWindow.window.setSettingsValue("cacheOption", true)
+            }
         }
     }
     Row {
@@ -206,7 +229,17 @@ ScrollablePage {
         ComboBox {
             id: comboBox_cache_limit
             model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
-            currentIndex: 5
+            currentIndex: MainWindow.window.getSettingsValue(
+                              "cacheMemoryIndex", 5)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("cacheMemoryIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("cacheMemoryIndex",
+                                                       5) == 5)
+                    MainWindow.window.setSettingsValue("cacheMemoryIndex", 5)
+            }
         }
     }
     Row {
@@ -257,6 +290,18 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
+            checked: MainWindow.window.getSettingsValue(
+                         "showTranslationOption", false) == "true"
+            onClicked: {
+                MainWindow.window.setSettingsValue("showTranslationOption",
+                                                   checked)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("showTranslationOption",
+                                                       false) === false)
+                    MainWindow.window.setSettingsValue("showTranslationOption",
+                                                       false)
+            }
         }
     }
     Row {
@@ -274,7 +319,15 @@ ScrollablePage {
         ComboBox {
             id: comboBox_font_size
             model: [" Small - 16px ", " Medium - 22px ", " Large(Default) - 28px ", " X-Large - 36px "]
-            currentIndex: 2
+            currentIndex: MainWindow.window.getSettingsValue("fontSizeIndex", 2)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("fontSizeIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("fontSizeIndex", 2) == 2)
+                    MainWindow.window.setSettingsValue("fontSizeIndex", 2)
+            }
         }
     }
 
@@ -306,7 +359,15 @@ ScrollablePage {
         ComboBox {
             id: comboBox_close_app
             model: [" Ask ", " Exit ", " Minimize to tray "]
-            currentIndex: 0
+            currentIndex: MainWindow.window.getSettingsValue("closeAppIndex", 0)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("closeAppIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("closeAppIndex", 2) == 0)
+                    MainWindow.window.setSettingsValue("closeAppIndex", 0)
+            }
         }
     }
 }
