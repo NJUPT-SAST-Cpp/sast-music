@@ -187,3 +187,36 @@ void NeteaseCloudMusic::CloudMusicClient::getDailySongs(std::function<void(Resul
         callback(result.andThen(Deserializer<DailySongsEntity>::from));
     });
 }
+
+void NeteaseCloudMusic::CloudMusicClient::getSongLyric(SongId id,
+                                                       std::function<void(Result<SongLyricEntity>)> callback) {
+    auto url = QUrl("https://interface3.music.163.com/eapi/song/lyric/v1");
+    auto data = QJsonDocument(QJsonObject{
+        {"id", static_cast<qint64>(id)},
+        {"cp", false},
+        {"tv", 0},
+        {"lv", 0},
+        {"rv", 0},
+        {"kv", 0},
+        {"yv", 0},
+        {"ytv", 0},
+        {"yrv", 0},
+    });
+    request<EApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<SongLyricEntity>::from));
+    });
+}
+
+void NeteaseCloudMusic::CloudMusicClient::cloudsearch(QStringView keywords, SearchType type, int limit, int offset,
+                                                      std::function<void(Result<SearchResultEntity>)> callback) {
+    auto url = QUrl("https://interface.music.163.com/eapi/cloudsearch/pc");
+    auto data = QJsonDocument(QJsonObject{
+        {"s", keywords.toString()},
+        {"type", static_cast<int>(type)},
+        {"limit", limit},
+        {"offset", offset},
+    });
+    request<EApi>("POST", url, data, [callback = std::move(callback)](Result<QJsonObject> result) {
+        callback(result.andThen(Deserializer<SearchResultEntity>::from));
+    });
+}

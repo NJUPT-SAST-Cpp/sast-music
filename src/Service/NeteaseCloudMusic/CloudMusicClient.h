@@ -7,7 +7,10 @@
 #include "Response/ManySongInfoEntity.h"
 #include "Response/ManySongUrlInfoEntity.h"
 #include "Response/PlaylistDetailEntity.h"
+#include "Response/SearchResultEntity.h"
+#include "Response/SongLyricEntity.h"
 #include "Response/SubscriptionCountEntity.h"
+#include "SearchType.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
@@ -105,5 +108,8 @@ public:
     void getSongsUrl(const QList<SongId>& songIds, QStringView level,
                      std::function<void(Result<ManySongUrlInfoEntity>)> callback);
     void getDailySongs(std::function<void(Result<DailySongsEntity>)> callback);
+    void getSongLyric(SongId id, std::function<void(Result<SongLyricEntity>)> callback);
+    void cloudsearch(QStringView keywords, SearchType type, int limit, int offset,
+                     std::function<void(Result<SearchResultEntity>)> callback);
 };
 } // namespace NeteaseCloudMusic

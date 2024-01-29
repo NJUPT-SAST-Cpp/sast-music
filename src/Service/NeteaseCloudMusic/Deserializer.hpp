@@ -12,10 +12,13 @@
 #include "Response/PlaylistDetailEntity.h"
 #include "Response/PlaylistEntity.h"
 #include "Response/ProfileInfoEntity.h"
+#include "Response/SearchResultEntity.h"
 #include "Response/SongInfoEntity.h"
+#include "Response/SongLyricEntity.h"
 #include "Response/SongUrlInfoEntity.h"
 #include "Response/SubscriptionCountEntity.h"
 #include "Response/TrackIdEntity.h"
+#include "Response/VersionedLyricEntity.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -656,6 +659,131 @@ struct Deserializer<DailySongsEntity> {
         }
         return DailySongsEntity{
             std::move(dailySongs).unwrap(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<VersionedLyricEntity> {
+    static Result<VersionedLyricEntity> from(const QJsonValue& value) {
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("version") || !obj["version"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: version is not number"};
+        }
+        if (!obj.contains("lyric") || !obj["lyric"].isString()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: lyric is not string"};
+        }
+        return VersionedLyricEntity{
+            obj["version"].toInt(),
+            obj["lyric"].toString(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<SongLyricEntity> {
+    static Result<SongLyricEntity> from(const QJsonValue& value) {
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("lrc") || !obj["lrc"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: lrc is not object"};
+        }
+        if (!obj.contains("tlyric") || !obj["tlyric"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: tlyric is not object"};
+        }
+        if (!obj.contains("klyric") || !obj["klyric"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: klyric is not object"};
+        }
+        if (!obj.contains("romalrc") || !obj["romalrc"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: romalrc is not object"};
+        }
+        auto lrc = Deserializer<VersionedLyricEntity>::from(obj["lrc"]);
+        if (lrc.isErr()) {
+            return std::move(lrc).unwrapErr();
+        }
+        auto tlyric = Deserializer<VersionedLyricEntity>::from(obj["tlyric"]);
+        if (tlyric.isErr()) {
+            return std::move(tlyric).unwrapErr();
+        }
+        auto klyric = Deserializer<VersionedLyricEntity>::from(obj["klyric"]);
+        if (klyric.isErr()) {
+            return std::move(klyric).unwrapErr();
+        }
+        auto romalrc = Deserializer<VersionedLyricEntity>::from(obj["romalrc"]);
+        if (romalrc.isErr()) {
+            return std::move(romalrc).unwrapErr();
+        }
+        return SongLyricEntity{
+            std::move(lrc).unwrap(),
+            std::move(tlyric).unwrap(),
+            std::move(klyric).unwrap(),
+            std::move(romalrc).unwrap(),
+        };
+    }
+};
+
+template <>
+struct Deserializer<SearchResultEntity> {
+    static Result<SearchResultEntity> from(const QJsonValue& value) {
+        if (!value.isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
+        }
+        auto obj = value.toObject();
+
+        if (!obj.contains("result") || !obj["result"].isObject()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: result is not object"};
+        }
+        auto result = obj["result"].toObject();
+
+        int64_t songCount = 0;
+        int64_t playlistCount = 0;
+        int64_t profileCount = 0;
+        QList<SongInfoEntity> songs;
+        QList<PlaylistEntity> playlists;
+        QList<ProfileInfoEntity> profiles;
+        if (result.contains("songCount") && result["songCount"].isDouble()) {
+            songCount = result["songCount"].toInteger();
+        }
+        if (result.contains("playlistCount") && result["playlistCount"].isDouble()) {
+            playlistCount = result["playlistCount"].toInteger();
+        }
+        if (result.contains("profileCount") && result["profileCount"].isDouble()) {
+            profileCount = result["profileCount"].toInteger();
+        }
+        if (result.contains("songs") && result["songs"].isArray()) {
+            auto t = Deserializer<QList<SongInfoEntity>>::from(result["songs"]);
+            if (t.isOk()) {
+                songs = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
+        }
+        if (result.contains("playlists") && result["playlists"].isArray()) {
+            auto t = Deserializer<QList<PlaylistEntity>>::from(result["playlists"]);
+            if (t.isOk()) {
+                playlists = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
+        }
+        if (result.contains("userprofiles") && result["userprofiles"].isArray()) {
+            auto t = Deserializer<QList<ProfileInfoEntity>>::from(result["userprofiles"]);
+            if (t.isOk()) {
+                profiles = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
+        }
+
+        return SearchResultEntity{
+            songCount, playlistCount, profileCount, std::move(songs), std::move(playlists), std::move(profiles),
         };
     }
 };
