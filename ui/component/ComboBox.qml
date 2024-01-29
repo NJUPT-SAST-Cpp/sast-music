@@ -11,7 +11,7 @@ FluComboBox {
     editable: false
     height: 32
     width: Math.max(implicitWidth, 192)
-    font.family: "Barlow"
+    font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
     font.weight: 600
     font.pixelSize: 10
     focusPolicy: Qt.StrongFocus

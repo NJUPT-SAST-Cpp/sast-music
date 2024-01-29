@@ -18,7 +18,7 @@ TextField {
     enabled: !disabled
     placeholderText: "Search"
     font.pixelSize: 16
-    font.family: "Barlow-Medium"
+    font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
     font.bold: true
     color: activeFocus ? "#335eea" : "#767676"
     selectionColor: FluTools.colorAlpha(FluTheme.primaryColor, 0.5)

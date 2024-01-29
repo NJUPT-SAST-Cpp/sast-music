@@ -77,7 +77,9 @@ BlurRectangle {
             id: btn_library
             text: "LIBRARY"
             textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
-            onClicked: stackView.pushPage(libraryPageUrl)
+            onClicked: /*UserViewModel.isLogin ? */ stackView.pushPage(
+                                                        libraryPageUrl) /*: stackView.pushPage(
+                                                                           "qrc:///ui/page/Login.qml")*/
         }
     }
 
@@ -105,6 +107,7 @@ BlurRectangle {
             anchors.fill: parent
             source: "qrc:///res/img/avatar.svg"
             fillMode: Image.PreserveAspectFit
+            cache: true
         }
 
         Rectangle {
@@ -131,7 +134,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/settings.svg"
             text: "Settings"
-            font.family: "Barlow-Bold"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.bold: true
             onClicked: {
                 stackView.pushPage("qrc:///ui/page/Settings.qml")
@@ -141,7 +144,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: UserViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
             text: UserViewModel.isLogin ? "Logout" : "Login"
-            font.family: "Barlow-Bold"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.bold: true
             onClicked: {
                 if (!UserViewModel.isLogin) {
@@ -156,7 +159,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/github.svg"
             text: "GitHub Repo"
-            font.family: "Barlow-Bold"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.bold: true
             onClicked: {
                 Qt.openUrlExternally(
