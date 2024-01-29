@@ -64,7 +64,7 @@ ScrollablePage {
                 font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
                 font.pixelSize: 14
                 font.weight: 200
-                width: page.width - 56 - 290
+                width: page.width - 56 - 290 - 130
             }
             IconButton {
                 anchors.bottom: parent.bottom
