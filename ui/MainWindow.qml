@@ -30,33 +30,8 @@ ApplicationWindow {
         id: stackView
         anchors.fill: parent
 
-        function isPageInStack(pageName) {
-            for (var i = 0; i < stackView.depth; ++i) {
-                if (stackView.get(i).objectName === pageName) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        // This function pops pages until the target page is on top
-        function popToTargetPage(targetPageName) {
-            while (stackView.depth > 1
-                   && stackView.currentItem.objectName !== targetPageName) {
-                stackView.pop()
-            }
-        }
-
-        // This function pushes a new page or pops to an existing instance of the page
-        function pushOrPopToPage(pageUrl, pageName) {
-            if (isPageInStack(pageName)) {
-                popToTargetPage(pageName)
-            } else {
-                stackView.push(pageUrl, {
-                                   "objectName": pageName
-                               })
-            }
-            topPageUrl = pageUrl
+        Component.onCompleted: {
+            pushPage(homePageUrl)
         }
 
         function pushPage(url) {
@@ -69,7 +44,7 @@ ApplicationWindow {
                 redoStack.push(undoStack[undoStack.length - 1])
                 undoStack.pop()
                 topPageUrl = undoStack[undoStack.length - 1]
-                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+                pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
             }
         }
 
@@ -77,29 +52,8 @@ ApplicationWindow {
             if (redoStack.length >= 1) {
                 topPageUrl = redoStack[redoStack.length - 1]
                 redoStack.pop()
-                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+                pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
             }
-        }
-
-        function url2Name(url) {
-            if (url === homePageUrl)
-                return "home"
-            if (url === explorePageUrl)
-                return "explore"
-            if (url === libraryPageUrl)
-                return "library"
-            if (url === "qrc:///ui/page/Settings.qml")
-                return "settings"
-            if (url === "qrc:///ui/page/Login.qml")
-                return "login"
-            if (url === "qrc:///ui/page/SearchResult.qml")
-                return "searchResult"
-            if (url === "qrc:///ui/page/PlayList.qml")
-                return "playList"
-        }
-
-        Component.onCompleted: {
-            pushPage(homePageUrl)
         }
     }
 
@@ -181,5 +135,59 @@ ApplicationWindow {
         to: 0
         duration: 400
         easing.type: Easing.InOutQuad
+    }
+
+    function isPageInStack(pageName) {
+        for (var i = 0; i < stackView.depth; ++i) {
+            if (stackView.get(i).objectName === pageName) {
+                return true
+            }
+        }
+        return false
+    }
+
+    // This function pops pages until the target page is on top
+    function popToTargetPage(targetPageName) {
+        while (stackView.depth > 1
+               && stackView.currentItem.objectName !== targetPageName) {
+            stackView.pop()
+        }
+    }
+
+    // This function pushes a new page or pops to an existing instance of the page
+    function pushOrPopToPage(pageUrl, pageName) {
+        if (isPageInStack(pageName)) {
+            popToTargetPage(pageName)
+        } else {
+            stackView.push(pageUrl, {
+                               "objectName": pageName
+                           })
+        }
+        topPageUrl = pageUrl
+    }
+
+    function pushPage(url) {
+        stackView.pushPage(url)
+    }
+
+    function url2Name(url) {
+        if (url === homePageUrl)
+            return "home"
+        if (url === explorePageUrl)
+            return "explore"
+        if (url === libraryPageUrl)
+            return "library"
+        if (url === "qrc:///ui/page/Settings.qml")
+            return "settings"
+        if (url === "qrc:///ui/page/Login.qml")
+            return "login"
+        if (url === "qrc:///ui/page/SearchResult.qml")
+            return "searchResult"
+        if (url === "qrc:///ui/page/PlayList.qml")
+            return "playList"
+        if (url === "qrc:///ui/page/SongListInfo.qml")
+            return "songListInfo"
+        if (url === "qrc:///ui/page/PrivateRader.qml")
+            return "privateRadar"
     }
 }

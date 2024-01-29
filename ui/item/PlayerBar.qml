@@ -42,6 +42,7 @@ BlurRectangle {
         FluImage {
             anchors.fill: parent
             source: "qrc:///res/img/netease-music.png"
+            cache: true
         }
         FluShadow {}
     }
@@ -52,7 +53,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Barlow-Bold"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.bold: true
         font.pixelSize: 16
         anchors {
@@ -69,7 +70,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Barlow-Bold"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.pixelSize: 12
         color: "#73706c"
         anchors {

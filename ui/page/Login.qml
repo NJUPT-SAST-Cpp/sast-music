@@ -24,7 +24,7 @@ ScrollablePage {
     Text {
         id: text_LoginToNetease
         text: "Login to Netease"
-        font.family: "Barlow-Bold"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.pixelSize: 24
         font.bold: true
         Layout.alignment: Qt.AlignHCenter
@@ -53,7 +53,7 @@ ScrollablePage {
     Text {
         id: text_LoginTip
         text: "打开网易云音乐APP扫码登录"
-        font.family: "Barlow"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.pixelSize: 18
         font.bold: false
         Layout.alignment: Qt.AlignHCenter
