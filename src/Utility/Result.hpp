@@ -6,6 +6,7 @@
 #include <utility>
 #include <variant>
 enum class ErrorKind {
+    NoError = -1,
     NetworkError,
     JsonParseError,
     EncryptionError,
@@ -14,7 +15,7 @@ enum class ErrorKind {
 };
 class ErrorInfo {
 public:
-    ErrorKind kind;
+    ErrorKind kind = ErrorKind::NoError;
     QString message;
     ErrorInfo(ErrorKind kind, const QString& message) : kind(kind), message(message) {}
     ErrorInfo(ErrorKind kind, QString&& message) : kind(kind), message(std::move(message)) {}

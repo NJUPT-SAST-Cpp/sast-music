@@ -1,7 +1,6 @@
 #include "CloudMusicClient.h"
 #include "Deserializer.hpp"
 #include "Encryption/EApi.hpp"
-#include "Encryption/Encryption.hpp"
 #include "Encryption/WeApi.hpp"
 #include <QCryptographicHash>
 #include <QNetworkProxy>
@@ -13,11 +12,12 @@ NeteaseCloudMusic::CloudMusicClient* NeteaseCloudMusic::CloudMusicClient::getIns
 
 NeteaseCloudMusic::CloudMusicClient::CloudMusicClient() {
     // FIXME: proxy for debug
-    QNetworkProxy proxy;
-    proxy.setType(QNetworkProxy::HttpProxy);
-    proxy.setHostName("127.0.0.1");
-    proxy.setPort(8888);
-    manager.setProxy(proxy);
+    // QNetworkProxy proxy;
+    // proxy.setType(QNetworkProxy::HttpProxy);
+    // proxy.setHostName("127.0.0.1");
+    // proxy.setPort(8888);
+    // manager.setProxy(proxy);
+    manager.setProxy(QNetworkProxy::NoProxy);
 }
 
 NeteaseCloudMusic::CloudMusicClient::~CloudMusicClient() {}
@@ -164,7 +164,7 @@ void NeteaseCloudMusic::CloudMusicClient::getSongsDetail(const QList<SongId>& so
 
 void NeteaseCloudMusic::CloudMusicClient::getSongsUrl(const QList<SongId>& songIds, QStringView level,
                                                       std::function<void(Result<ManySongUrlInfoEntity>)> callback) {
-    auto cookieJar = manager.cookieJar();
+    // auto cookieJar = manager.cookieJar();
     auto url = QUrl("https://interface.music.163.com/eapi/song/enhance/player/url/v1");
     QJsonArray ids;
     for (auto& songId : songIds) {

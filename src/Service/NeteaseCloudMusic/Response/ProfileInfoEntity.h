@@ -4,7 +4,7 @@
 #include <QString>
 namespace NeteaseCloudMusic {
 struct ProfileInfoEntity {
-    UserId userId;
+    UserId userId = 0;
     QString nickname;
     QString avatarUrl;
     QString backgroundUrl;

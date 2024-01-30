@@ -8,7 +8,6 @@ PersistentCookieJar::~PersistentCookieJar() {
 }
 
 QList<QNetworkCookie> PersistentCookieJar::cookiesForUrl(const QUrl& url) const {
-
     QMutexLocker lock(&mutex);
     return QNetworkCookieJar::cookiesForUrl(url);
 }
@@ -28,13 +27,11 @@ void PersistentCookieJar::save() {
             data.append("\n");
         }
     }
-    QSettings settings;
     settings.setValue("Cookies", data);
 }
 
 void PersistentCookieJar::load() {
     QMutexLocker lock(&mutex);
-    QSettings settings;
     QByteArray data = settings.value("Cookies").toByteArray();
     setAllCookies(QNetworkCookie::parseCookies(data));
 }

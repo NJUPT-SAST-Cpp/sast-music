@@ -14,5 +14,6 @@ public:
 private:
     void save();
     void load();
+    QSettings settings;
     mutable QMutex mutex;
 };
