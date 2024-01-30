@@ -45,5 +45,6 @@
         <file>res/img/volume-mute.svg</file>
         <file>res/img/volume.svg</file>
         <file>res/img/x.svg</file>
+        <file>res/fonts/MiSans-Regular.ttf</file>
     </qresource>
 </RCC>

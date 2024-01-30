@@ -1,9 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtCore
 import FluentUI
 import sast_music
 import "../component"
+import "../"
 
 ScrollablePage {
     objectName: "settings"
@@ -43,7 +45,7 @@ ScrollablePage {
             spacing: 2
             Text {
                 text: "Username"
-                font.family: "Barlow"
+                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
                 font.weight: 600
                 font.pixelSize: 20
             }
@@ -69,7 +71,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶SVIP"
-                        font.family: "Barlow"
+                        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
                         font.pixelSize: 13
                     }
                 }
@@ -93,7 +95,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶VIP"
-                        font.family: "Barlow"
+                        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
                         font.pixelSize: 13
                     }
                 }
@@ -104,7 +106,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Sound"
-        font.family: "Barlow"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -120,7 +122,7 @@ ScrollablePage {
         Text {
             id: text_music_quality
             text: "Music Quality"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -129,6 +131,17 @@ ScrollablePage {
         ComboBox {
             id: comboBox_music_quality
             model: [" Low - 128Kbps ", " Medium - 192Kbps ", " High - 320Kbps ", " Lossless - FLAC ", " Hi - Res "]
+            currentIndex: MainWindow.window.getSettingsValue(
+                              "musicQualityIndex", 2)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("musicQualityIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("musicQualityIndex",
+                                                       2) == 2)
+                    MainWindow.window.setSettingsValue("musicQualityIndex", 2)
+            }
         }
     }
 
@@ -138,7 +151,7 @@ ScrollablePage {
         Text {
             id: text_output_device
             text: "Audio Output device"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -164,7 +177,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Cache"
-        font.family: "Barlow"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -181,7 +194,7 @@ ScrollablePage {
         Text {
             id: text_automatically_cache_songs
             text: "Automatically cache songs"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -189,6 +202,16 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_automatically_cache_songs
+            onClicked: {
+                MainWindow.window.setSettingsValue("cacheOption", checked)
+            }
+            checked: MainWindow.window.getSettingsValue("cacheOption",
+                                                        true) == "true"
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("cacheOption",
+                                                       true) === true)
+                    MainWindow.window.setSettingsValue("cacheOption", true)
+            }
         }
     }
     Row {
@@ -197,7 +220,7 @@ ScrollablePage {
         Text {
             id: text_cache_limit
             text: "Songs Cache limit"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -206,7 +229,17 @@ ScrollablePage {
         ComboBox {
             id: comboBox_cache_limit
             model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
-            currentIndex: 5
+            currentIndex: MainWindow.window.getSettingsValue(
+                              "cacheMemoryIndex", 5)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("cacheMemoryIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("cacheMemoryIndex",
+                                                       5) == 5)
+                    MainWindow.window.setSettingsValue("cacheMemoryIndex", 5)
+            }
         }
     }
     Row {
@@ -215,7 +248,7 @@ ScrollablePage {
         Text {
             id: text_cache_num
             text: "Cached 263 songs (6.76 GiB)"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -233,7 +266,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Lyrics"
-        font.family: "Barlow"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -249,7 +282,7 @@ ScrollablePage {
         Text {
             id: text_show_translation
             text: "Show lyrics translation"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -257,6 +290,18 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
+            checked: MainWindow.window.getSettingsValue(
+                         "showTranslationOption", false) == "true"
+            onClicked: {
+                MainWindow.window.setSettingsValue("showTranslationOption",
+                                                   checked)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("showTranslationOption",
+                                                       false) === false)
+                    MainWindow.window.setSettingsValue("showTranslationOption",
+                                                       false)
+            }
         }
     }
     Row {
@@ -265,7 +310,7 @@ ScrollablePage {
         Text {
             id: text_font_size
             text: "Songs Cache limit"
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -274,14 +319,22 @@ ScrollablePage {
         ComboBox {
             id: comboBox_font_size
             model: [" Small - 16px ", " Medium - 22px ", " Large(Default) - 28px ", " X-Large - 36px "]
-            currentIndex: 2
+            currentIndex: MainWindow.window.getSettingsValue("fontSizeIndex", 2)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("fontSizeIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("fontSizeIndex", 2) == 2)
+                    MainWindow.window.setSettingsValue("fontSizeIndex", 2)
+            }
         }
     }
 
     Text {
         Layout.topMargin: 48
         text: "Others"
-        font.family: "Barlow"
+        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -297,7 +350,7 @@ ScrollablePage {
         Text {
             id: text_close_app
             text: "Close App..."
-            font.family: "Barlow"
+            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -306,7 +359,15 @@ ScrollablePage {
         ComboBox {
             id: comboBox_close_app
             model: [" Ask ", " Exit ", " Minimize to tray "]
-            currentIndex: 0
+            currentIndex: MainWindow.window.getSettingsValue("closeAppIndex", 0)
+            onCurrentIndexChanged: {
+                MainWindow.window.setSettingsValue("closeAppIndex",
+                                                   currentIndex)
+            }
+            Component.onCompleted: {
+                if (MainWindow.window.getSettingsValue("closeAppIndex", 2) == 0)
+                    MainWindow.window.setSettingsValue("closeAppIndex", 0)
+            }
         }
     }
 }

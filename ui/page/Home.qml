@@ -13,5 +13,6 @@ ScrollablePage {
         source: "qrc:///res/img/sast_music.svg"
         height: 200
         fillMode: Image.PreserveAspectFit
+        cache: true
     }
 }

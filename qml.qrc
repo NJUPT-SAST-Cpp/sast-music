@@ -21,5 +21,11 @@
         <file>ui/page/SearchResult.qml</file>
         <file>ui/page/Settings.qml</file>
         <file>ui/MainWindow.qml</file>
+        <file>ui/page/SongListInfo.qml</file>
+        <file>ui/page/PrivateRadar.qml</file>
+        <file>ui/item/MusicBlock.qml</file>
+        <file>ui/item/PlayListCover.qml</file>
+        <file>ui/item/SystemTray.qml</file>
+        <file>ui/page/LikedSongs.qml</file>
     </qresource>
 </RCC>
