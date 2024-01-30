@@ -26,7 +26,7 @@ ScrollablePage {
     Text {
         id: text_LoginToNetease
         text: "Login to Netease"
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 24
         font.bold: true
         Layout.alignment: Qt.AlignHCenter
@@ -71,7 +71,7 @@ ScrollablePage {
                 return "未知错误"
             }
         }
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 18
         font.bold: false
         Layout.alignment: Qt.AlignHCenter

@@ -1,8 +1,15 @@
+#ifndef USERPROFILE_H
+#define USERPROFILE_H
+
 #include <Service/NeteaseCloudMusic/Response/LoginStatusEntity.h>
-#include <Utility/Def.h>
+#include <Utility/NeteaseCloudMusic>
+#include <initializer_list>
 
 struct UserProfile {
     UserProfile() = default;
+    UserProfile(UserId userId, QString nickname, QString avatarUrl, bool defaultAvatar)
+        : userId(userId), nickname(std::move(nickname)), avatarUrl(std::move(avatarUrl)), defaultAvatar(defaultAvatar) {
+    }
     UserProfile(const LoginStatusEntity& entity) {
         auto account = entity.account.value_or(AccountInfoEntity{true, 0});
         auto profile = entity.profile.value_or(ProfileInfoEntity{0, "guest", "", "", true});
@@ -17,3 +24,5 @@ struct UserProfile {
     QString avatarUrl = "qrc:///res/img/avatar.svg";
     bool defaultAvatar;
 };
+
+#endif // USERPROFILE_H

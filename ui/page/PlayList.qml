@@ -11,7 +11,7 @@ ScrollablePage {
     Text {
         id: text_nowPlay
         text: "Now Playing"
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 30
         font.bold: true
     }
@@ -27,7 +27,7 @@ ScrollablePage {
     Text {
         id: text_nextUP
         text: "Next UP"
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 30
         font.bold: true
         Layout.topMargin: 10

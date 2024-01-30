@@ -5,6 +5,8 @@
 #include <QCryptographicHash>
 #include <QNetworkProxy>
 #include <Utility/CookieUtils.h>
+#include <Utility/SettingsUtils.h>
+
 NeteaseCloudMusic::CloudMusicClient* NeteaseCloudMusic::CloudMusicClient::getInstance() {
     static CloudMusicClient instance;
     return &instance;
@@ -222,7 +224,7 @@ void NeteaseCloudMusic::CloudMusicClient::cloudsearch(QStringView keywords, Sear
 }
 
 void NeteaseCloudMusic::CloudMusicClient::logout(std::function<void(Result<QJsonObject>)> callback) {
-    auto url = QUrl("https://interface.music.163.com/eapi/logout");
+    auto url = QUrl("https://interface.music.163.com/weapi/logout");
     auto data = QJsonDocument(QJsonObject{});
     request<WeApi>("POST", url, data,
                    [callback = std::move(callback)](Result<QJsonObject> result) { callback(result.unwrap()); });

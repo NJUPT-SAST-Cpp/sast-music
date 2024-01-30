@@ -254,7 +254,7 @@ ApplicationWindow {
             return "playList"
         if (url === "qrc:///ui/page/SongListInfo.qml")
             return "songListInfo"
-        if (url === "qrc:///ui/page/PrivateRader.qml")
+        if (url === "qrc:///ui/page/PrivateRadar.qml")
             return "privateRadar"
         if (url === "qrc:///ui/page/LikedSongs.qml")
             return "likedSongs"

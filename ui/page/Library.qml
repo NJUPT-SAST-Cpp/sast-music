@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import sast_music
 import FluentUI
 import "../component"
 import "../item"
@@ -9,6 +10,29 @@ import "../"
 ScrollablePage {
     objectName: "library"
     id: library_page
+
+    Component.onCompleted: {
+        PlayListViewModel.loadPlayList(UserProfileViewModel.userId)
+    }
+
+    SongViewModel {
+        id: song_view_model
+    }
+
+    Connections {
+        target: PlayListViewModel
+        function onLoadPlayListSuccess() {
+            song_view_model.loadSongs(PlayListViewModel.likedPlayListId)
+        }
+    }
+
+    Connections {
+        target: song_view_model
+        function onLoadSongsFailed(message) {
+            showError(message)
+        }
+    }
+
     Row {
         spacing: 10
         FluClip {
@@ -26,7 +50,7 @@ ScrollablePage {
         Text {
             anchors.verticalCenter: avatar.verticalCenter
             text: UserProfileViewModel.nickname + "'s Library"
-            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+            font.family: "Misans"
             font.weight: 700
             font.pixelSize: 42
         }
@@ -40,7 +64,6 @@ ScrollablePage {
             width: 410
             height: 260
             Layout.alignment: Qt.AlignHCenter
-
             Rectangle {
                 id: liked_song_background
                 color: "#3057d7"
@@ -50,12 +73,11 @@ ScrollablePage {
             }
             Text {
                 id: liked_song_num_text
-                property int liked_num: 114514
-                text: liked_num + " Songs"
+                text: song_view_model.count + " Songs"
                 elide: Text.ElideRight
                 color: "#3057d7"
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.bold: false
                 font.pixelSize: 16
                 anchors {
@@ -70,7 +92,7 @@ ScrollablePage {
                 text: "Liked Songs"
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.bold: true
                 font.pixelSize: 23
                 color: "#3057d7"
@@ -85,7 +107,7 @@ ScrollablePage {
                 id: liked_song_comment
                 text: "好多人都浪漫\n好多人都心酸\n好聚好散"
                 elide: Text.ElideRight
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.bold: true
                 color: "#3057d7"
@@ -102,7 +124,7 @@ ScrollablePage {
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
-                    MainWindow.window.pushPage("qrc:///ui/page/LikedSongs.qml")
+                    pushPage("qrc:///ui/page/LikedSongs.qml")
                 }
             }
             Rectangle {
@@ -145,7 +167,6 @@ ScrollablePage {
             }
         }
         Rectangle {
-            property int selected: -1
             id: liked_grid_rectangle
             height: 260
             width: library_page.width - liked_song.width - 140
@@ -158,19 +179,16 @@ ScrollablePage {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
                 Repeater {
-                    model: 12
+                    model: song_view_model
                     Rectangle {
-                        property string song_img_source: "qrc:///res/img/netease-music.png"
-                        property string song_name: "Song"
-                        property string song_singer: "Singer"
+                        property bool playing: false
                         property bool hovered: false
-                        property bool selected_self: liked_grid_rectangle.selected == index
                         width: (liked_grid_rectangle.width - 20) / 3
                         height: 58
                         Layout.topMargin: 10
                         Layout.alignment: Qt.AlignHCenter
                         radius: 18
-                        color: selected_self ? "#193057d7" : (hovered ? "#10000000" : "#00000000")
+                        color: playing ? "#3057d7" : (hovered ? "#10000000" : "#00000000")
                         FluClip {
                             id: liked_grid_image_song
                             radius: [5, 5, 5, 5]
@@ -183,7 +201,7 @@ ScrollablePage {
                             }
                             Image {
                                 anchors.fill: parent
-                                source: song_img_source
+                                source: model.imgUrl
                                 cache: true
                             }
                             FluShadow {}
@@ -191,50 +209,50 @@ ScrollablePage {
 
                         Text {
                             id: liked_grid_text_song
-                            text: song_name
+                            text: model.name
                             elide: Text.ElideRight
                             maximumLineCount: 1
-                            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                            font.family: "Misans"
                             font.bold: true
                             font.pixelSize: 18
-                            color: parent.selected_self ? "#3057d7" : "#000000"
+                            color: parent.playing ? "#3057d7" : "#000000"
                             anchors {
                                 left: liked_grid_image_song.right
                                 leftMargin: 20
                                 top: parent.top
                                 topMargin: 10
                             }
-                            width: parent.width
+                            width: parent.width - 60
                         }
                         Text {
                             id: liked_grid_text_singer
-                            text: song_singer
+                            text: model.artists
                             elide: Text.ElideRight
                             maximumLineCount: 1
-                            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                            font.family: "Misans"
                             font.pixelSize: 11
-                            color: parent.selected_self ? "#3057d7" : "#808080"
+                            color: parent.playing ? "#3057d7" : "#808080"
                             anchors {
                                 left: liked_grid_image_song.right
                                 leftMargin: 20
                                 top: liked_grid_text_song.bottom
                                 topMargin: 0
                             }
-                            width: parent.width
+                            width: parent.width - 60
                         }
                         MouseArea {
                             anchors.fill: parent
                             hoverEnabled: true
                             onEntered: {
-                                if (!parent.selected_self)
+                                if (!parent.playing)
                                     parent.hovered = true
                             }
                             onExited: {
                                 parent.hovered = false
                             }
                             onDoubleClicked: {
-                                liked_grid_rectangle.selected = index
-                                // TO DO
+
+                                // TODO
                             }
                         }
                     }
@@ -252,7 +270,7 @@ ScrollablePage {
         implicitWidth: contentWidth
         width: implicitWidth
         height: implicitHeight
-        model: 12
+        model: PlayListViewModel
         cellHeight: cellWidth * 1.2 + 20
         cellWidth: (library_page.width - 130) / 5
         delegate: Item {
@@ -261,7 +279,7 @@ ScrollablePage {
             PlayListCover {
                 id: song_package_image_song
                 width: parent.width
-                source: "qrc:///res/img/background.png"
+                source: model.coverImgUrl
                 onClicked: {
 
                     // TODO
@@ -274,10 +292,10 @@ ScrollablePage {
             }
             Text {
                 id: song_package_text_song
-                text: "Song"
+                text: model.name
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.bold: true
                 font.pixelSize: 18
                 anchors {
@@ -288,10 +306,10 @@ ScrollablePage {
             }
             Text {
                 id: song_package_text_singer
-                text: "Singer"
+                text: "by " + model.creatorName
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 11
                 anchors {
                     top: song_package_text_song.bottom

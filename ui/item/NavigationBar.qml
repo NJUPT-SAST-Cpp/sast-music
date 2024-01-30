@@ -134,7 +134,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/settings.svg"
             text: "Settings"
-            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+            font.family: "Misans"
             font.bold: true
             onClicked: {
                 stackView.pushPage("qrc:///ui/page/Settings.qml")
@@ -144,7 +144,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: UserProfileViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
             text: UserProfileViewModel.isLogin ? "Logout" : "Login"
-            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+            font.family: "Misans"
             font.bold: true
             onClicked: {
                 if (!UserProfileViewModel.isLogin) {
@@ -159,7 +159,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/github.svg"
             text: "GitHub Repo"
-            font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+            font.family: "Misans"
             font.bold: true
             onClicked: {
                 Qt.openUrlExternally(
@@ -177,4 +177,20 @@ BlurRectangle {
             LoginViewModel.logout()
         }
     }
+
+    Connections {
+        target: LoginViewModel
+        function onLogoutSuccess() {
+            UserProfileViewModel.isLogin = false
+            showSuccess("Logout success")
+        }
+    }
+
+    Connections {
+        target: LoginViewModel
+        function onLogoutFailed(message) {
+            showError(message)
+        }
+    }
+
 }

@@ -51,7 +51,7 @@ Item {
         text: songTitle
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.bold: true
         font.pixelSize: 16
         color: playing ? activeColor : "#000"
@@ -69,7 +69,7 @@ Item {
         elide: Text.ElideRight
         color: playing ? activeColor : "#7a7a7a"
         maximumLineCount: 1
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.bold: true
         font.pixelSize: 16
         anchors {
@@ -85,7 +85,7 @@ Item {
         text: control.singer
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 12
         color: playing ? activeColor : "#000"
         anchors {
@@ -101,7 +101,7 @@ Item {
         text: "album"
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+        font.family: "Misans"
         font.pixelSize: 16
         color: playing ? activeColor : "#000"
         anchors {

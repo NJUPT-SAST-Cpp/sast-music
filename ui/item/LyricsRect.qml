@@ -145,7 +145,7 @@ Rectangle {
             Text {
                 id: text_song
                 text: "Song"
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 22
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.95)
@@ -162,7 +162,7 @@ Rectangle {
             Text {
                 id: text_singer
                 text: "Singer"
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -184,7 +184,7 @@ Rectangle {
                     topMargin: 22
                 }
                 text: "0:38"
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -197,7 +197,7 @@ Rectangle {
                     topMargin: 22
                 }
                 text: "4:09"
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)

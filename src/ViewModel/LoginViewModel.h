@@ -31,4 +31,6 @@ signals:
     void loginQRCodePollingFailed(QString message);
     void onQRCodeDataChanged();
     void onStatusChanged();
+    void logoutSuccess();
+    void logoutFailed(QString message);
 };

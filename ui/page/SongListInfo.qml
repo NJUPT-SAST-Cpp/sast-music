@@ -26,7 +26,7 @@ ScrollablePage {
                 elide: Text.ElideRight
                 wrapMode: Text.WordWrap
                 maximumLineCount: 2
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.bold: true
                 font.pixelSize: 36
                 width: parent.width
@@ -38,7 +38,7 @@ ScrollablePage {
                 text: "Playlist by Username"
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 18
                 width: page.width - 56 - 290
             }
@@ -49,7 +49,7 @@ ScrollablePage {
                 text: "Updated at Dec 11, 2023 · 166 Songs"
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.weight: 200
                 width: page.width - 56 - 290
@@ -61,7 +61,7 @@ ScrollablePage {
                 topPadding: 24
                 text: "description"
                 wrapMode: Text.WordWrap
-                font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
+                font.family: "Misans"
                 font.pixelSize: 14
                 font.weight: 200
                 width: page.width - 56 - 290 - 130

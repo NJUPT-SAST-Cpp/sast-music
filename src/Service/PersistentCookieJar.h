@@ -4,6 +4,7 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QSettings>
+
 class PersistentCookieJar : public QNetworkCookieJar {
 public:
     PersistentCookieJar(QObject* parent = nullptr);
@@ -14,6 +15,6 @@ public:
 private:
     void save();
     void load();
-    QSettings settings;
     mutable QMutex mutex;
+    QSettings settings;
 };

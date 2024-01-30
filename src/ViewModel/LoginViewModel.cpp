@@ -27,12 +27,13 @@ void LoginViewModel::newLoginQRCode() {
 }
 
 void LoginViewModel::logout() {
-    CloudMusicClient::getInstance()->logout([](Result<QJsonObject> result) {
+    CloudMusicClient::getInstance()->logout([this](Result<QJsonObject> result) {
         if (result.isErr()) {
+            emit logoutFailed(result.unwrapErr().message);
             return;
         }
         auto entity = result.unwrap();
-        qDebug() << entity;
+        emit logoutSuccess();
     });
 }
 
@@ -49,8 +50,6 @@ void LoginViewModel::loginQRCodePolling() {
         if (this->m_status != entity.status) {
             this->m_status = entity.status;
             emit onStatusChanged();
-        }
-        if (entity.status == LoginQRCodePollingStatus::Success) {
         }
     });
 }
