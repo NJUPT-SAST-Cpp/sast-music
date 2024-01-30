@@ -186,6 +186,24 @@ ApplicationWindow {
                    event.accepted = false
                }
 
+    FluInfoBar {
+        id: infoBar
+        root: window
+    }
+
+    function showError(text, duration, moremsg) {
+        infoBar.showError(text, duration, moremsg)
+    }
+    function showSuccess(text, duration, moremsg) {
+        infoBar.showSuccess(text, duration, moremsg)
+    }
+    function showInfo(text, duration, moremsg) {
+        infoBar.showInfo(text, duration, moremsg)
+    }
+    function showWarning(text, duration, moremsg) {
+        infoBar.showWarning(text, duration, moremsg)
+    }
+
     function isPageInStack(pageName) {
         for (var i = 0; i < stackView.depth; ++i) {
             if (stackView.get(i).objectName === pageName) {
