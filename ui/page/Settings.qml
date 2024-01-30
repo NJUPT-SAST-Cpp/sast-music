@@ -45,7 +45,7 @@ ScrollablePage {
             spacing: 2
             Text {
                 text: UserProfileViewModel.nickname
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.weight: 600
                 font.pixelSize: 20
             }
@@ -71,7 +71,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶SVIP"
-                        font.family: "Misans"
+                        font.family: "MiSans"
                         font.pixelSize: 13
                     }
                 }
@@ -95,7 +95,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶VIP"
-                        font.family: "Misans"
+                        font.family: "MiSans"
                         font.pixelSize: 13
                     }
                 }
@@ -106,7 +106,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Sound"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -122,7 +122,7 @@ ScrollablePage {
         Text {
             id: text_music_quality
             text: "Music Quality"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -131,15 +131,12 @@ ScrollablePage {
         ComboBox {
             id: comboBox_music_quality
             model: [" Low - 128Kbps ", " Medium - 192Kbps ", " High - 320Kbps ", " Lossless - FLAC ", " Hi - Res "]
-            currentIndex: getSettingsValue(
-                              "musicQualityIndex", 2)
+            currentIndex: getSettingsValue("musicQualityIndex", 2)
             onCurrentIndexChanged: {
-                setSettingsValue("musicQualityIndex",
-                                                   currentIndex)
+                setSettingsValue("musicQualityIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("musicQualityIndex",
-                                                       2) == 2)
+                if (getSettingsValue("musicQualityIndex", 2) == 2)
                     setSettingsValue("musicQualityIndex", 2)
             }
         }
@@ -151,7 +148,7 @@ ScrollablePage {
         Text {
             id: text_output_device
             text: "Audio Output device"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -177,7 +174,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Cache"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -194,7 +191,7 @@ ScrollablePage {
         Text {
             id: text_automatically_cache_songs
             text: "Automatically cache songs"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -205,11 +202,9 @@ ScrollablePage {
             onClicked: {
                 setSettingsValue("cacheOption", checked)
             }
-            checked: getSettingsValue("cacheOption",
-                                                        true) == "true"
+            checked: getSettingsValue("cacheOption", true) == "true"
             Component.onCompleted: {
-                if (getSettingsValue("cacheOption",
-                                                       true) === true)
+                if (getSettingsValue("cacheOption", true) === true)
                     setSettingsValue("cacheOption", true)
             }
         }
@@ -220,7 +215,7 @@ ScrollablePage {
         Text {
             id: text_cache_limit
             text: "Songs Cache limit"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -229,15 +224,12 @@ ScrollablePage {
         ComboBox {
             id: comboBox_cache_limit
             model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
-            currentIndex: getSettingsValue(
-                              "cacheMemoryIndex", 5)
+            currentIndex: getSettingsValue("cacheMemoryIndex", 5)
             onCurrentIndexChanged: {
-                setSettingsValue("cacheMemoryIndex",
-                                                   currentIndex)
+                setSettingsValue("cacheMemoryIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("cacheMemoryIndex",
-                                                       5) == 5)
+                if (getSettingsValue("cacheMemoryIndex", 5) == 5)
                     setSettingsValue("cacheMemoryIndex", 5)
             }
         }
@@ -248,7 +240,7 @@ ScrollablePage {
         Text {
             id: text_cache_num
             text: "Cached 263 songs (6.76 GiB)"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -266,7 +258,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Lyrics"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -282,7 +274,7 @@ ScrollablePage {
         Text {
             id: text_show_translation
             text: "Show lyrics translation"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -290,17 +282,13 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
-            checked: getSettingsValue(
-                         "showTranslationOption", false) == "true"
+            checked: getSettingsValue("showTranslationOption", false) == "true"
             onClicked: {
-                setSettingsValue("showTranslationOption",
-                                                   checked)
+                setSettingsValue("showTranslationOption", checked)
             }
             Component.onCompleted: {
-                if (getSettingsValue("showTranslationOption",
-                                                       false) === false)
-                    setSettingsValue("showTranslationOption",
-                                                       false)
+                if (getSettingsValue("showTranslationOption", false) === false)
+                    setSettingsValue("showTranslationOption", false)
             }
         }
     }
@@ -310,7 +298,7 @@ ScrollablePage {
         Text {
             id: text_font_size
             text: "Songs Cache limit"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -321,8 +309,7 @@ ScrollablePage {
             model: [" Small - 16px ", " Medium - 22px ", " Large(Default) - 28px ", " X-Large - 36px "]
             currentIndex: getSettingsValue("fontSizeIndex", 2)
             onCurrentIndexChanged: {
-                setSettingsValue("fontSizeIndex",
-                                                   currentIndex)
+                setSettingsValue("fontSizeIndex", currentIndex)
             }
             Component.onCompleted: {
                 if (getSettingsValue("fontSizeIndex", 2) == 2)
@@ -334,7 +321,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Others"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -350,7 +337,7 @@ ScrollablePage {
         Text {
             id: text_close_app
             text: "Close App..."
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -361,8 +348,7 @@ ScrollablePage {
             model: [" Ask ", " Exit ", " Minimize to tray "]
             currentIndex: getSettingsValue("closeAppIndex", 0)
             onCurrentIndexChanged: {
-                setSettingsValue("closeAppIndex",
-                                                   currentIndex)
+                setSettingsValue("closeAppIndex", currentIndex)
             }
             Component.onCompleted: {
                 if (getSettingsValue("closeAppIndex", 2) == 0)

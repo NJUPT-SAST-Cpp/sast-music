@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     QGuiApplication::setWindowIcon(QIcon(QStringLiteral(":/res/icon/app.ico")));
 
     // Construct cloud music client after setting organization name and domain
-    // to make sure QSerttings can work properly
+    // to make sure QSettings can work properly
     NeteaseCloudMusic::CloudMusicClient::getInstance()->setCookieJar(new PersistentCookieJar());
     NeteaseCloudMusic::CloudMusicClient::getInstance()->checkAnonimousToken([](Result<void>) {});
 

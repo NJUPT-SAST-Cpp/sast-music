@@ -3,12 +3,12 @@
 #include "Service/NeteaseCloudMusic/Response/LoginStatusEntity.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Utility/SettingsUtils.h>
-#include <qtypes.h>
 
 using namespace NeteaseCloudMusic;
 
 UserProfileViewModel::UserProfileViewModel(QObject* parent) : QObject(parent) {
-    isLogin = !SettingsUtils::getInstance()->value("Cookies").isNull();
+    isLogin = !(SettingsUtils::getInstance()->value("Cookies").isNull() &&
+                SettingsUtils::getInstance()->value("Cookies").toString().isEmpty());
 }
 
 UserProfileViewModel* UserProfileViewModel::create(QQmlEngine*, QJSEngine*) {
@@ -16,17 +16,6 @@ UserProfileViewModel* UserProfileViewModel::create(QQmlEngine*, QJSEngine*) {
 }
 
 void UserProfileViewModel::loadUserProfile() {
-    auto settingsUtils = SettingsUtils::getInstance();
-    if (isLogin) {
-        auto userId = settingsUtils->value("userId").toUInt();
-        auto nickName = settingsUtils->value("nickName").toString();
-        auto avatarUrl = settingsUtils->value("avatarUrl").toString();
-        auto defaultAvatar = settingsUtils->value("defaultAvatar").toBool();
-        setIsLogin(true);
-        setUserProfileModel(UserProfile{userId, nickName, avatarUrl, defaultAvatar});
-        emit loadUserProfileSuccess();
-        return;
-    }
     CloudMusicClient::getInstance()->getLoginStatus([=](Result<LoginStatusEntity> result) {
         if (result.isErr()) {
             emit loadUserProfileFailed(result.unwrapErr().message);
@@ -40,10 +29,6 @@ void UserProfileViewModel::loadUserProfile() {
         }
         setUserProfileModel(UserProfile(entity));
         emit loadUserProfileSuccess();
-        settingsUtils->setValue("userId", (quint16)userProfileModel.userId);
-        settingsUtils->setValue("nickName", userProfileModel.nickname);
-        settingsUtils->setValue("avatarUrl", userProfileModel.avatarUrl);
-        settingsUtils->setValue("defaultAvatar", userProfileModel.defaultAvatar);
     });
 }
 

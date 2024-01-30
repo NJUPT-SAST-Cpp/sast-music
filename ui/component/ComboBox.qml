@@ -11,7 +11,7 @@ FluComboBox {
     editable: false
     height: 32
     width: Math.max(implicitWidth, 192)
-    font.family: "Misans"
+    font.family: "MiSans"
     font.weight: 600
     font.pixelSize: 10
     focusPolicy: Qt.StrongFocus

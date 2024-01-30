@@ -11,7 +11,7 @@ ScrollablePage {
     Text {
         id: text_nowPlay
         text: "Now Playing"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.pixelSize: 30
         font.bold: true
     }
@@ -27,7 +27,7 @@ ScrollablePage {
     Text {
         id: text_nextUP
         text: "Next UP"
-        font.family: "Misans"
+        font.family: "MiSans"
         font.pixelSize: 30
         font.bold: true
         Layout.topMargin: 10

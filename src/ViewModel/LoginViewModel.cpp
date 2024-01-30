@@ -1,12 +1,12 @@
 #include "LoginViewModel.h"
 #include "Service/NeteaseCloudMusic/Response/LoginQRCodePollingEntity.h"
+#include <QNetworkCookieJar>
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
-#include <qnetworkcookiejar.h>
 using namespace NeteaseCloudMusic;
 
 LoginViewModel::LoginViewModel(QObject* parent) : QObject(parent) {
     connect(&this->m_timer, &QTimer::timeout, this, &LoginViewModel::loginQRCodePolling);
-    this->m_timer.setInterval(10000);
+    this->m_timer.setInterval(2000);
     this->m_timer.setSingleShot(false);
 }
 

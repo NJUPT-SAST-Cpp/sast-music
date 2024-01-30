@@ -50,7 +50,7 @@ ScrollablePage {
         Text {
             anchors.verticalCenter: avatar.verticalCenter
             text: UserProfileViewModel.nickname + "'s Library"
-            font.family: "Misans"
+            font.family: "MiSans"
             font.weight: 700
             font.pixelSize: 42
         }
@@ -77,7 +77,7 @@ ScrollablePage {
                 elide: Text.ElideRight
                 color: "#3057d7"
                 maximumLineCount: 1
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.bold: false
                 font.pixelSize: 16
                 anchors {
@@ -92,7 +92,7 @@ ScrollablePage {
                 text: "Liked Songs"
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.bold: true
                 font.pixelSize: 23
                 color: "#3057d7"
@@ -107,7 +107,7 @@ ScrollablePage {
                 id: liked_song_comment
                 text: "好多人都浪漫\n好多人都心酸\n好聚好散"
                 elide: Text.ElideRight
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.pixelSize: 14
                 font.bold: true
                 color: "#3057d7"
@@ -212,7 +212,7 @@ ScrollablePage {
                             text: model.name
                             elide: Text.ElideRight
                             maximumLineCount: 1
-                            font.family: "Misans"
+                            font.family: "MiSans"
                             font.bold: true
                             font.pixelSize: 18
                             color: parent.playing ? "#3057d7" : "#000000"
@@ -222,14 +222,14 @@ ScrollablePage {
                                 top: parent.top
                                 topMargin: 10
                             }
-                            width: parent.width - 60
+                            width: parent.width - 80
                         }
                         Text {
                             id: liked_grid_text_singer
                             text: model.artists
                             elide: Text.ElideRight
                             maximumLineCount: 1
-                            font.family: "Misans"
+                            font.family: "MiSans"
                             font.pixelSize: 11
                             color: parent.playing ? "#3057d7" : "#808080"
                             anchors {
@@ -238,7 +238,7 @@ ScrollablePage {
                                 top: liked_grid_text_song.bottom
                                 topMargin: 0
                             }
-                            width: parent.width - 60
+                            width: parent.width - 80
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -295,7 +295,7 @@ ScrollablePage {
                 text: model.name
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.bold: true
                 font.pixelSize: 18
                 anchors {
@@ -309,7 +309,7 @@ ScrollablePage {
                 text: "by " + model.creatorName
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "Misans"
+                font.family: "MiSans"
                 font.pixelSize: 11
                 anchors {
                     top: song_package_text_song.bottom

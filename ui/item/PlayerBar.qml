@@ -53,7 +53,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Misans"
+        font.family: "MiSans"
         font.bold: true
         font.pixelSize: 16
         anchors {
@@ -70,7 +70,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "Misans"
+        font.family: "MiSans"
         font.pixelSize: 12
         color: "#73706c"
         anchors {

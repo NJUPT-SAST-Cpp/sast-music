@@ -21,7 +21,7 @@ Item {
     FluTextButton {
         id: btn
         text: control.text
-        font.family: "Misans"
+        font.family: "MiSans"
         font.pixelSize: control.fontSize
         font.weight: control.fontWeight
         textColor: control.textColor

@@ -21,7 +21,7 @@ bool PersistentCookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieL
 void PersistentCookieJar::save() {
     QMutexLocker lock(&mutex);
     QList<QNetworkCookie> list = allCookies();
-    QString data;
+    QByteArray data;
     foreach (QNetworkCookie cookie, list) {
         if (!cookie.isSessionCookie()) {
             data.append(cookie.toRawForm());

@@ -15,6 +15,10 @@ void PlayListViewModel::loadPlayList(UserId userId) {
             return;
         }
         auto playLists = result.unwrap().playlist;
+        if (playLists.isEmpty()) {
+            emit loadPlayListSuccess();
+            return;
+        }
         auto likedPlayList = playLists.front();
         setLikedPlayListId(likedPlayList.id);
         playLists.pop_front();
