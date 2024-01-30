@@ -18,14 +18,14 @@ ScrollablePage {
             radius: [23, 23, 23, 23]
             Image {
                 anchors.fill: parent
-                source: "qrc:///res/img/avatar.svg"
+                source: UserProfileViewModel.avatarUrl
                 fillMode: Image.PreserveAspectFit
                 cache: true
             }
         }
         Text {
             anchors.verticalCenter: avatar.verticalCenter
-            text: "Username's Library"
+            text: UserProfileViewModel.nickname + "'s Library"
             font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.weight: 700
             font.pixelSize: 42
@@ -128,10 +128,11 @@ ScrollablePage {
                 height: 40
                 iconWidth: 18
                 iconHeight: 20
-                iconUrl: "qrc:///res/img/play.svg" 
+                iconUrl: "qrc:///res/img/play.svg"
                 iconColor: "#fff"
                 anchors.centerIn: liked_song_btn_rectangle
                 onClicked: {
+
                     // TODO
                 }
                 hoverColor: Qt.rgba(0, 0, 0, 0)

@@ -111,5 +111,6 @@ public:
     void getSongLyric(SongId id, std::function<void(Result<SongLyricEntity>)> callback);
     void cloudsearch(QStringView keywords, SearchType type, int limit, int offset,
                      std::function<void(Result<SearchResultEntity>)> callback);
+    void logout(std::function<void(Result<QJsonObject>)> callback);
 };
 } // namespace NeteaseCloudMusic

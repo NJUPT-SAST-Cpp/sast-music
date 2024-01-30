@@ -20,6 +20,7 @@ private slots:
 public:
     explicit LoginViewModel(QObject* parent = nullptr);
     Q_INVOKABLE void newLoginQRCode();
+    Q_INVOKABLE void logout();
     Q_PROPERTY(QString qrCodeData READ getQRCodeData NOTIFY onQRCodeDataChanged FINAL)
     Q_PROPERTY(NeteaseCloudMusic::LoginQRCodePollingStatus status READ getStatus NOTIFY onStatusChanged FINAL)
     QString getQRCodeData() const;

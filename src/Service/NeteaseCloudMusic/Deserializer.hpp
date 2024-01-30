@@ -1,5 +1,5 @@
 #pragma once
-#include "Response/AccoutInfoEntity.h"
+#include "Response/AccountInfoEntity.h"
 #include "Response/AlbumInfoEntity.h"
 #include "Response/ArtistInfoEntity.h"
 #include "Response/DailySongsEntity.h"
@@ -124,8 +124,8 @@ struct Deserializer<LoginQRCodePollingEntity> {
 };
 
 template <>
-struct Deserializer<AccoutInfoEntity> {
-    static Result<AccoutInfoEntity> from(const QJsonValue& value) {
+struct Deserializer<AccountInfoEntity> {
+    static Result<AccountInfoEntity> from(const QJsonValue& value) {
         // only a few fields are deserialized
         if (!value.isObject()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
@@ -137,7 +137,7 @@ struct Deserializer<AccoutInfoEntity> {
         if (!obj.contains("id") || !obj["id"].isDouble()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: id is not number"};
         }
-        return AccoutInfoEntity{
+        return AccountInfoEntity{
             obj["anonimousUser"].toBool(),
             static_cast<UserId>(obj["id"].toInteger()),
         };
@@ -197,12 +197,12 @@ struct Deserializer<LoginStatusEntity> {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
         }
         auto obj = value.toObject();
-        std::optional<AccoutInfoEntity> account;
+        std::optional<AccountInfoEntity> account;
         std::optional<ProfileInfoEntity> profile;
         if (!obj.contains("account") || obj["account"].isNull()) {
             account = std::nullopt;
         } else if (obj["account"].isObject()) {
-            auto t = Deserializer<AccoutInfoEntity>::from(obj["account"]);
+            auto t = Deserializer<AccountInfoEntity>::from(obj["account"]);
             if (t.isOk()) {
                 account = std::move(t).unwrap();
             } else {

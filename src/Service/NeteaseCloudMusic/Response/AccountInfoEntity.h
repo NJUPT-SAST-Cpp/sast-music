@@ -2,7 +2,7 @@
 #include "BasicDef.h"
 #include <cstdint>
 namespace NeteaseCloudMusic {
-struct AccoutInfoEntity {
+struct AccountInfoEntity {
     bool anonimousUser;
     UserId id;
 };

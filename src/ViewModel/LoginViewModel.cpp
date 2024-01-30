@@ -1,5 +1,7 @@
 #include "LoginViewModel.h"
+#include "Service/NeteaseCloudMusic/Response/LoginQRCodePollingEntity.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
+#include <qnetworkcookiejar.h>
 using namespace NeteaseCloudMusic;
 
 LoginViewModel::LoginViewModel(QObject* parent) : QObject(parent) {
@@ -24,6 +26,16 @@ void LoginViewModel::newLoginQRCode() {
     });
 }
 
+void LoginViewModel::logout() {
+    CloudMusicClient::getInstance()->logout([](Result<QJsonObject> result) {
+        if (result.isErr()) {
+            return;
+        }
+        auto entity = result.unwrap();
+        qDebug() << entity;
+    });
+}
+
 void LoginViewModel::loginQRCodePolling() {
     CloudMusicClient::getInstance()->loginQRCodePolling(this->m_key, [this](Result<LoginQRCodePollingEntity> result) {
         if (result.isErr()) {
@@ -37,6 +49,8 @@ void LoginViewModel::loginQRCodePolling() {
         if (this->m_status != entity.status) {
             this->m_status = entity.status;
             emit onStatusChanged();
+        }
+        if (entity.status == LoginQRCodePollingStatus::Success) {
         }
     });
 }

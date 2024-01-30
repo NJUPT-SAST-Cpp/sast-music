@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import FluentUI
 import sast_music
 import "../component"
+import "../"
 
 ScrollablePage {
     objectName: "login"
@@ -56,15 +57,18 @@ ScrollablePage {
         text: {
             switch (LoginViewModel.status) {
             case 0:
-                return "打开网易云音乐APP扫码登录";
+                return "打开网易云音乐APP扫码登录"
             case 1:
-                return "扫码成功，请在手机上确认登录";
+                return "扫码成功，请在手机上确认登录"
             case 2:
-                return "登录成功";
+            {
+                UserProfileViewModel.loadUserProfile()
+                return "登录成功"
+            }
             case 4:
-                return "二维码已失效，请刷新";
+                return "二维码已失效，请刷新"
             default:
-                return "未知错误";
+                return "未知错误"
             }
         }
         font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
@@ -77,18 +81,29 @@ ScrollablePage {
     Connections {
         target: LoginViewModel
         function onLoginQRCodeNewFailed(message) {
-            showError(message, 4000);
+            showError(message, 4000)
         }
     }
 
     Connections {
         target: LoginViewModel
         function onLoginQRCodePollingFailed(message) {
-            showError(message, 4000);
+            showError(message, 4000)
+        }
+    }
+
+    Connections {
+        target: UserProfileViewModel
+        function onLoadUserProfileSuccess() {
+            returnPage()
         }
     }
 
     Component.onCompleted: {
-        LoginViewModel.newLoginQRCode();
+        LoginViewModel.newLoginQRCode()
+    }
+
+    function returnPage() {
+        pushPage("qrc:///ui/page/Home.qml")
     }
 }

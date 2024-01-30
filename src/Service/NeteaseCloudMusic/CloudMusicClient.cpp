@@ -220,3 +220,10 @@ void NeteaseCloudMusic::CloudMusicClient::cloudsearch(QStringView keywords, Sear
         callback(result.andThen(Deserializer<SearchResultEntity>::from));
     });
 }
+
+void NeteaseCloudMusic::CloudMusicClient::logout(std::function<void(Result<QJsonObject>)> callback) {
+    auto url = QUrl("https://interface.music.163.com/eapi/logout");
+    auto data = QJsonDocument(QJsonObject{});
+    request<WeApi>("POST", url, data,
+                   [callback = std::move(callback)](Result<QJsonObject> result) { callback(result.unwrap()); });
+}

@@ -30,7 +30,7 @@ ScrollablePage {
             width: 64
             height: 64
             Image {
-                source: "qrc:///res/img/avatar.svg"
+                source: UserProfileViewModel.avatarUrl
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
                 cache: true
@@ -44,13 +44,13 @@ ScrollablePage {
             }
             spacing: 2
             Text {
-                text: "Username"
+                text: UserProfileViewModel.nickname
                 font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
                 font.weight: 600
                 font.pixelSize: 20
             }
             Loader {
-                sourceComponent: com_vip_logo // TODO
+                sourceComponent: null // FIXME
             }
 
             Component {
@@ -131,16 +131,16 @@ ScrollablePage {
         ComboBox {
             id: comboBox_music_quality
             model: [" Low - 128Kbps ", " Medium - 192Kbps ", " High - 320Kbps ", " Lossless - FLAC ", " Hi - Res "]
-            currentIndex: MainWindow.window.getSettingsValue(
+            currentIndex: getSettingsValue(
                               "musicQualityIndex", 2)
             onCurrentIndexChanged: {
-                MainWindow.window.setSettingsValue("musicQualityIndex",
+                setSettingsValue("musicQualityIndex",
                                                    currentIndex)
             }
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("musicQualityIndex",
+                if (getSettingsValue("musicQualityIndex",
                                                        2) == 2)
-                    MainWindow.window.setSettingsValue("musicQualityIndex", 2)
+                    setSettingsValue("musicQualityIndex", 2)
             }
         }
     }
@@ -203,14 +203,14 @@ ScrollablePage {
         ToggleSwitch {
             id: btn_automatically_cache_songs
             onClicked: {
-                MainWindow.window.setSettingsValue("cacheOption", checked)
+                setSettingsValue("cacheOption", checked)
             }
-            checked: MainWindow.window.getSettingsValue("cacheOption",
+            checked: getSettingsValue("cacheOption",
                                                         true) == "true"
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("cacheOption",
+                if (getSettingsValue("cacheOption",
                                                        true) === true)
-                    MainWindow.window.setSettingsValue("cacheOption", true)
+                    setSettingsValue("cacheOption", true)
             }
         }
     }
@@ -229,16 +229,16 @@ ScrollablePage {
         ComboBox {
             id: comboBox_cache_limit
             model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
-            currentIndex: MainWindow.window.getSettingsValue(
+            currentIndex: getSettingsValue(
                               "cacheMemoryIndex", 5)
             onCurrentIndexChanged: {
-                MainWindow.window.setSettingsValue("cacheMemoryIndex",
+                setSettingsValue("cacheMemoryIndex",
                                                    currentIndex)
             }
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("cacheMemoryIndex",
+                if (getSettingsValue("cacheMemoryIndex",
                                                        5) == 5)
-                    MainWindow.window.setSettingsValue("cacheMemoryIndex", 5)
+                    setSettingsValue("cacheMemoryIndex", 5)
             }
         }
     }
@@ -290,16 +290,16 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
-            checked: MainWindow.window.getSettingsValue(
+            checked: getSettingsValue(
                          "showTranslationOption", false) == "true"
             onClicked: {
-                MainWindow.window.setSettingsValue("showTranslationOption",
+                setSettingsValue("showTranslationOption",
                                                    checked)
             }
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("showTranslationOption",
+                if (getSettingsValue("showTranslationOption",
                                                        false) === false)
-                    MainWindow.window.setSettingsValue("showTranslationOption",
+                    setSettingsValue("showTranslationOption",
                                                        false)
             }
         }
@@ -319,14 +319,14 @@ ScrollablePage {
         ComboBox {
             id: comboBox_font_size
             model: [" Small - 16px ", " Medium - 22px ", " Large(Default) - 28px ", " X-Large - 36px "]
-            currentIndex: MainWindow.window.getSettingsValue("fontSizeIndex", 2)
+            currentIndex: getSettingsValue("fontSizeIndex", 2)
             onCurrentIndexChanged: {
-                MainWindow.window.setSettingsValue("fontSizeIndex",
+                setSettingsValue("fontSizeIndex",
                                                    currentIndex)
             }
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("fontSizeIndex", 2) == 2)
-                    MainWindow.window.setSettingsValue("fontSizeIndex", 2)
+                if (getSettingsValue("fontSizeIndex", 2) == 2)
+                    setSettingsValue("fontSizeIndex", 2)
             }
         }
     }
@@ -359,14 +359,14 @@ ScrollablePage {
         ComboBox {
             id: comboBox_close_app
             model: [" Ask ", " Exit ", " Minimize to tray "]
-            currentIndex: MainWindow.window.getSettingsValue("closeAppIndex", 0)
+            currentIndex: getSettingsValue("closeAppIndex", 0)
             onCurrentIndexChanged: {
-                MainWindow.window.setSettingsValue("closeAppIndex",
+                setSettingsValue("closeAppIndex",
                                                    currentIndex)
             }
             Component.onCompleted: {
-                if (MainWindow.window.getSettingsValue("closeAppIndex", 2) == 0)
-                    MainWindow.window.setSettingsValue("closeAppIndex", 0)
+                if (getSettingsValue("closeAppIndex", 2) == 0)
+                    setSettingsValue("closeAppIndex", 0)
             }
         }
     }

@@ -77,9 +77,9 @@ BlurRectangle {
             id: btn_library
             text: "LIBRARY"
             textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
-            onClicked: /*UserViewModel.isLogin ? */ stackView.pushPage(
-                                                        libraryPageUrl) /*: stackView.pushPage(
-                                                                           "qrc:///ui/page/Login.qml")*/
+            onClicked: UserProfileViewModel.isLogin ? stackView.pushPage(
+                                                          libraryPageUrl) : stackView.pushPage(
+                                                          "qrc:///ui/page/Login.qml")
         }
     }
 
@@ -105,7 +105,7 @@ BlurRectangle {
         radius: [15, 15, 15, 15]
         Image {
             anchors.fill: parent
-            source: "qrc:///res/img/avatar.svg"
+            source: UserProfileViewModel.avatarUrl
             fillMode: Image.PreserveAspectFit
             cache: true
         }
@@ -142,16 +142,16 @@ BlurRectangle {
         }
         RadiusMenuItem {
             iconSize: 20
-            iconUrl: UserViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
-            text: UserViewModel.isLogin ? "Logout" : "Login"
+            iconUrl: UserProfileViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
+            text: UserProfileViewModel.isLogin ? "Logout" : "Login"
             font.family: "Barlow,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,MiSans,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif,microsoft uighur"
             font.bold: true
             onClicked: {
-                if (!UserViewModel.isLogin) {
+                if (!UserProfileViewModel.isLogin) {
                     stackView.pushPage("qrc:///ui/page/Login.qml")
                     return
                 }
-                // TODO: popup dialog
+                logout_dialog.open()
             }
         }
         MenuSeparator {}
@@ -165,6 +165,16 @@ BlurRectangle {
                 Qt.openUrlExternally(
                             "https://github.com/NJUPT-SAST-Cpp/sast-music")
             }
+        }
+    }
+
+    FluContentDialog {
+        id: logout_dialog
+        title: "Confirm logout?"
+        positiveText: "Ok"
+        negativeText: "Cancel"
+        onPositiveClicked: {
+            LoginViewModel.logout()
         }
     }
 }

@@ -264,8 +264,8 @@ ApplicationWindow {
         return settings.value(item, defaultItem)
     }
 
-    function setSettingsValue(item, itemVaue) {
-        settings.setValue(item, itemVaue)
+    function setSettingsValue(item, itemValue) {
+        settings.setValue(item, itemValue)
     }
 
     Settings {
