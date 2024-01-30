@@ -10,4 +10,4 @@ enum class LoginQRCodePollingStatus {
 struct LoginQRCodePollingEntity {
     LoginQRCodePollingStatus status;
 };
-}
+} // namespace NeteaseCloudMusic

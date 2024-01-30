@@ -5,4 +5,4 @@ struct LoginQRCodeEntity {
     QString key;
     QString qrCodeData;
 };
-}
+} // namespace NeteaseCloudMusic

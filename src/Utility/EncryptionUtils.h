@@ -1,7 +1,8 @@
 #pragma once
+#include "Result.hpp"
 #include <QByteArray>
 #include <QString>
-#include "Result.hpp"
+
 // PKCS#7 padding
 Result<QByteArray> aesCbcEncrypt(const QByteArray& data, const QByteArray& key, const QByteArray& iv);
 // PKCS#7 padding

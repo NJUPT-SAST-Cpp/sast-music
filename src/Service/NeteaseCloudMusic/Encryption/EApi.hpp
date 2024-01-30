@@ -74,7 +74,8 @@ public:
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             return std::make_tuple(request, "params=" + params.unwrap().toHex());
         } else {
-            request.setUrl(QStringLiteral("%1?params=%2").arg(url.toString(QUrl::RemoveQuery), params.unwrap().toHex()));
+            request.setUrl(
+                QStringLiteral("%1?params=%2").arg(url.toString(QUrl::RemoveQuery), params.unwrap().toHex()));
             return std::make_tuple(request, QByteArray());
         }
     }
