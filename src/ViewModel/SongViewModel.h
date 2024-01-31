@@ -30,6 +30,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void loadSongs(PlaylistId playListId);
+    Q_INVOKABLE void loadAllLikedSongs();
+    Q_INVOKABLE void loadLikedSongs(PlaylistId playlistId);
 
     int getCount() const;
     void setCount(int newCount);
@@ -42,6 +44,7 @@ signals:
 
 private:
     QList<Song> model;
+    QList<Song> likedSongModel;
     int count = 0;
     Q_PROPERTY(int count READ getCount WRITE setCount NOTIFY countChanged FINAL)
 };

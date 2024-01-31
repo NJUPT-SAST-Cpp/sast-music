@@ -1,5 +1,8 @@
 #include "SongViewModel.h"
+#include "Model/Song.h"
+#include "Service/NeteaseCloudMusic/Response/SongInfoEntity.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
+
 using namespace NeteaseCloudMusic;
 
 SongViewModel::SongViewModel(QObject* parent) : QAbstractListModel(parent) {}
@@ -47,6 +50,31 @@ QHash<int, QByteArray> SongViewModel::roleNames() const {
     return roles;
 }
 
+void SongViewModel::loadLikedSongs(PlaylistId playListId) {
+    CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
+        if (result.isErr()) {
+            emit loadSongsFailed(result.unwrapErr().message);
+            return;
+        }
+        auto songs = result.unwrap().tracks;
+        for (const auto& song : songs) {
+            likedSongModel.emplace_back(song);
+        }
+        emit beginResetModel();
+        auto size = std::min(songs.count(), (qsizetype)12);
+        model = likedSongModel.sliced(0, size);
+        emit endResetModel();
+        setCount(songs.count());
+        emit loadSongsSuccess();
+    });
+}
+
+void SongViewModel::loadAllLikedSongs() {
+    emit beginResetModel();
+    model = std::move(likedSongModel);
+    emit endResetModel();
+}
+
 void SongViewModel::loadSongs(PlaylistId playListId) {
     CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
         if (result.isErr()) {
@@ -55,8 +83,8 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         }
         auto songs = result.unwrap().tracks;
         emit beginResetModel();
-        for (int i = 0; i < 12; ++i) {
-            model.emplace_back(songs[i]);
+        for (const auto& song : songs) {
+            model.emplace_back(song);
         }
         emit endResetModel();
         setCount(songs.count());

@@ -8,7 +8,7 @@ using namespace NeteaseCloudMusic;
 
 UserProfileViewModel::UserProfileViewModel(QObject* parent) : QObject(parent) {
     isLogin = !(SettingsUtils::getInstance()->value("Cookies").isNull() &&
-                SettingsUtils::getInstance()->value("Cookies").toString().isEmpty());
+                SettingsUtils::getInstance()->value("Cookies").toByteArray().isEmpty());
 }
 
 UserProfileViewModel* UserProfileViewModel::create(QQmlEngine*, QJSEngine*) {

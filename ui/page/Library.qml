@@ -12,6 +12,8 @@ ScrollablePage {
     id: library_page
 
     Component.onCompleted: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
         PlayListViewModel.loadPlayList(UserProfileViewModel.userId)
     }
 
@@ -22,14 +24,37 @@ ScrollablePage {
     Connections {
         target: PlayListViewModel
         function onLoadPlayListSuccess() {
-            song_view_model.loadSongs(PlayListViewModel.likedPlayListId)
+            song_view_model.loadLikedSongs(PlayListViewModel.likedPlayListId)
         }
     }
 
     Connections {
         target: song_view_model
         function onLoadSongsFailed(message) {
-            showError(message)
+            showError(message, 4000)
+            statusMode = FluStatusViewType.Error
+        }
+    }
+
+    Connections {
+        target: PlayListViewModel
+        function onLoadPlayListFailed(message) {
+            showError(message, 4000)
+            statusMode = FluStatusViewType.Error
+        }
+    }
+
+    onErrorClicked: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
+        PlayListViewModel.loadPlayList(UserProfileViewModel.userId)
+    }
+
+    Connections {
+        target: song_view_model
+        function onLoadSongsSuccess() {
+            endLoading()
+            statusMode = FluStatusViewType.Success
         }
     }
 
