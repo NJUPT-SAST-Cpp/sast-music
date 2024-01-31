@@ -1,12 +1,20 @@
 #include "SongViewModel.h"
-#include "Model/Song.h"
-#include "Service/NeteaseCloudMusic/Response/SongInfoEntity.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
-#include <qdatetime.h>
-
+#include <Utility/Tools.h>
 using namespace NeteaseCloudMusic;
 
 SongViewModel::SongViewModel(QObject* parent) : QAbstractListModel(parent) {}
+
+SongViewModel* SongViewModel::getInstance() {
+    static SongViewModel instance;
+    return &instance;
+}
+
+SongViewModel* SongViewModel::create(QQmlEngine*, QJSEngine*) {
+    auto instance = getInstance();
+    QJSEngine::setObjectOwnership(instance, QQmlEngine::CppOwnership);
+    return instance;
+}
 
 int SongViewModel::rowCount(const QModelIndex& parent) const {
     // For list models only the root node (an invalid parent) should return the list's size. For all
@@ -34,12 +42,8 @@ QVariant SongViewModel::data(const QModelIndex& index, int role) const {
         return element.album;
     case Role::ImgUrl:
         return element.imgUrl;
-    case Role::Duration: {
-        int seconds = element.duration / 1000;
-        int minutes = seconds / 60;
-        seconds %= 60;
-        return QString("%1:%2").arg(minutes).arg(seconds, 2, 10, QChar('0'));
-    }
+    case Role::Duration:
+        return Tools::milsec2Time(element.duration);
     }
     return QVariant();
 }
@@ -58,31 +62,6 @@ QHash<int, QByteArray> SongViewModel::roleNames() const {
     return roles;
 }
 
-void SongViewModel::loadLikedSongs(PlaylistId playListId) {
-    CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
-        if (result.isErr()) {
-            emit loadSongsFailed(result.unwrapErr().message);
-            return;
-        }
-        auto songs = result.unwrap().tracks;
-        for (const auto& song : songs) {
-            likedSongModel.emplace_back(song);
-        }
-        emit beginResetModel();
-        auto size = std::min(songs.count(), (qsizetype)12);
-        model = likedSongModel.sliced(0, size);
-        emit endResetModel();
-        setCount(songs.count());
-        emit loadSongsSuccess();
-    });
-}
-
-void SongViewModel::loadAllLikedSongs() {
-    emit beginResetModel();
-    model = std::move(likedSongModel);
-    emit endResetModel();
-}
-
 void SongViewModel::loadSongs(PlaylistId playListId) {
     CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
         if (result.isErr()) {
@@ -91,6 +70,7 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         }
         auto songs = result.unwrap().tracks;
         emit beginResetModel();
+        model.clear();
         for (const auto& song : songs) {
             model.emplace_back(song);
         }
@@ -98,6 +78,12 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         setCount(songs.count());
         emit loadSongsSuccess();
     });
+}
+
+void SongViewModel::resetModel(const QList<Song>& model) {
+    emit beginResetModel();
+    this->model = model;
+    emit endResetModel();
 }
 
 int SongViewModel::getCount() const {
@@ -109,4 +95,70 @@ void SongViewModel::setCount(int newCount) {
         return;
     count = newCount;
     emit countChanged();
+}
+
+QString SongViewModel::getName() const {
+    return name;
+}
+
+void SongViewModel::setName(const QString& newName) {
+    if (name == newName)
+        return;
+    name = newName;
+    emit nameChanged();
+}
+
+QString SongViewModel::getCoverImgUrl() const {
+    return coverImgUrl;
+}
+
+void SongViewModel::setCoverImgUrl(const QString& newCoverImgUrl) {
+    if (coverImgUrl == newCoverImgUrl)
+        return;
+    coverImgUrl = newCoverImgUrl;
+    emit coverImgUrlChanged();
+}
+
+QString SongViewModel::getCreatorName() const {
+    return creatorName;
+}
+
+void SongViewModel::setCreatorName(const QString& newCreatorName) {
+    if (creatorName == newCreatorName)
+        return;
+    creatorName = newCreatorName;
+    emit creatorNameChanged();
+}
+
+QString SongViewModel::getDescription() const {
+    return description;
+}
+
+void SongViewModel::setDescription(const QString& newDescription) {
+    if (description == newDescription)
+        return;
+    description = newDescription;
+    emit descriptionChanged();
+}
+
+QString SongViewModel::getUpdateTime() const {
+    return updateTime;
+}
+
+void SongViewModel::setUpdateTime(const QString& newUpdateTime) {
+    if (updateTime == newUpdateTime)
+        return;
+    updateTime = newUpdateTime;
+    emit updateTimeChanged();
+}
+
+PlaylistId SongViewModel::getPlaylistId() const {
+    return playlistId;
+}
+
+void SongViewModel::setPlaylistId(PlaylistId newPlaylistId) {
+    if (playlistId == newPlaylistId)
+        return;
+    playlistId = newPlaylistId;
+    emit playlistIdChanged();
 }

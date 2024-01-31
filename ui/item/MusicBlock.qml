@@ -65,7 +65,7 @@ Item {
 
     Text {
         id: subheading
-        text: "(" + control.songSubtitle + ")"
+        text: control.songSubtitle === "" ? "" : "(" + control.songSubtitle + ")"
         elide: Text.ElideRight
         color: playing ? activeColor : "#7a7a7a"
         maximumLineCount: 1
@@ -106,7 +106,7 @@ Item {
         color: playing ? activeColor : "#000"
         anchors {
             left: parent.left
-            leftMargin: 400
+            leftMargin: 420
             verticalCenter: parent.verticalCenter
         }
     }

@@ -9,11 +9,12 @@ import "../item"
 ScrollablePage {
     id: page
     objectName: "playList"
+
     Row {
         spacing: 56
         PlayListCover {
             id: cover
-            source: "qrc:///res/img/background.png"
+            source: SongViewModel.coverImgUrl
             width: 290
         }
         Item {
@@ -22,7 +23,7 @@ ScrollablePage {
             anchors.bottom: cover.bottom
             Text {
                 id: title
-                text: "Song List Title"
+                text: SongViewModel.name
                 elide: Text.ElideRight
                 wrapMode: Text.WordWrap
                 maximumLineCount: 2
@@ -35,7 +36,7 @@ ScrollablePage {
                 id: playlist_by_username
                 anchors.top: title.bottom
                 anchors.topMargin: 24
-                text: "Playlist by Username"
+                text: "Playlist by " + SongViewModel.creatorName
                 elide: Text.ElideRight
                 maximumLineCount: 1
                 font.family: "MiSans"
@@ -46,7 +47,8 @@ ScrollablePage {
                 id: playlist_update_num
                 anchors.top: playlist_by_username.bottom
                 anchors.topMargin: 2
-                text: "Updated at Dec 11, 2023 · 166 Songs"
+                text: "Updated at " + SongViewModel.updateTime + " · "
+                      + SongViewModel.count + " Songs"
                 elide: Text.ElideRight
                 maximumLineCount: 1
                 font.family: "MiSans"
@@ -58,8 +60,7 @@ ScrollablePage {
             Text {
                 anchors.top: playlist_update_num.bottom
                 anchors.topMargin: 24
-                topPadding: 24
-                text: "description"
+                text: SongViewModel.description
                 wrapMode: Text.WordWrap
                 font.family: "MiSans"
                 font.pixelSize: 14
@@ -81,10 +82,6 @@ ScrollablePage {
         }
     }
 
-    SongViewModel {
-        id: song_view_model
-    }
-
     ListView {
         id: playList
         implicitHeight: contentHeight
@@ -93,14 +90,14 @@ ScrollablePage {
         interactive: false
         Layout.topMargin: 35
         Layout.alignment: Qt.AlignHCenter
-        model: song_view_model
+        model: SongViewModel
 
         delegate: MusicBlock {
             songTitle: model.name
             songSubtitle: model.alias
             imgSource: model.imgUrl
             album: model.album
-            singer: model.artist
+            singer: model.artists
             time: model.duration
             width: page.width - 130
             onPlayClicked: playing => {//TODO
@@ -110,7 +107,31 @@ ScrollablePage {
         }
     }
 
-    function loadSongListInfo(playListId) {
-        song_view_model.loadSongs(playListId)
+    Component.onCompleted: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
+        SongViewModel.loadSongs(SongViewModel.playlistId)
+    }
+
+    Connections {
+        target: SongViewModel
+        function onLoadSongsFailed(message) {
+            showError(message, 4000)
+            statusMode = FluStatusViewType.Error
+        }
+    }
+
+    onErrorClicked: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
+        SongViewModel.loadSongs(SongViewModel.playlistId)
+    }
+
+    Connections {
+        target: SongViewModel
+        function onLoadSongsSuccess() {
+            endLoading()
+            statusMode = FluStatusViewType.Success
+        }
     }
 }

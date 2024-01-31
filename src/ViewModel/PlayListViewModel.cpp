@@ -58,13 +58,17 @@ QVariant PlayListViewModel::data(const QModelIndex& index, int role) const {
     auto element = model[index.row()];
     switch (role) {
     case Role::PlayListId:
-        return (int)element.id;
+        return (quint64)element.id;
     case Role::Name:
         return element.name;
     case Role::CreatorName:
         return element.creatorName;
     case Role::CoverImgUrl:
         return element.coverImgUrl;
+    case Role::Description:
+        return element.description;
+    case Role::UpdateTime:
+        return element.updateTime;
     }
     return QVariant();
 }

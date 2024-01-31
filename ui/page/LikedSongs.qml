@@ -33,14 +33,6 @@ ScrollablePage {
         }
     }
 
-    SongViewModel {
-        id: liked_songs_view_model
-    }
-
-    Component.onCompleted: {
-        liked_songs_view_model.loadAllLikedSongs()
-    }
-
     ListView {
         id: playList
         implicitHeight: contentHeight
@@ -50,7 +42,7 @@ ScrollablePage {
         Layout.topMargin: 10
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter
-        model: liked_songs_view_model
+        model: SongViewModel
 
         delegate: MusicBlock {
             width: playList.width
@@ -58,7 +50,7 @@ ScrollablePage {
             songSubtitle: model.alias
             imgSource: model.imgUrl
             album: model.album
-            singer: model.artist
+            singer: model.artists
             onPlayClicked: playing => {//TODO
                            }
             onLikedChanged: liked => {//TODO

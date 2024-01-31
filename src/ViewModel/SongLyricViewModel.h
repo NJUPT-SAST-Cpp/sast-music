@@ -41,7 +41,7 @@ signals:
 
 private:
     QList<SongLyric> model;
-    bool hasLyric;
+    bool hasLyric = false;
     Q_PROPERTY(bool hasLyric READ getHasLyric WRITE setHasLyric NOTIFY hasLyricChanged FINAL)
 };
 

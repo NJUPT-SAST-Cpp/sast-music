@@ -17,19 +17,15 @@ ScrollablePage {
         PlayListViewModel.loadPlayList(UserProfileViewModel.userId)
     }
 
-    SongViewModel {
-        id: song_view_model
-    }
-
     Connections {
         target: PlayListViewModel
         function onLoadPlayListSuccess() {
-            song_view_model.loadLikedSongs(PlayListViewModel.likedPlayListId)
+            LikedSongViewModel.loadLikedSongs(PlayListViewModel.likedPlayListId)
         }
     }
 
     Connections {
-        target: song_view_model
+        target: LikedSongViewModel
         function onLoadSongsFailed(message) {
             showError(message, 4000)
             statusMode = FluStatusViewType.Error
@@ -51,7 +47,7 @@ ScrollablePage {
     }
 
     Connections {
-        target: song_view_model
+        target: LikedSongViewModel
         function onLoadSongsSuccess() {
             endLoading()
             statusMode = FluStatusViewType.Success
@@ -98,7 +94,7 @@ ScrollablePage {
             }
             Text {
                 id: liked_song_num_text
-                text: song_view_model.count + " Songs"
+                text: LikedSongViewModel.count + " Songs"
                 elide: Text.ElideRight
                 color: "#3057d7"
                 maximumLineCount: 1
@@ -149,6 +145,7 @@ ScrollablePage {
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
+                    LikedSongViewModel.loadAllLikedSongs()
                     pushPage("qrc:///ui/page/LikedSongs.qml")
                 }
             }
@@ -204,7 +201,7 @@ ScrollablePage {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter
                 Repeater {
-                    model: song_view_model
+                    model: LikedSongViewModel
                     Rectangle {
                         property bool playing: false
                         property bool hovered: false
@@ -310,8 +307,13 @@ ScrollablePage {
                     // TODO
                 }
                 onShowSongList: {
-                    pushPage("qrc:///ui/page/SongListInfo.qml")
-                    loadSongListInfo(model.playListId)
+                    SongViewModel.playlistId = model.playListId
+                    SongViewModel.name = model.name
+                    SongViewModel.coverImgUrl = model.coverImgUrl
+                    SongViewModel.creatorName = model.creatorName
+                    SongViewModel.description = model.description
+                    SongViewModel.updateTime = model.updateTime
+                    pushPage("qrc:///ui/page/PlayList.qml")
                 }
             }
             Text {
