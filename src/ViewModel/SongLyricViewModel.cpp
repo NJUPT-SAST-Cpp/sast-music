@@ -24,7 +24,9 @@ QVariant SongLyricViewModel::data(const QModelIndex& index, int role) const {
 }
 
 QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
+    static QHash<int, QByteArray> roles;
     // FIXME: Implement me!
+    return roles;
 }
 
 void SongLyricViewModel::loadSongLyric(SongId songId) {
