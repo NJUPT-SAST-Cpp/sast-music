@@ -310,9 +310,8 @@ ScrollablePage {
                     // TODO
                 }
                 onShowSongList: {
-                    MainWindow.window.pushPage(
-                                "qrc:///ui/page/SongListInfo.qml")
-                    // FIXME
+                    pushPage("qrc:///ui/page/SongListInfo.qml")
+                    loadSongListInfo(model.playListId)
                 }
             }
             Text {

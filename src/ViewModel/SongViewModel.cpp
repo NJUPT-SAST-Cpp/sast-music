@@ -2,6 +2,7 @@
 #include "Model/Song.h"
 #include "Service/NeteaseCloudMusic/Response/SongInfoEntity.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
+#include <qdatetime.h>
 
 using namespace NeteaseCloudMusic;
 
@@ -33,6 +34,12 @@ QVariant SongViewModel::data(const QModelIndex& index, int role) const {
         return element.album;
     case Role::ImgUrl:
         return element.imgUrl;
+    case Role::Duration: {
+        int seconds = element.duration / 1000;
+        int minutes = seconds / 60;
+        seconds %= 60;
+        return QString("%1:%2").arg(minutes).arg(seconds, 2, 10, QChar('0'));
+    }
     }
     return QVariant();
 }
@@ -46,6 +53,7 @@ QHash<int, QByteArray> SongViewModel::roleNames() const {
         roles[Role::Artists] = "artists";
         roles[Role::Album] = "album";
         roles[Role::ImgUrl] = "imgUrl";
+        roles[Role::Duration] = "duration";
     }
     return roles;
 }

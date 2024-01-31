@@ -2,55 +2,115 @@ import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import FluentUI
+import sast_music
 import "../component"
 import "../item"
 
 ScrollablePage {
+    id: page
     objectName: "playList"
+    Row {
+        spacing: 56
+        PlayListCover {
+            id: cover
+            source: "qrc:///res/img/background.png"
+            width: 290
+        }
+        Item {
+            width: page.width - 290 - 56
+            anchors.top: cover.top
+            anchors.bottom: cover.bottom
+            Text {
+                id: title
+                text: "Song List Title"
+                elide: Text.ElideRight
+                wrapMode: Text.WordWrap
+                maximumLineCount: 2
+                font.family: "MiSans"
+                font.bold: true
+                font.pixelSize: 36
+                width: parent.width
+            }
+            Text {
+                id: playlist_by_username
+                anchors.top: title.bottom
+                anchors.topMargin: 24
+                text: "Playlist by Username"
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                font.family: "MiSans"
+                font.pixelSize: 18
+                width: page.width - 56 - 290
+            }
+            Text {
+                id: playlist_update_num
+                anchors.top: playlist_by_username.bottom
+                anchors.topMargin: 2
+                text: "Updated at Dec 11, 2023 · 166 Songs"
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                font.family: "MiSans"
+                font.pixelSize: 14
+                font.weight: 200
+                width: page.width - 56 - 290
+            }
 
-    Text {
-        id: text_nowPlay
-        text: "Now Playing"
-        font.family: "MiSans"
-        font.pixelSize: 30
-        font.bold: true
+            Text {
+                anchors.top: playlist_update_num.bottom
+                anchors.topMargin: 24
+                topPadding: 24
+                text: "description"
+                wrapMode: Text.WordWrap
+                font.family: "MiSans"
+                font.pixelSize: 14
+                font.weight: 200
+                width: page.width - 56 - 290 - 130
+            }
+            IconButton {
+                anchors.bottom: parent.bottom
+                width: 98
+                height: 40
+                display: Button.TextBesideIcon
+                iconUrl: "qrc:///res/img/play.svg"
+                iconColor: "#335eea"
+                normalColor: "#eaeffd"
+                hoverColor: normalColor
+                textColor: "#335eea"
+                text: "PLAY"
+            }
+        }
     }
 
-    MusicBlock {
-        Layout.topMargin: 10
-        Layout.fillWidth: true
-        playing: true
-        onLikedClicked: liked => {//TODO
-                        }
-    }
-
-    Text {
-        id: text_nextUP
-        text: "Next UP"
-        font.family: "MiSans"
-        font.pixelSize: 30
-        font.bold: true
-        Layout.topMargin: 10
-        Layout.alignment: Qt.AlignTop
+    SongViewModel {
+        id: song_view_model
     }
 
     ListView {
         id: playList
         implicitHeight: contentHeight
         height: implicitHeight
-        interactive: false
-        spacing: 10
-        Layout.topMargin: 10
         Layout.fillWidth: true
+        interactive: false
+        Layout.topMargin: 35
         Layout.alignment: Qt.AlignHCenter
-        model: 20
+        model: song_view_model
 
         delegate: MusicBlock {
-            width: playList.width
+            songTitle: model.name
+            songSubtitle: model.alias
+            imgSource: model.imgUrl
+            album: model.album
+            singer: model.artist
+            time: model.duration
+            width: page.width - 130
             onPlayClicked: playing => {//TODO
                            }
             onLikedChanged: liked => {//TODO
                             }
         }
+    }
+
+    function loadSongListInfo(playListId) {
+        song_view_model.loadSongs(playListId)
     }
 }

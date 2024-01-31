@@ -250,10 +250,10 @@ ApplicationWindow {
             return "login"
         if (url === "qrc:///ui/page/SearchResult.qml")
             return "searchResult"
+        if (url === "qrc:///ui/page/NextUp.qml")
+            return "nextUp"
         if (url === "qrc:///ui/page/PlayList.qml")
             return "playList"
-        if (url === "qrc:///ui/page/SongListInfo.qml")
-            return "songListInfo"
         if (url === "qrc:///ui/page/PrivateRadar.qml")
             return "privateRadar"
         if (url === "qrc:///ui/page/LikedSongs.qml")

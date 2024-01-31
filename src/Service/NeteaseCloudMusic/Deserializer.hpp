@@ -24,6 +24,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <Utility/Result.hpp>
+#include <qtypes.h>
 namespace NeteaseCloudMusic {
 
 template <typename T>
@@ -464,6 +465,9 @@ struct Deserializer<SongInfoEntity> {
         if (!obj.contains("al") || !obj["al"].isObject()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: al is not object"};
         }
+        if (!obj.contains("dt") || !obj["dt"].isDouble()) {
+            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: dt is not number"};
+        }
         auto aliases = Deserializer<QStringList>::from(obj["alia"]);
         if (aliases.isErr()) {
             return std::move(aliases).unwrapErr();
@@ -482,6 +486,7 @@ struct Deserializer<SongInfoEntity> {
             std::move(aliases).unwrap(),
             std::move(artists).unwrap(),
             std::move(album).unwrap(),
+            (quint64)obj["dt"].toInteger(),
         };
     }
 };

@@ -20,6 +20,7 @@ public:
         Artists,
         Album,
         ImgUrl,
+        Duration,
     };
 
     // Basic functionality:

@@ -11,5 +11,6 @@ struct SongInfoEntity {
     QStringList aliases;
     QList<ArtistInfoEntity> artists;
     AlbumInfoEntity album;
+    quint64 duration;
 };
 }; // namespace NeteaseCloudMusic
