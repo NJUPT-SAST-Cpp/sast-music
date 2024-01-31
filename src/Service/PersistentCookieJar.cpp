@@ -22,8 +22,9 @@ void PersistentCookieJar::save() {
     QMutexLocker lock(&mutex);
     QList<QNetworkCookie> list = allCookies();
     QByteArray data;
+
     foreach (QNetworkCookie cookie, list) {
-        if (!cookie.isSessionCookie()) {
+        if (cookie.name() == "MUSIC_U" || cookie.name() == "NMTID" || !cookie.isSessionCookie()) {
             data.append(cookie.toRawForm());
             data.append("\n");
         }
