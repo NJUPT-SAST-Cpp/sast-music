@@ -35,6 +35,8 @@ public:
 
     Q_INVOKABLE void loadLikedSongs(PlaylistId playlistId);
     Q_INVOKABLE void loadAllLikedSongs();
+    Q_INVOKABLE void playSongByIndex(int index);
+    Q_INVOKABLE void playAllSongs();
 
     int getCount() const;
     void setCount(int newCount);
@@ -46,8 +48,8 @@ signals:
     void countChanged();
 
 private:
-    ;
     QList<Song> model;
+    QList<Song> allLikedSongs;
 
     int count = 0;
     Q_PROPERTY(int count READ getCount WRITE setCount NOTIFY countChanged FINAL)

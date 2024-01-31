@@ -1,4 +1,6 @@
 #include "SongViewModel.h"
+#include "Model/Song.h"
+#include "NextUpViewModel.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Utility/Tools.h>
 using namespace NeteaseCloudMusic;
@@ -69,21 +71,35 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
             return;
         }
         auto songs = result.unwrap().tracks;
-        emit beginResetModel();
+        beginResetModel();
         model.clear();
         for (const auto& song : songs) {
             model.emplace_back(song);
         }
-        emit endResetModel();
+        endResetModel();
         setCount(songs.count());
         emit loadSongsSuccess();
     });
 }
 
+void SongViewModel::playSongByIndex(int index) {
+    auto song = model[index];
+    NextUpViewModel::getInstance()->appendModel(song);
+}
+
+void SongViewModel::playAllSongs() {
+    // TODO
+}
+
+void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
+    loadSongs(playListId);
+    emit prepareForPlaying();
+}
+
 void SongViewModel::resetModel(const QList<Song>& model) {
-    emit beginResetModel();
-    this->model = model;
-    emit endResetModel();
+    beginResetModel();
+    this->model = std::move(model);
+    endResetModel();
 }
 
 int SongViewModel::getCount() const {

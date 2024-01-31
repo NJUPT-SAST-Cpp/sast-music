@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import Qt.labs.platform
+import sast_music
 
 SystemTrayIcon {
     id: control
@@ -19,34 +20,23 @@ SystemTrayIcon {
         MenuSeparator {}
         MenuItem {
             icon.source: "qrc:///res/img/play.svg"
-            text: "播放"
+            text: PlayingSongViewModel.playing ? "暂停" : "播放"
             onTriggered: {
-
-                // TODO
+                PlayingSongViewModel.playing ? PlayingSongViewModel.pause() : PlayingSongViewModel.play()
             }
         }
         MenuItem {
             icon.source: "qrc:///res/img/previous.svg"
             text: "上一首"
             onTriggered: {
-
-                // TODO
+                PlayingSongViewModel.previous()
             }
         }
         MenuItem {
             icon.source: "qrc:///res/img/next.svg"
             text: "下一首"
             onTriggered: {
-
-                // TODO
-            }
-        }
-        MenuItem {
-            icon.source: "qrc:///res/img/repeat.svg"
-            text: "循环播放"
-            onTriggered: {
-
-                // TODO
+                PlayingSongViewModel.next()
             }
         }
         MenuItem {

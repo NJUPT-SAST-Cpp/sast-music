@@ -25,6 +25,11 @@ void OutputDeviceViewModel::loadAudioOutputDevices() {
     emit dataChanged(index(0), index(devices.count()));
 }
 
+QAudioDevice OutputDeviceViewModel::device() {
+    auto device = devices[currentIndex];
+    return device;
+}
+
 OutputDeviceViewModel* OutputDeviceViewModel::getInstance() {
     static OutputDeviceViewModel instance;
     return &instance;

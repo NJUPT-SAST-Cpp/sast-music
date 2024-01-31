@@ -68,6 +68,7 @@ ApplicationWindow {
     PlayerBar {
         id: playerBar
         stackView: stackView
+        topPageUrl: topPageUrl
         animationup: animationup
         volumeValue: window.volumeValue
         rec_lyrics: rec_lyrics
@@ -86,9 +87,13 @@ ApplicationWindow {
         handleVisible: item_mouse_progress.containsMouse
         normalColor: "#e6e6e6"
         tooltipEnabled: true
-        tipText: "1:32"
+        to: PlayingSongViewModel.duration
         anchors {
             bottom: playerBar.top
+        }
+        value: PlayingSongViewModel.timeStamp
+        onValueChanged: {
+            PlayingSongViewModel.timeStamp = value
         }
     }
 

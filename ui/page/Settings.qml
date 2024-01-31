@@ -199,6 +199,7 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_automatically_cache_songs
+            disabled: true
             onClicked: {
                 setSettingsValue("cacheOption", checked)
             }
@@ -239,7 +240,7 @@ ScrollablePage {
         spacing: 720 - text_cache_num.implicitWidth - btn_clear_cache.width
         Text {
             id: text_cache_num
-            text: "Cached 263 songs (6.76 GiB)"
+            text: "Cached 0 songs (0 GiB)"
             font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
@@ -283,6 +284,7 @@ ScrollablePage {
         ToggleSwitch {
             id: btn_show_translation
             checked: getSettingsValue("showTranslationOption", false) == "true"
+            disabled: true
             onClicked: {
                 setSettingsValue("showTranslationOption", checked)
             }

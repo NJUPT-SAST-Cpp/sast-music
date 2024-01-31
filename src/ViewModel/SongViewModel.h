@@ -2,9 +2,11 @@
 #define SONGVIEWMODEL_H
 
 #include "Model/Song.h"
+#include "Service/NeteaseCloudMusic/Response/BasicDef.h"
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
+#include <qtmetamacros.h>
 
 class SongViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -33,6 +35,9 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void loadSongs(PlaylistId playListId);
+    Q_INVOKABLE void playSongByIndex(int index);
+    Q_INVOKABLE void playAllSongs();
+    Q_INVOKABLE void loadAndPlayAllSongs(PlaylistId playListId);
 
     void resetModel(const QList<Song>& model);
 
@@ -60,6 +65,8 @@ public:
 signals:
     void loadSongsSuccess();
     void loadSongsFailed(QString message);
+
+    void prepareForPlaying();
 
     void countChanged();
     void nameChanged();
