@@ -66,7 +66,6 @@ Use your IDE (QtCreator or CLion) to open. Only `CMake` support.
     
     下载安装缺少的组件，例如 `Qt6::MultiMedia`
 
-## Tasks
+## Tasks & API Docs
 
-> [!NOTE]
-> 待定
+[wiki](https://github.com/NJUPT-SAST-Cpp/sast-music/wiki/API-Docs)
