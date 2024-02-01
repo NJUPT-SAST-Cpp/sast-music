@@ -9,7 +9,7 @@ ScrollablePage {
 
     FluText {
         text: "Explore"
-        font.family: "Barlow-Bold"
+        font.family: "MiSans"
         font.weight: 700
         font.pixelSize: 56
     }

@@ -12,7 +12,6 @@ class VolumeViewModel : public QObject {
 
 public:
     static VolumeViewModel* getInstance();
-
     static VolumeViewModel* create(QQmlEngine*, QJSEngine*);
 
     int volume() const;

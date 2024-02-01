@@ -57,7 +57,7 @@ T.Slider {
         parent: control.handle
         visible: control.tooltipEnabled && (control.pressed || control.hovered)
         text: tipText
-        font.family: "Barlow-Medium"
+        font.family: "MiSans"
         font.pixelSize: 12
         font.weight: 500
     }

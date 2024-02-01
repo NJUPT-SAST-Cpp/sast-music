@@ -81,7 +81,7 @@ T.MenuItem {
                 id: content_text
                 text: control.text
                 color: control.textColor
-                font.family: "Barlow-Bold"
+                font.family: "MiSans"
                 font.bold: true
                 anchors.verticalCenter: parent.verticalCenter
             }

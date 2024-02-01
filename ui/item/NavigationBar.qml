@@ -77,7 +77,9 @@ BlurRectangle {
             id: btn_library
             text: "LIBRARY"
             textColor: topPageUrl === libraryPageUrl ? activeColor : "#000"
-            onClicked: stackView.pushPage(libraryPageUrl)
+            onClicked: UserProfileViewModel.isLogin ? stackView.pushPage(
+                                                          libraryPageUrl) : stackView.pushPage(
+                                                          "qrc:///ui/page/Login.qml")
         }
     }
 
@@ -103,8 +105,9 @@ BlurRectangle {
         radius: [15, 15, 15, 15]
         Image {
             anchors.fill: parent
-            source: "qrc:///res/img/avatar.svg"
+            source: UserProfileViewModel.avatarUrl
             fillMode: Image.PreserveAspectFit
+            cache: true
         }
 
         Rectangle {
@@ -131,7 +134,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/settings.svg"
             text: "Settings"
-            font.family: "Barlow-Bold"
+            font.family: "MiSans"
             font.bold: true
             onClicked: {
                 stackView.pushPage("qrc:///ui/page/Settings.qml")
@@ -139,16 +142,16 @@ BlurRectangle {
         }
         RadiusMenuItem {
             iconSize: 20
-            iconUrl: UserViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
-            text: UserViewModel.isLogin ? "Logout" : "Login"
-            font.family: "Barlow-Bold"
+            iconUrl: UserProfileViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
+            text: UserProfileViewModel.isLogin ? "Logout" : "Login"
+            font.family: "MiSans"
             font.bold: true
             onClicked: {
-                if (!UserViewModel.isLogin) {
+                if (!UserProfileViewModel.isLogin) {
                     stackView.pushPage("qrc:///ui/page/Login.qml")
                     return
                 }
-                // TODO: popup dialog
+                logout_dialog.open()
             }
         }
         MenuSeparator {}
@@ -156,7 +159,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/github.svg"
             text: "GitHub Repo"
-            font.family: "Barlow-Bold"
+            font.family: "MiSans"
             font.bold: true
             onClicked: {
                 Qt.openUrlExternally(
@@ -164,4 +167,31 @@ BlurRectangle {
             }
         }
     }
+
+    FluContentDialog {
+        id: logout_dialog
+        title: "Confirm logout?"
+        positiveText: "Ok"
+        negativeText: "Cancel"
+        onPositiveClicked: {
+            LoginViewModel.logout()
+        }
+    }
+
+    Connections {
+        target: LoginViewModel
+        function onLogoutSuccess() {
+            UserProfileViewModel.isLogin = false
+            UserProfileViewModel.loadUserProfile()
+            showSuccess("Logout success")
+        }
+    }
+
+    Connections {
+        target: LoginViewModel
+        function onLogoutFailed(message) {
+            showError(message)
+        }
+    }
+
 }

@@ -1,9 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtCore
 import FluentUI
 import sast_music
 import "../component"
+import "../"
 
 ScrollablePage {
     objectName: "settings"
@@ -28,7 +30,7 @@ ScrollablePage {
             width: 64
             height: 64
             Image {
-                source: "qrc:///res/img/avatar.svg"
+                source: UserProfileViewModel.avatarUrl
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
                 cache: true
@@ -42,13 +44,13 @@ ScrollablePage {
             }
             spacing: 2
             Text {
-                text: "Username"
-                font.family: "Barlow"
+                text: UserProfileViewModel.nickname
+                font.family: "MiSans"
                 font.weight: 600
                 font.pixelSize: 20
             }
             Loader {
-                sourceComponent: com_vip_logo // TODO
+                sourceComponent: null // FIXME
             }
 
             Component {
@@ -69,7 +71,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶SVIP"
-                        font.family: "Barlow"
+                        font.family: "MiSans"
                         font.pixelSize: 13
                     }
                 }
@@ -93,7 +95,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶VIP"
-                        font.family: "Barlow"
+                        font.family: "MiSans"
                         font.pixelSize: 13
                     }
                 }
@@ -104,7 +106,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Sound"
-        font.family: "Barlow"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -120,7 +122,7 @@ ScrollablePage {
         Text {
             id: text_music_quality
             text: "Music Quality"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -129,6 +131,14 @@ ScrollablePage {
         ComboBox {
             id: comboBox_music_quality
             model: [" Low - 128Kbps ", " Medium - 192Kbps ", " High - 320Kbps ", " Lossless - FLAC ", " Hi - Res "]
+            currentIndex: getSettingsValue("musicQualityIndex", 2)
+            onCurrentIndexChanged: {
+                setSettingsValue("musicQualityIndex", currentIndex)
+            }
+            Component.onCompleted: {
+                if (getSettingsValue("musicQualityIndex", 2) == 2)
+                    setSettingsValue("musicQualityIndex", 2)
+            }
         }
     }
 
@@ -138,7 +148,7 @@ ScrollablePage {
         Text {
             id: text_output_device
             text: "Audio Output device"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -164,7 +174,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Cache"
-        font.family: "Barlow"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -181,7 +191,7 @@ ScrollablePage {
         Text {
             id: text_automatically_cache_songs
             text: "Automatically cache songs"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -189,6 +199,14 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_automatically_cache_songs
+            onClicked: {
+                setSettingsValue("cacheOption", checked)
+            }
+            checked: getSettingsValue("cacheOption", true) == "true"
+            Component.onCompleted: {
+                if (getSettingsValue("cacheOption", true) === true)
+                    setSettingsValue("cacheOption", true)
+            }
         }
     }
     Row {
@@ -197,7 +215,7 @@ ScrollablePage {
         Text {
             id: text_cache_limit
             text: "Songs Cache limit"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -206,7 +224,14 @@ ScrollablePage {
         ComboBox {
             id: comboBox_cache_limit
             model: [" None ", " 500 MiB ", " 1 GiB ", " 2 GiB ", " 4 GiB ", " 8 GiB "]
-            currentIndex: 5
+            currentIndex: getSettingsValue("cacheMemoryIndex", 5)
+            onCurrentIndexChanged: {
+                setSettingsValue("cacheMemoryIndex", currentIndex)
+            }
+            Component.onCompleted: {
+                if (getSettingsValue("cacheMemoryIndex", 5) == 5)
+                    setSettingsValue("cacheMemoryIndex", 5)
+            }
         }
     }
     Row {
@@ -215,7 +240,7 @@ ScrollablePage {
         Text {
             id: text_cache_num
             text: "Cached 263 songs (6.76 GiB)"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -233,7 +258,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Lyrics"
-        font.family: "Barlow"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -249,7 +274,7 @@ ScrollablePage {
         Text {
             id: text_show_translation
             text: "Show lyrics translation"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -257,6 +282,14 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
+            checked: getSettingsValue("showTranslationOption", false) == "true"
+            onClicked: {
+                setSettingsValue("showTranslationOption", checked)
+            }
+            Component.onCompleted: {
+                if (getSettingsValue("showTranslationOption", false) === false)
+                    setSettingsValue("showTranslationOption", false)
+            }
         }
     }
     Row {
@@ -265,7 +298,7 @@ ScrollablePage {
         Text {
             id: text_font_size
             text: "Songs Cache limit"
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -274,14 +307,21 @@ ScrollablePage {
         ComboBox {
             id: comboBox_font_size
             model: [" Small - 16px ", " Medium - 22px ", " Large(Default) - 28px ", " X-Large - 36px "]
-            currentIndex: 2
+            currentIndex: getSettingsValue("fontSizeIndex", 2)
+            onCurrentIndexChanged: {
+                setSettingsValue("fontSizeIndex", currentIndex)
+            }
+            Component.onCompleted: {
+                if (getSettingsValue("fontSizeIndex", 2) == 2)
+                    setSettingsValue("fontSizeIndex", 2)
+            }
         }
     }
 
     Text {
         Layout.topMargin: 48
         text: "Others"
-        font.family: "Barlow"
+        font.family: "MiSans"
         font.weight: 600
         font.pixelSize: 26
     }
@@ -297,7 +337,7 @@ ScrollablePage {
         Text {
             id: text_close_app
             text: "Close App..."
-            font.family: "Barlow"
+            font.family: "MiSans"
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -306,7 +346,14 @@ ScrollablePage {
         ComboBox {
             id: comboBox_close_app
             model: [" Ask ", " Exit ", " Minimize to tray "]
-            currentIndex: 0
+            currentIndex: getSettingsValue("closeAppIndex", 0)
+            onCurrentIndexChanged: {
+                setSettingsValue("closeAppIndex", currentIndex)
+            }
+            Component.onCompleted: {
+                if (getSettingsValue("closeAppIndex", 2) == 0)
+                    setSettingsValue("closeAppIndex", 0)
+            }
         }
     }
 }

@@ -2,328 +2,136 @@ import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import FluentUI
+import sast_music
 import "../component"
+import "../item"
 
 ScrollablePage {
-    id: play_list_root
+    id: page
     objectName: "playList"
 
-    property var currentSelectedItem: null
-
-    Text {
-        id: text_nowPlay
-        text: "Now Playing"
-        font.family: "Barlow-Bold"
-        font.pixelSize: 30
-        font.bold: true
-    }
-
-    Rectangle {
-        id: now_play
-        width: 1300
-        height: 60
-        Layout.topMargin: 10
-        Layout.alignment: Qt.AlignHCenter
-
-        Rectangle {
-            id: now_play_background
-            color: "#3057d7"
-            anchors.fill: parent
-            radius: 10
-            opacity: 0.2
+    Row {
+        spacing: 56
+        PlayListCover {
+            id: cover
+            source: SongViewModel.coverImgUrl
+            width: 290
         }
-
-        FluClip {
-            id: now_play_image_song
-            radius: [3, 3, 3, 3]
-            width: 35
-            height: 35
-            anchors {
-                left: parent.left
-                leftMargin: 20
-                verticalCenter: parent.verticalCenter
+        Item {
+            width: page.width - 290 - 56
+            anchors.top: cover.top
+            anchors.bottom: cover.bottom
+            Text {
+                id: title
+                text: SongViewModel.name
+                elide: Text.ElideRight
+                wrapMode: Text.WordWrap
+                maximumLineCount: 2
+                font.family: "MiSans"
+                font.bold: true
+                font.pixelSize: 36
+                width: parent.width
             }
-            FluImage {
-                anchors.fill: parent
-                source: "qrc:///res/img/netease-music.png"
+            Text {
+                id: playlist_by_username
+                anchors.top: title.bottom
+                anchors.topMargin: 24
+                text: "Playlist by " + SongViewModel.creatorName
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                font.family: "MiSans"
+                font.pixelSize: 18
+                width: page.width - 56 - 290
             }
-            FluShadow {}
-        }
-
-        Text {
-            id: now_play_text_song
-            text: "Song"
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            font.family: "Barlow-Bold"
-            font.bold: true
-            font.pixelSize: 16
-            color: "#3057d7"
-            anchors {
-                left: now_play_image_song.right
-                leftMargin: 10
-                top: parent.top
-                topMargin: 10
+            Text {
+                id: playlist_update_num
+                anchors.top: playlist_by_username.bottom
+                anchors.topMargin: 2
+                text: "Updated at " + SongViewModel.updateTime + " · "
+                      + SongViewModel.count + " Songs"
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                font.family: "MiSans"
+                font.pixelSize: 14
+                font.weight: 200
+                width: page.width - 56 - 290
             }
-        }
 
-        Text {
-            id: now_play_subheading
-            text: "(subheading)"
-            elide: Text.ElideRight
-            color: "#3057d7"
-            maximumLineCount: 1
-            font.family: "Barlow-Bold"
-            font.bold: true
-            font.pixelSize: 16
-            anchors {
-                left: now_play_text_song.right
-                leftMargin: 2
-                top: parent.top
-                topMargin: 10
+            Text {
+                anchors.top: playlist_update_num.bottom
+                anchors.topMargin: 24
+                text: SongViewModel.description
+                wrapMode: Text.WordWrap
+                font.family: "MiSans"
+                font.pixelSize: 14
+                font.weight: 200
+                width: page.width - 56 - 290 - 130
+            }
+            IconButton {
+                anchors.bottom: parent.bottom
+                width: 98
+                height: 40
+                display: Button.TextBesideIcon
+                iconUrl: "qrc:///res/img/play.svg"
+                iconColor: "#335eea"
+                normalColor: "#eaeffd"
+                hoverColor: normalColor
+                textColor: "#335eea"
+                text: "PLAY"
             }
         }
-
-        Text {
-            id: now_play_text_singer
-            text: "singer"
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            font.family: "Barlow-Bold"
-            font.pixelSize: 12
-            color: "#3057d7"
-            anchors {
-                left: now_play_image_song.right
-                leftMargin: 10
-                top: parent.top
-                topMargin: 35
-            }
-        }
-
-        Text {
-            id: now_play_album
-            text: "album"
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            font.family: "Barlow-Bold"
-            font.pixelSize: 16
-            color: "#3057d7"
-            anchors {
-                left: parent.left
-                leftMargin: 400
-                verticalCenter: parent.verticalCenter
-            }
-        }
-
-        Text {
-            id: now_play_text_time
-            text: "4:12"
-            color: "#3057d7"
-            anchors {
-                right: parent.right
-                rightMargin: 20
-                verticalCenter: parent.verticalCenter
-            }
-        }
-        MouseArea {
-            id: now_play_mouseArea
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: {
-                // TODO
-            }
-        }
-
-        IconButton {
-            id: now_play_btn_like
-            property bool liked: false
-            width: 40
-            height: 40
-            iconWidth: 15
-            iconHeight: 15
-            iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
-            iconColor: "#3057d7"
-            anchors {
-                right: now_play_text_time.left
-                rightMargin: 20
-                verticalCenter: parent.verticalCenter
-            }
-            onClicked: {
-                liked = !liked
-            }
-        }
-    }
-
-    Text {
-        id: text_nextUP
-        text: "Next UP"
-        font.family: "Barlow-Bold"
-        font.pixelSize: 30
-        font.bold: true
-        Layout.topMargin: 10
-        Layout.alignment: Qt.AlignTop
     }
 
     ListView {
         id: playList
         implicitHeight: contentHeight
         height: implicitHeight
-        interactive: false
-        spacing: 10
-        Layout.topMargin: 10
         Layout.fillWidth: true
+        interactive: false
+        Layout.topMargin: 35
         Layout.alignment: Qt.AlignHCenter
-        model: 20
+        model: SongViewModel
 
-        delegate: Item {
-            width: playList.width
-            height: 60
+        delegate: MusicBlock {
+            songTitle: model.name
+            songSubtitle: model.alias
+            imgSource: model.imgUrl
+            album: model.album
+            singer: model.artists
+            time: model.duration
+            width: page.width - 130
+            onPlayClicked: playing => {//TODO
+                           }
+            onLikedChanged: liked => {//TODO
+                            }
+        }
+    }
 
-            Rectangle {
-                id: background
-                color: (play_list_root.currentSelectedItem === index || mouseArea.containsMouse) ? "gray" : "white"
-                anchors.fill: parent
-                radius: 10
-                opacity: (play_list_root.currentSelectedItem === index || mouseArea.containsMouse) ? 0.2 : 0
-            }
+    Component.onCompleted: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
+        SongViewModel.loadSongs(SongViewModel.playlistId)
+    }
 
-            FluClip {
-                id: image_song
-                radius: [3, 3, 3, 3]
-                width: 35
-                height: 35
-                anchors {
-                    left: parent.left
-                    leftMargin: 20
-                    verticalCenter: parent.verticalCenter
-                }
-                FluImage {
-                    anchors.fill: parent
-                    source: "qrc:///res/img/netease-music.png"
-                }
-                FluShadow {}
-            }
+    Connections {
+        target: SongViewModel
+        function onLoadSongsFailed(message) {
+            showError(message, 4000)
+            statusMode = FluStatusViewType.Error
+        }
+    }
 
-            Text {
-                id: text_song
-                text: "Song"
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                font.family: "Barlow-Bold"
-                font.bold: true
-                font.pixelSize: 16
-                color: "black"
-                anchors {
-                    left: image_song.right
-                    leftMargin: 10
-                    top: parent.top
-                    topMargin: 10
-                }
-            }
+    onErrorClicked: {
+        statusMode = FluStatusViewType.Loading
+        startLoading()
+        SongViewModel.loadSongs(SongViewModel.playlistId)
+    }
 
-            Text {
-                id: subheading
-                text: "(subheading)"
-                elide: Text.ElideRight
-                color: (play_list_root.currentSelectedItem === index) ? "#73706c" : "#9b9ba0"
-                maximumLineCount: 1
-                font.family: "Barlow-Bold"
-                font.bold: true
-                font.pixelSize: 16
-                anchors {
-                    left: text_song.right
-                    leftMargin: 2
-                    top: parent.top
-                    topMargin: 10
-                }
-            }
-
-            Text {
-                id: text_singer
-                text: "singer"
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                font.family: "Barlow-Bold"
-                font.pixelSize: 12
-                color: (play_list_root.currentSelectedItem === index) ? "#73706c" : "#9b9ba0"
-                anchors {
-                    left: image_song.right
-                    leftMargin: 10
-                    top: parent.top
-                    topMargin: 35
-                }
-            }
-
-            Text {
-                id: album
-                text: "album"
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                font.family: "Barlow-Bold"
-                font.pixelSize: 16
-                color: "black"
-                anchors {
-                    left: parent.left
-                    leftMargin: 400
-                    verticalCenter: parent.verticalCenter
-                }
-            }
-
-            Text {
-                id: text_time
-                text: "4:12"
-                color: "black"
-                anchors {
-                    right: parent.right
-                    rightMargin: 20
-                    verticalCenter: parent.verticalCenter
-                }
-            }
-            MouseArea {
-                id: mouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked: {
-                    play_list_root.currentSelectedItem = index;
-                }
-            }
-
-            IconButton {
-                id: btn_like
-                property bool liked: false
-                width: 40
-                height: 40
-                iconWidth: 15
-                iconHeight: 15
-                iconUrl: liked ? "qrc:///res/img/heart.svg" : "qrc:///res/img/heart-solid.svg"
-                anchors {
-                    right: text_time.left
-                    rightMargin: 20
-                    verticalCenter: parent.verticalCenter
-                }
-                onClicked: {
-                    liked = !liked
-                }
-            }
-
-            IconButton {
-                id: btn_play
-                property bool playing: true
-                anchors {
-                    right: btn_like.left
-                    rightMargin: 10
-                    verticalCenter: parent.verticalCenter
-                }
-                width: 40
-                height: 40
-                radius: 10
-                iconWidth: 10
-                iconHeight: 15
-                iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
-                onClicked: {
-                    playing = !playing
-                }
-            }
+    Connections {
+        target: SongViewModel
+        function onLoadSongsSuccess() {
+            endLoading()
+            statusMode = FluStatusViewType.Success
         }
     }
 }

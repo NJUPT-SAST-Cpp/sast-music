@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts
+import Qt.labs.platform
+import QtCore
 import FluentUI
 import sast_music
 import "./component"
@@ -30,33 +32,8 @@ ApplicationWindow {
         id: stackView
         anchors.fill: parent
 
-        function isPageInStack(pageName) {
-            for (var i = 0; i < stackView.depth; ++i) {
-                if (stackView.get(i).objectName === pageName) {
-                    return true
-                }
-            }
-            return false
-        }
-
-        // This function pops pages until the target page is on top
-        function popToTargetPage(targetPageName) {
-            while (stackView.depth > 1
-                   && stackView.currentItem.objectName !== targetPageName) {
-                stackView.pop()
-            }
-        }
-
-        // This function pushes a new page or pops to an existing instance of the page
-        function pushOrPopToPage(pageUrl, pageName) {
-            if (isPageInStack(pageName)) {
-                popToTargetPage(pageName)
-            } else {
-                stackView.push(pageUrl, {
-                                   "objectName": pageName
-                               })
-            }
-            topPageUrl = pageUrl
+        Component.onCompleted: {
+            pushPage(homePageUrl)
         }
 
         function pushPage(url) {
@@ -69,7 +46,7 @@ ApplicationWindow {
                 redoStack.push(undoStack[undoStack.length - 1])
                 undoStack.pop()
                 topPageUrl = undoStack[undoStack.length - 1]
-                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+                pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
             }
         }
 
@@ -77,29 +54,8 @@ ApplicationWindow {
             if (redoStack.length >= 1) {
                 topPageUrl = redoStack[redoStack.length - 1]
                 redoStack.pop()
-                stackView.pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
+                pushOrPopToPage(topPageUrl, url2Name(topPageUrl))
             }
-        }
-
-        function url2Name(url) {
-            if (url === homePageUrl)
-                return "home"
-            if (url === explorePageUrl)
-                return "explore"
-            if (url === libraryPageUrl)
-                return "library"
-            if (url === "qrc:///ui/page/Settings.qml")
-                return "settings"
-            if (url === "qrc:///ui/page/Login.qml")
-                return "login"
-            if (url === "qrc:///ui/page/SearchResult.qml")
-                return "searchResult"
-            if (url === "qrc:///ui/page/PlayList.qml")
-                return "playList"
-        }
-
-        Component.onCompleted: {
-            pushPage(homePageUrl)
         }
     }
 
@@ -181,5 +137,144 @@ ApplicationWindow {
         to: 0
         duration: 400
         easing.type: Easing.InOutQuad
+    }
+
+    SystemTray {
+        id: system_tray
+        window: window
+    }
+
+    FluContentDialog {
+        id: dialog_close
+        title: "Confirmed Close?"
+        buttonFlags: FluContentDialogType.NegativeButton | FluContentDialogType.NeutralButton
+                     | FluContentDialogType.PositiveButton
+        positiveText: "exit"
+        negativeText: "minimize to tray"
+        neutralText: "cancel"
+        onPositiveClicked: {
+            if (checkBox.checked)
+                settings.setValue("closeAppIndex", 1)
+            Qt.exit(0)
+        }
+        onNegativeClicked: {
+            if (checkBox.checked)
+                settings.setValue("closeAppIndex", 2)
+            window.hide()
+        }
+        FluCheckBox {
+            id: checkBox
+            anchors {
+                left: parent.left
+                leftMargin: 20
+                verticalCenter: parent.verticalCenter
+            }
+            text: "Remember my choice"
+        }
+    }
+
+    onClosing: event => {
+                   var closeApp = settings.value("closeAppIndex", 0)
+                   if (closeApp == 0) {
+                       settings.setValue("closeAppIndex", 0)
+                       dialog_close.open()
+                   } else if (closeApp == 1) {
+                       Qt.exit(0)
+                   } else if (closeApp == 2) {
+                       window.hide()
+                   }
+                   event.accepted = false
+               }
+
+    FluInfoBar {
+        id: infoBar
+        root: window
+    }
+
+    function showError(text, duration, moremsg) {
+        infoBar.showError(text, duration, moremsg)
+    }
+    function showSuccess(text, duration, moremsg) {
+        infoBar.showSuccess(text, duration, moremsg)
+    }
+    function showInfo(text, duration, moremsg) {
+        infoBar.showInfo(text, duration, moremsg)
+    }
+    function showWarning(text, duration, moremsg) {
+        infoBar.showWarning(text, duration, moremsg)
+    }
+
+    function isPageInStack(pageName) {
+        for (var i = 0; i < stackView.depth; ++i) {
+            if (stackView.get(i).objectName === pageName) {
+                return true
+            }
+        }
+        return false
+    }
+
+    // This function pops pages until the target page is on top
+    function popToTargetPage(targetPageName) {
+        while (stackView.depth > 1
+               && stackView.currentItem.objectName !== targetPageName) {
+            stackView.pop()
+        }
+    }
+
+    // This function pushes a new page or pops to an existing instance of the page
+    function pushOrPopToPage(pageUrl, pageName) {
+        if (isPageInStack(pageName)) {
+            popToTargetPage(pageName)
+        } else {
+            stackView.push(pageUrl, {
+                               "objectName": pageName
+                           })
+        }
+        topPageUrl = pageUrl
+    }
+
+    function pushPage(url) {
+        stackView.pushPage(url)
+    }
+
+    function url2Name(url) {
+        if (url === homePageUrl)
+            return "home"
+        if (url === explorePageUrl)
+            return "explore"
+        if (url === libraryPageUrl)
+            return "library"
+        if (url === "qrc:///ui/page/Settings.qml")
+            return "settings"
+        if (url === "qrc:///ui/page/Login.qml")
+            return "login"
+        if (url === "qrc:///ui/page/SearchResult.qml")
+            return "searchResult"
+        if (url === "qrc:///ui/page/NextUp.qml")
+            return "nextUp"
+        if (url === "qrc:///ui/page/PlayList.qml")
+            return "playList"
+        if (url === "qrc:///ui/page/PrivateRadar.qml")
+            return "privateRadar"
+        if (url === "qrc:///ui/page/LikedSongs.qml")
+            return "likedSongs"
+    }
+
+    function getSettingsValue(item, defaultItem) {
+        return settings.value(item, defaultItem)
+    }
+
+    function setSettingsValue(item, itemValue) {
+        settings.setValue(item, itemValue)
+    }
+
+    Settings {
+        id: settings
+        property int musicQualityIndex
+        property bool showTranslationOption
+        property bool cacheOption
+        property int cacheMemoryIndex
+        property int fontSizeIndex
+        property int closeAppIndex
     }
 }

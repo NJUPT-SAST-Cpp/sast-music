@@ -18,7 +18,7 @@ TextField {
     enabled: !disabled
     placeholderText: "Search"
     font.pixelSize: 16
-    font.family: "Barlow-Medium"
+    font.family: "MiSans"
     font.bold: true
     color: activeFocus ? "#335eea" : "#767676"
     selectionColor: FluTools.colorAlpha(FluTheme.primaryColor, 0.5)
