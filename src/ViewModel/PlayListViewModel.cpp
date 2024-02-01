@@ -22,12 +22,12 @@ void PlayListViewModel::loadPlayList(UserId userId) {
         auto likedPlayList = playLists.front();
         setLikedPlayListId(likedPlayList.id);
         playLists.pop_front();
-        emit beginResetModel();
+        beginResetModel();
         model.clear();
         for (const auto& playList : playLists) {
             model.emplace_back(playList);
         }
-        emit endResetModel();
+        endResetModel();
         emit loadPlayListSuccess();
     });
 }

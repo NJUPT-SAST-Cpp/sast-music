@@ -148,7 +148,6 @@ void NeteaseCloudMusic::CloudMusicClient::getPlaylistDetail(
 
 void NeteaseCloudMusic::CloudMusicClient::getSongsDetail(const QList<SongId>& songIds,
                                                          std::function<void(Result<ManySongInfoEntity>)> callback) {
-
     auto url = QUrl("https://music.163.com/weapi/v3/song/detail");
     QJsonArray c;
     for (auto& songId : songIds) {
@@ -166,7 +165,6 @@ void NeteaseCloudMusic::CloudMusicClient::getSongsDetail(const QList<SongId>& so
 
 void NeteaseCloudMusic::CloudMusicClient::getSongsUrl(const QList<SongId>& songIds, QStringView level,
                                                       std::function<void(Result<ManySongUrlInfoEntity>)> callback) {
-    // auto cookieJar = manager.cookieJar();
     auto url = QUrl("https://interface.music.163.com/eapi/song/enhance/player/url/v1");
     QJsonArray ids;
     for (auto& songId : songIds) {

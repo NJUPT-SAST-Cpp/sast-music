@@ -13,7 +13,7 @@ Rectangle {
     Image {
         id: img_bg
         anchors.fill: parent
-        source: "qrc:///res/img/background.png"
+        source: PlayingSongViewModel.imgUrl
         cache: true
     }
     FluAcrylic {
@@ -25,7 +25,7 @@ Rectangle {
     }
     Loader {
         anchors.fill: parent
-        sourceComponent: SongLyricViewModel.hasLyric ? com_no_lyric_music : com_lyric_music
+        sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
     }
     Component {
         id: com_lyric_music
@@ -33,7 +33,6 @@ Rectangle {
             width: rec_lyrics.width
             height: rec_lyrics.height
             RowLayout {
-                anchors.centerIn: parent
                 spacing: 50
                 Item {
                     width: rec_lyrics.width
@@ -51,7 +50,7 @@ Rectangle {
                         Image {
                             id: img
                             anchors.fill: parent
-                            source: "qrc:///res/img/background.png"
+                            source: PlayingSongViewModel.imgUrl
                             cache: true
                         }
                         FluShadow {
@@ -107,6 +106,9 @@ Rectangle {
                         onValueChanged: {
                             VolumeViewModel.volume = value
                         }
+                        from: 0
+                        to: 100
+                        stepSize: 1
                     }
                     MouseArea {
                         id: item_mouse_slider_volume
@@ -150,7 +152,7 @@ Rectangle {
                     }
                     Text {
                         id: text_song
-                        text: "Song"
+                        text: PlayingSongViewModel.name
                         font.family: "MiSans"
                         font.pixelSize: 22
                         font.weight: 500
@@ -167,7 +169,7 @@ Rectangle {
                     }
                     Text {
                         id: text_singer
-                        text: "Singer"
+                        text: PlayingSongViewModel.artists
                         font.family: "MiSans"
                         font.pixelSize: 14
                         font.weight: 500
@@ -189,7 +191,8 @@ Rectangle {
                             top: text_singer.bottom
                             topMargin: 22
                         }
-                        text: "0:38"
+                        text: slider_progress.milsec2Time(
+                                  PlayingSongViewModel.timeStamp)
                         font.family: "MiSans"
                         font.pixelSize: 14
                         font.weight: 500
@@ -202,7 +205,7 @@ Rectangle {
                             top: text_singer.bottom
                             topMargin: 22
                         }
-                        text: "4:09"
+                        text: PlayingSongViewModel.durationTime
                         font.family: "MiSans"
                         font.pixelSize: 14
                         font.weight: 500
@@ -210,7 +213,6 @@ Rectangle {
                     }
                     MusicSlider {
                         id: slider_progress
-                        value: 20
                         anchors {
                             verticalCenter: text_start_time.verticalCenter
                             left: text_start_time.right
@@ -221,6 +223,11 @@ Rectangle {
                         handleVisible: item_mouse_slider_progress.containsMouse
                         active: true
                         activeColor: "#fff"
+                        to: PlayingSongViewModel.duration
+                        value: PlayingSongViewModel.timeStamp
+                        onValueChanged: {
+                            PlayingSongViewModel.timeStamp = value
+                        }
                     }
                     MouseArea {
                         id: item_mouse_slider_progress
@@ -260,10 +267,13 @@ Rectangle {
                             iconHeight: 22
                             iconColor: "#fff"
                             hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                            onClicked: {
+                                PlayingSongViewModel.previous()
+                            }
                         }
                         IconButton {
                             id: btn_play
-                            property bool playing: true
+                            property bool playing: PlayingSongViewModel.playing
                             width: 48
                             height: 48
                             radius: 10
@@ -271,9 +281,10 @@ Rectangle {
                             iconHeight: 30
                             iconColor: "#fff"
                             hoverColor: Qt.rgba(1, 1, 1, 0.08)
-                            iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
+                            iconUrl: playing ? "qrc:///res/img/pause.svg" : "qrc:///res/img/play.svg"
                             onClicked: {
-                                playing = !playing
+                                playing ? PlayingSongViewModel.pause(
+                                              ) : PlayingSongViewModel.play()
                             }
                             Layout.alignment: Qt.AlignCenter
                         }
@@ -285,6 +296,9 @@ Rectangle {
                             iconHeight: 22
                             iconColor: "#fff"
                             hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                            onClicked: {
+                                PlayingSongViewModel.next()
+                            }
                         }
                         IconButton {
                             iconUrl: "qrc:///res/img/shuffle.svg"
@@ -317,7 +331,7 @@ Rectangle {
                 Image {
                     id: img
                     anchors.fill: parent
-                    source: "qrc:///res/img/background.png"
+                    source: PlayingSongViewModel.imgUrl
                     cache: true
                 }
                 FluShadow {
@@ -416,7 +430,7 @@ Rectangle {
             }
             Text {
                 id: text_song
-                text: "Song"
+                text: PlayingSongViewModel.name
                 font.family: "MiSans"
                 font.pixelSize: 22
                 font.weight: 500
@@ -433,7 +447,7 @@ Rectangle {
             }
             Text {
                 id: text_singer
-                text: "Singer"
+                text: PlayingSongViewModel.artists
                 font.family: "MiSans"
                 font.pixelSize: 14
                 font.weight: 500
@@ -455,7 +469,8 @@ Rectangle {
                     top: text_singer.bottom
                     topMargin: 22
                 }
-                text: "0:38"
+                text: slider_progress.milsec2Time(
+                          PlayingSongViewModel.timeStamp)
                 font.family: "MiSans"
                 font.pixelSize: 14
                 font.weight: 500
@@ -468,7 +483,7 @@ Rectangle {
                     top: text_singer.bottom
                     topMargin: 22
                 }
-                text: "4:09"
+                text: PlayingSongViewModel.durationTime
                 font.family: "MiSans"
                 font.pixelSize: 14
                 font.weight: 500
@@ -476,7 +491,6 @@ Rectangle {
             }
             MusicSlider {
                 id: slider_progress
-                value: 20
                 anchors {
                     verticalCenter: text_start_time.verticalCenter
                     left: text_start_time.right
@@ -487,6 +501,11 @@ Rectangle {
                 handleVisible: item_mouse_slider_progress.containsMouse
                 active: true
                 activeColor: "#fff"
+                to: PlayingSongViewModel.duration
+                value: PlayingSongViewModel.timeStamp
+                onValueChanged: {
+                    PlayingSongViewModel.timeStamp = value
+                }
             }
             MouseArea {
                 id: item_mouse_slider_progress
@@ -526,10 +545,13 @@ Rectangle {
                     iconHeight: 22
                     iconColor: "#fff"
                     hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    onClicked: {
+                        PlayingSongViewModel.previous()
+                    }
                 }
                 IconButton {
                     id: btn_play
-                    property bool playing: true
+                    property bool playing: PlayingSongViewModel.playing
                     width: 48
                     height: 48
                     radius: 10
@@ -537,9 +559,10 @@ Rectangle {
                     iconHeight: 30
                     iconColor: "#fff"
                     hoverColor: Qt.rgba(1, 1, 1, 0.08)
-                    iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
+                    iconUrl: playing ? "qrc:///res/img/pause.svg" : "qrc:///res/img/play.svg"
                     onClicked: {
-                        playing = !playing
+                        playing ? PlayingSongViewModel.pause(
+                                      ) : PlayingSongViewModel.play()
                     }
                     Layout.alignment: Qt.AlignCenter
                 }
@@ -551,6 +574,9 @@ Rectangle {
                     iconHeight: 22
                     iconColor: "#fff"
                     hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    onClicked: {
+                        PlayingSongViewModel.next()
+                    }
                 }
                 IconButton {
                     iconUrl: "qrc:///res/img/shuffle.svg"

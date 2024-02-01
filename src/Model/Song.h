@@ -19,6 +19,9 @@ struct Song {
         }
         artists.removeLast();
     }
+    bool operator==(const Song& other) const {
+        return id == other.id;
+    }
     SongId id;
     QString name;
     QString alias;

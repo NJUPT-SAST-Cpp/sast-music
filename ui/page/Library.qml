@@ -80,7 +80,7 @@ ScrollablePage {
     Row {
         Layout.topMargin: 20
         spacing: 10
-        Rectangle {
+        Item {
             id: liked_song
             width: 410
             height: 260
@@ -176,8 +176,7 @@ ScrollablePage {
                 iconColor: "#fff"
                 anchors.centerIn: liked_song_btn_rectangle
                 onClicked: {
-
-                    // TODO
+                    LikedSongViewModel.playAllSongs()
                 }
                 hoverColor: Qt.rgba(0, 0, 0, 0)
                 onHoveredChanged: {
@@ -188,7 +187,7 @@ ScrollablePage {
                 }
             }
         }
-        Rectangle {
+        Item {
             id: liked_grid_rectangle
             height: 260
             width: library_page.width - liked_song.width - 140
@@ -203,14 +202,14 @@ ScrollablePage {
                 Repeater {
                     model: LikedSongViewModel
                     Rectangle {
-                        property bool playing: false
+                        property bool playing: PlayingSongViewModel.songId === model.songId
                         property bool hovered: false
                         width: (liked_grid_rectangle.width - 20) / 3
                         height: 58
                         Layout.topMargin: 10
                         Layout.alignment: Qt.AlignHCenter
                         radius: 18
-                        color: playing ? "#3057d7" : (hovered ? "#10000000" : "#00000000")
+                        color: playing ? "#eaeffd" : (hovered ? "#10000000" : "#00000000")
                         FluClip {
                             id: liked_grid_image_song
                             radius: [5, 5, 5, 5]
@@ -273,13 +272,27 @@ ScrollablePage {
                                 parent.hovered = false
                             }
                             onDoubleClicked: {
-
-                                // TODO
+                                if (!parent.playing)
+                                    LikedSongViewModel.playSongByIndex(index)
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    Connections {
+        target: SongViewModel
+        function onPrepareForPlaying() {
+            SongViewModel.playAllSongs()
+        }
+    }
+
+    Connections {
+        target: SongViewModel
+        function onLoadSongsFailed(message) {
+            showError(message)
         }
     }
 
@@ -303,8 +316,7 @@ ScrollablePage {
                 width: parent.width
                 source: model.coverImgUrl
                 onClicked: {
-
-                    // TODO
+                    SongViewModel.loadSongs(model.playListId, true)
                 }
                 onShowSongList: {
                     SongViewModel.playlistId = model.playListId

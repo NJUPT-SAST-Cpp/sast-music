@@ -1,6 +1,5 @@
 #pragma once
 #include <QSettings>
-#include <qsettings.h>
 
 class SettingsUtils {
 public:

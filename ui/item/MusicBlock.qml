@@ -18,7 +18,7 @@ Item {
     property string singer: "singer"
     property string album: "album"
     property string time: "4:12"
-    signal playClicked(bool playing)
+    signal playClicked
     signal likedClicked(bool licked)
 
     height: 60
@@ -77,6 +77,8 @@ Item {
             leftMargin: 2
             top: parent.top
             topMargin: 10
+            right: album.left
+            rightMargin: 10
         }
     }
 
@@ -84,6 +86,7 @@ Item {
         id: text_singer
         text: control.singer
         elide: Text.ElideRight
+        width: 520
         maximumLineCount: 1
         font.family: "MiSans"
         font.pixelSize: 12
@@ -98,8 +101,9 @@ Item {
 
     Text {
         id: album
-        text: "album"
+        text: control.album
         elide: Text.ElideRight
+        width: 400
         maximumLineCount: 1
         font.family: "MiSans"
         font.pixelSize: 16
@@ -114,7 +118,7 @@ Item {
     Text {
         id: text_time
         text: control.time
-        color: "black"
+        color: playing ? activeColor : "#000"
         anchors {
             right: parent.right
             rightMargin: 20
@@ -127,8 +131,7 @@ Item {
         hoverEnabled: true
         anchors.fill: parent
         onDoubleClicked: {
-            playing = !playing
-            control.playClicked(playing)
+            control.playClicked()
         }
     }
 
