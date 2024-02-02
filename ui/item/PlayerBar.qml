@@ -159,6 +159,7 @@ BlurRectangle {
             rightMargin: 10
             verticalCenter: parent.verticalCenter
         }
+        live: true
         value: VolumeViewModel.volume
         width: 85
         active: item_mouse_slider.containsMouse

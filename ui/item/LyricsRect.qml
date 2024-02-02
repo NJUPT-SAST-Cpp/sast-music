@@ -23,7 +23,10 @@ Rectangle {
         tintOpacity: 0
         tintColor: Qt.rgba(0, 0, 0, 0.39)
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/main
     MouseArea {
         anchors.fill: parent
     }
@@ -112,6 +115,7 @@ Rectangle {
                     rightMargin: 8
                 }
                 value: VolumeViewModel.volume
+                live: true
                 width: 84
                 active: true
                 activeColor: Qt.rgba(1, 1, 1, 0.7)
@@ -281,7 +285,16 @@ Rectangle {
                     iconHeight: 16
                     hoverColor: Qt.rgba(1, 1, 1, 0.08)
                     onClicked: {
+<<<<<<< HEAD
 
+=======
+                        if (NextUpViewModel.playMode === NextUpViewModel.RepeatOne)
+                            NextUpViewModel.playMode = NextUpViewModel.PlayOnce
+                        else if (NextUpViewModel.playMode === NextUpViewModel.PlayOnce)
+                            NextUpViewModel.playMode = NextUpViewModel.ListRepeat
+                        else
+                            NextUpViewModel.playMode = NextUpViewModel.RepeatOne
+>>>>>>> upstream/main
                     }
                 }
                 IconButton {

@@ -6,7 +6,7 @@
 #include <Utility/SettingsUtils.h>
 #include <Utility/Tools.h>
 
-PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, player(new MusicPlayer) {
+PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, player(new MusicPlayer(this)) {
     load();
     player->setPosition(timeStamp);
     QObject::connect(NextUpViewModel::getInstance(), &NextUpViewModel::loadSongsUrlSuccess, this,

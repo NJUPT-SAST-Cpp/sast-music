@@ -68,8 +68,9 @@ void LikedSongViewModel::loadLikedSongs(PlaylistId playListId) {
         for (const auto& song : songs) {
             allLikedSongs.emplace_back(song);
         }
+        auto size = std::min((qsizetype)12, allLikedSongs.count());
         beginResetModel();
-        model = allLikedSongs.sliced(0, 12);
+        model = allLikedSongs.sliced(0, size);
         endResetModel();
         setCount(allLikedSongs.count());
         emit loadSongsSuccess();
