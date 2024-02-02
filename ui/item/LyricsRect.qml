@@ -23,12 +23,12 @@ Rectangle {
         tintOpacity: 0
         tintColor: Qt.rgba(0, 0, 0, 0.39)
     }
+    MouseArea {
+        anchors.fill: parent
+    }
     Loader {
         anchors.fill: parent
         sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
-    }
-    MouseArea {
-        anchors.fill: parent
     }
     Component {
         id: com_lyric_music
@@ -111,6 +111,7 @@ Rectangle {
                     rightMargin: 8
                 }
                 value: VolumeViewModel.volume
+                live: true
                 width: 84
                 active: true
                 activeColor: Qt.rgba(1, 1, 1, 0.7)
