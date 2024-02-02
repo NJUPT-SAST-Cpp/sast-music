@@ -5,7 +5,10 @@
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
 
-NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {}
+
+NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
+    e1.seed(time(0));
+}
 
 NextUpViewModel* NextUpViewModel::getInstance() {
     static NextUpViewModel instance;
@@ -179,15 +182,41 @@ Song NextUpViewModel::getNextSong() {
         break;
     }
     case PlayMode::ListRepeat: {
+        if(playingSong.id == 0){
+            song.id = model[0].id;
+            playingSong = model[0];
+            break;
+        }
+
+        auto index = model.indexOf(playingSong);
         // TODO
+        auto size = model.size();
+        if(index == size-1){
+            song.id = model[0].id;
+            playingSong = model[0];
+        }else{
+            song.id = model[index+1].id;
+            playingSong = model[index+1];
+        }
         break;
     }
     case PlayMode::RepeatOne: {
+        if(playingSong.id == 0){
+            return Song{};
+        }
+        song.id=playingSong.id;
         // TODO
         break;
     }
     case PlayMode::Shuffle: {
         // TODO
+        std::uniform_int_distribution<unsigned> u(0,model.size()-1);
+        auto index = u(e1);
+        while(playingSong.id == model[index].id){
+            index = u(e1);
+        }
+        song.id = model[index].id;
+        playingSong = model[index];
         break;
     }
     }

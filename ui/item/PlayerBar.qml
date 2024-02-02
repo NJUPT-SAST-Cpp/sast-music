@@ -121,6 +121,7 @@ BlurRectangle {
         iconHeight: 25
         iconUrl: playing ? "qrc:///res/img/pause.svg" : "qrc:///res/img/play.svg"
         onClicked: {
+            console.log("now playing:" + playing)
             playing ? PlayingSongViewModel.pause() : PlayingSongViewModel.play()
         }
     }

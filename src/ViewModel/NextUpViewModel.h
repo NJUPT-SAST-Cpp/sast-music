@@ -5,6 +5,8 @@
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
+#include <ctime>
+#include <random>
 
 class NextUpViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -74,6 +76,10 @@ private:
     QHash<NeteaseCloudMusic::SongId, QUrl> songUrls;
     PlayMode playMode = PlayMode::ListRepeat;
     Q_PROPERTY(PlayMode playMode READ getPlayMode WRITE setPlayMode NOTIFY playModeChanged FINAL)
+
+
+    std::default_random_engine e1;
+
 };
 
 #endif // NEXTUPVIEWMODEL_H
