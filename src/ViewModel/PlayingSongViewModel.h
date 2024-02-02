@@ -43,7 +43,6 @@ public:
     void setImgUrl(const QString& newImgUrl);
 
     QString getDurationTime() const;
-    void setDurationTime(const QString& newDurationTime);
 
     quint64 getDuration() const;
     void setDuration(quint64 newDuration);
@@ -64,7 +63,6 @@ signals:
     void albumChanged();
     void imgUrlChanged();
     void durationChanged();
-    void durationTimeChanged();
     void timeStampChanged();
     void playingChanged();
 
@@ -95,7 +93,7 @@ private:
     Q_PROPERTY(QString artists READ getArtists WRITE setArtists NOTIFY artistsChanged FINAL)
     Q_PROPERTY(QString album READ getAlbum WRITE setAlbum NOTIFY albumChanged FINAL)
     Q_PROPERTY(QString imgUrl READ getImgUrl WRITE setImgUrl NOTIFY imgUrlChanged FINAL)
-    Q_PROPERTY(QString durationTime READ getDurationTime WRITE setDurationTime NOTIFY durationTimeChanged FINAL)
+    Q_PROPERTY(QString durationTime READ getDurationTime NOTIFY durationChanged FINAL)
     Q_PROPERTY(quint64 duration READ getDuration WRITE setDuration NOTIFY durationChanged FINAL)
     Q_PROPERTY(quint64 timeStamp READ getTimeStamp WRITE setTimeStamp NOTIFY timeStampChanged FINAL)
     Q_PROPERTY(bool playing READ getPlaying WRITE setPlaying NOTIFY playingChanged FINAL)

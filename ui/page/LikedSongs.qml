@@ -51,6 +51,7 @@ ScrollablePage {
             imgSource: model.imgUrl
             album: model.album
             singer: model.artists
+            time: model.duration
             playing: PlayingSongViewModel.songId === model.songId
             onPlayClicked: {
                 if (!playing)
