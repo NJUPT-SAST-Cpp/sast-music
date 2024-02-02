@@ -4,8 +4,6 @@
 #include <Model/UserProfile.h>
 #include <QObject>
 #include <QtQml/QQmlEngine>
-#include <qobject.h>
-#include <qtmetamacros.h>
 
 class UserProfileViewModel : public QObject {
     Q_OBJECT

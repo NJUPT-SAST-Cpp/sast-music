@@ -78,6 +78,9 @@ ScrollablePage {
                 hoverColor: normalColor
                 textColor: "#335eea"
                 text: "PLAY"
+                onClicked: {
+                    SongViewModel.playAllSongs()
+                }
             }
         }
     }
@@ -99,9 +102,12 @@ ScrollablePage {
             album: model.album
             singer: model.artists
             time: model.duration
-            width: page.width - 130
-            onPlayClicked: playing => {//TODO
-                           }
+            width: playList.width
+            playing: PlayingSongViewModel.songId === model.songId
+            onPlayClicked: {
+                if (!playing)
+                    SongViewModel.playSongByIndex(index)
+            }
             onLikedChanged: liked => {//TODO
                             }
         }

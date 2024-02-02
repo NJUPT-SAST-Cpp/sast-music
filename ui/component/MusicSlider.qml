@@ -21,6 +21,7 @@ T.Slider {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitHandleHeight + topPadding + bottomPadding)
     padding: 0
+    live: false
     handle: Rectangle {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding
@@ -56,9 +57,19 @@ T.Slider {
     FluTooltip {
         parent: control.handle
         visible: control.tooltipEnabled && (control.pressed || control.hovered)
-        text: tipText
+        text: String(milsec2Time(valueAt(position)))
         font.family: "MiSans"
         font.pixelSize: 12
         font.weight: 500
+    }
+    function milsec2Time(milsec) {
+        var seconds = parseInt(milsec / 1000)
+        var minutes = parseInt(seconds / 60)
+        seconds %= 60
+        if (seconds < 10) {
+            seconds = "0" + String(seconds)
+        }
+        var result = "%1:%2"
+        return result.arg(minutes).arg(seconds)
     }
 }

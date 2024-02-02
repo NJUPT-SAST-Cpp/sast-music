@@ -1,4 +1,5 @@
 #include "LikedSongViewModel.h"
+#include "NextUpViewModel.h"
 #include "SongViewModel.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Utility/Tools.h>
@@ -16,7 +17,7 @@ int LikedSongViewModel::rowCount(const QModelIndex& parent) const {
     if (parent.isValid())
         return 0;
 
-    return std::min((qsizetype)12, model.count());
+    return model.count();
 }
 
 QVariant LikedSongViewModel::data(const QModelIndex& index, int role) const {
@@ -63,19 +64,29 @@ void LikedSongViewModel::loadLikedSongs(PlaylistId playListId) {
             return;
         }
         auto songs = result.unwrap().tracks;
-        emit beginResetModel();
-        model.clear();
+        allLikedSongs.clear();
         for (const auto& song : songs) {
-            model.emplace_back(song);
+            allLikedSongs.emplace_back(song);
         }
-        emit endResetModel();
-        setCount(songs.count());
+        beginResetModel();
+        model = allLikedSongs.sliced(0, 12);
+        endResetModel();
+        setCount(allLikedSongs.count());
         emit loadSongsSuccess();
     });
 }
 
 void LikedSongViewModel::loadAllLikedSongs() {
-    SongViewModel::getInstance()->resetModel(model);
+    SongViewModel::getInstance()->resetModel(allLikedSongs);
+}
+
+void LikedSongViewModel::playSongByIndex(int index) {
+    auto song = model[index];
+    NextUpViewModel::getInstance()->appendModel(song);
+}
+
+void LikedSongViewModel::playAllSongs() {
+    // TODO
 }
 
 int LikedSongViewModel::getCount() const {

@@ -4,7 +4,7 @@
 #include <QAbstractListModel>
 #include <QAudioDevice>
 #include <QMediaDevices>
-#include <QtQml>
+#include <QtQml/QQmlEngine>
 
 class OutputDeviceViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -33,6 +33,8 @@ public:
 
     qsizetype getCurrentIndex() const;
     void setCurrentIndex(qsizetype newCurrentIndex);
+
+    QAudioDevice device();
 
 signals:
     void currentIndexChanged();

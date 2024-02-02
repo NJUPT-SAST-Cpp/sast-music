@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import sast_music
 import FluentUI
 import "../component"
 import "../item"
@@ -17,6 +18,12 @@ ScrollablePage {
     }
 
     MusicBlock {
+        songTitle: PlayingSongViewModel.name
+        songSubtitle: PlayingSongViewModel.alias
+        imgSource: PlayingSongViewModel.imgUrl
+        album: PlayingSongViewModel.album
+        singer: PlayingSongViewModel.artists
+        time: PlayingSongViewModel.durationTime
         Layout.topMargin: 10
         Layout.fillWidth: true
         playing: true
@@ -43,12 +50,19 @@ ScrollablePage {
         Layout.topMargin: 10
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignHCenter
-        model: 20
+        model: NextUpViewModel
 
         delegate: MusicBlock {
+            songTitle: model.name
+            songSubtitle: model.alias
+            imgSource: model.imgUrl
+            album: model.album
+            singer: model.artists
+            time: model.duration
             width: playList.width
-            onPlayClicked: playing => {//TODO
-                           }
+            onPlayClicked: {
+                NextUpViewModel.playSongByIndex(index)
+            }
             onLikedChanged: liked => {//TODO
                             }
         }

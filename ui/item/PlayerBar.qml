@@ -8,9 +8,11 @@ import "../component"
 BlurRectangle {
     id: playerBar
     property Item stackView
+    property string topPageUrl
     property Animation animationup
     property int volumeValue
     property Item rec_lyrics
+    readonly property color activeColor: "#335eea"
     height: 60
     blurRadius: 100
     target: stackView
@@ -41,7 +43,7 @@ BlurRectangle {
         }
         FluImage {
             anchors.fill: parent
-            source: "qrc:///res/img/netease-music.png"
+            source: PlayingSongViewModel.imgUrl
             cache: true
         }
         FluShadow {}
@@ -49,7 +51,7 @@ BlurRectangle {
 
     Text {
         id: text_song
-        text: "Song"
+        text: PlayingSongViewModel.name
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
@@ -66,13 +68,12 @@ BlurRectangle {
 
     Text {
         id: text_singer
-        text: "singer"
+        text: PlayingSongViewModel.artists
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
         font.family: "MiSans"
         font.pixelSize: 12
-        color: "#73706c"
         anchors {
             left: image_song.right
             leftMargin: 10
@@ -104,20 +105,23 @@ BlurRectangle {
             verticalCenter: parent.verticalCenter
         }
         iconUrl: "qrc:///res/img/previous.svg"
+        onClicked: {
+            PlayingSongViewModel.previous()
+        }
     }
 
     IconButton {
         id: btn_play
-        property bool playing: true
+        property bool playing: PlayingSongViewModel.playing
         anchors.centerIn: parent
         width: 40
         height: 40
         radius: 10
         iconWidth: 20
         iconHeight: 25
-        iconUrl: playing ? "qrc:///res/img/play.svg" : "qrc:///res/img/pause.svg"
+        iconUrl: playing ? "qrc:///res/img/pause.svg" : "qrc:///res/img/play.svg"
         onClicked: {
-            playing = !playing
+            playing ? PlayingSongViewModel.pause() : PlayingSongViewModel.play()
         }
     }
 
@@ -128,6 +132,9 @@ BlurRectangle {
             verticalCenter: parent.verticalCenter
         }
         iconUrl: "qrc:///res/img/next.svg"
+        onClicked: {
+            PlayingSongViewModel.next()
+        }
     }
 
     IconButton {
@@ -139,7 +146,8 @@ BlurRectangle {
         id: btn_arrow_up
         iconUrl: "qrc:///res/img/arrow-up.svg"
         onClicked: {
-            animationup.start()
+            if (PlayingSongViewModel.songId !== 0)
+                animationup.start()
         }
     }
 
@@ -167,7 +175,7 @@ BlurRectangle {
             rightMargin: 10
             top: parent.top
             bottom: parent.bottom
-            topMargin: 15
+            topMargin: 30
             bottomMargin: 15
         }
         onClicked: mouse => mouse.accepted = false
@@ -188,14 +196,45 @@ BlurRectangle {
         IconButton {
             iconUrl: "qrc:///res/img/list.svg"
             onClicked: {
-                stackView.pushPage("qrc:///ui/page/PlayList.qml")
+                if (topPageUrl !== "qrc:///ui/page/NextUp.qml")
+                    stackView.pushPage("qrc:///ui/page/NextUp.qml")
+                else {
+                    stackView.popPage()
+                }
             }
         }
         IconButton {
-            iconUrl: "qrc:///res/img/repeat.svg"
+            iconUrl: {
+                switch (NextUpViewModel.playMode) {
+                case NextUpViewModel.PlayOnce:
+                    return "qrc:///res/img/repeat"
+                case NextUpViewModel.ListRepeat:
+                    return "qrc:///res/img/repeat.svg"
+                case NextUpViewModel.RepeatOne:
+                    return "qrc:///res/img/repeat-1.svg"
+                case NextUpViewModel.Shuffle:
+                    return "qrc:///res/img/repeat.svg"
+                }
+            }
+            iconColor: NextUpViewModel.playMode === NextUpViewModel.PlayOnce ? "#000" : activeColor
+            onClicked: {
+                if (NextUpViewModel.playMode === NextUpViewModel.RepeatOne)
+                    NextUpViewModel.playMode = NextUpViewModel.PlayOnce
+                else if (NextUpViewModel.playMode === NextUpViewModel.PlayOnce)
+                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat
+                else
+                    NextUpViewModel.playMode = NextUpViewModel.RepeatOne
+            }
         }
         IconButton {
             iconUrl: "qrc:///res/img/shuffle.svg"
+            iconColor: NextUpViewModel.playMode === NextUpViewModel.Shuffle ? activeColor : "#000"
+            onClicked: {
+                if (NextUpViewModel.playMode === NextUpViewModel.Shuffle)
+                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat
+                else
+                    NextUpViewModel.playMode = NextUpViewModel.Shuffle
+            }
         }
         IconButton {
             id: btn_volume
@@ -209,6 +248,13 @@ BlurRectangle {
                     VolumeViewModel.volume = volumeValue
                 }
             }
+        }
+    }
+
+    Connections {
+        target: PlayingSongViewModel
+        function onPlaySongFailed(message) {
+            showError(message)
         }
     }
 }

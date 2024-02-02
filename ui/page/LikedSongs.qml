@@ -51,8 +51,12 @@ ScrollablePage {
             imgSource: model.imgUrl
             album: model.album
             singer: model.artists
-            onPlayClicked: playing => {//TODO
-                           }
+            time: model.duration
+            playing: PlayingSongViewModel.songId === model.songId
+            onPlayClicked: {
+                if (!playing)
+                    LikedSongViewModel.playSongByIndex(index)
+            }
             onLikedChanged: liked => {//TODO
                             }
         }
