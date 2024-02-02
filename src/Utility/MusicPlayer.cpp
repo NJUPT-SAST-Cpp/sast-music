@@ -4,7 +4,9 @@
 #include <QAudioOutput>
 
 MusicPlayer::MusicPlayer(QObject* parent) : QMediaPlayer(parent), audioOutput(new QAudioOutput) {
-    // TODO: connect signals and slots
+    connect(OutputDeviceViewModel::getInstance(), &OutputDeviceViewModel::currentIndexChanged, this,
+            &MusicPlayer::onAudioOutputDeviceChanged);
+    connect(VolumeViewModel::getInstance(), &VolumeViewModel::volumeChanged, this, &MusicPlayer::onVolumeChanged);
     audioOutput->setDevice(QMediaDevices::defaultAudioOutput());
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
     setAudioOutput(audioOutput);
