@@ -185,7 +185,7 @@ Song NextUpViewModel::getNextSong() {
     case PlayMode::ListRepeat: {
         if(playingSong.id == 0){
             song = model[0];
-            playingSong = model[0];
+            //playingSong = model[0];
             break;
         }
 
@@ -194,10 +194,10 @@ Song NextUpViewModel::getNextSong() {
         auto size = model.size();
         if(index == size-1){
             song = model[0];
-            playingSong = model[0];
+            //playingSong = model[0];
         }else{
             song = model[index+1];
-            playingSong = model[index+1];
+            //playingSong = model[index+1];
         }
         break;
     }
@@ -217,11 +217,10 @@ Song NextUpViewModel::getNextSong() {
             index = u(e1);
         }
         song = model[index];
-        playingSong = model[index];
         break;
     }
     }
-    emit playingSongChanged(song);
+    //emit playingSongChanged(song);
     return song;
 }
 

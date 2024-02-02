@@ -81,7 +81,7 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         endResetModel();
         setCount(songs.count());
         emit loadSongsSuccess();
-        emit prepareForPlaying();
+        //emit prepareForPlaying();
     });
 }
 
