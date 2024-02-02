@@ -110,7 +110,7 @@ Item {
         color: playing ? activeColor : "#000"
         anchors {
             left: parent.left
-            leftMargin: 420
+            leftMargin: 600
             verticalCenter: parent.verticalCenter
         }
     }

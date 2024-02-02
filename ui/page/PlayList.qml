@@ -102,7 +102,7 @@ ScrollablePage {
             album: model.album
             singer: model.artists
             time: model.duration
-            width: page.width - 130
+            width: playList.width
             playing: PlayingSongViewModel.songId === model.songId
             onPlayClicked: {
                 if (!playing)
