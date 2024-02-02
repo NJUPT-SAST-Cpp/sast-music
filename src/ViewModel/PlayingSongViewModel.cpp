@@ -170,13 +170,6 @@ QString PlayingSongViewModel::getDurationTime() const {
     return Tools::milsec2Time(duration);
 }
 
-void PlayingSongViewModel::setDurationTime(const QString& newDurationTime) {
-    if (durationTime == newDurationTime)
-        return;
-    durationTime = newDurationTime;
-    emit durationTimeChanged();
-}
-
 quint64 PlayingSongViewModel::getDuration() const {
     return duration;
 }
