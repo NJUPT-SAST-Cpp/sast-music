@@ -47,6 +47,7 @@ Rectangle {
         anchors.centerIn: parent
         visible: song_package_mousearea.containsMouse || hovered
         onClicked: {
+            console.log("button cliked!")
             control.clicked()
         }
         background: FluClip {

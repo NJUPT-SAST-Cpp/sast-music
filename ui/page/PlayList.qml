@@ -80,6 +80,7 @@ ScrollablePage {
                 text: "PLAY"
                 onClicked: {
                     SongViewModel.playAllSongs()
+                    console.log("playlist play clicked!")
                 }
             }
         }

@@ -3,6 +3,8 @@
 #include "NextUpViewModel.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Utility/Tools.h>
+#include <QDebug>
+
 using namespace NeteaseCloudMusic;
 
 SongViewModel::SongViewModel(QObject* parent) : QAbstractListModel(parent) {}
@@ -79,16 +81,27 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         endResetModel();
         setCount(songs.count());
         emit loadSongsSuccess();
+        emit prepareForPlaying();
     });
 }
 
 void SongViewModel::playSongByIndex(int index) {
     auto song = model[index];
+    qDebug()<<model.size();
+    qDebug()<<"/n";
+    qDebug()<<model.count();
     NextUpViewModel::getInstance()->appendModel(song);
 }
 
 void SongViewModel::playAllSongs() {
-    // TODO
+    NextUpViewModel::getInstance()->resetModel(model);
+    auto song =NextUpViewModel::getInstance()->getPlayingSong();
+    NextUpViewModel::getInstance()->removeModel(song);
+    // bool first = true;
+    // for (const auto& song : model) {
+    //     NextUpViewModel::getInstance()->appendModel2(song,first);
+    //     first = false;
+    // }
 }
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
