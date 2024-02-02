@@ -68,7 +68,8 @@ QHash<int, QByteArray> NextUpViewModel::roleNames() const {
 }
 
 void NextUpViewModel::resetModel(const QList<Song>& newModel) {
-    if (model.count() == 0) {
+    if (newModel.count() == 0) {
+        qDebug()<<"resetmodel failed!";
         return;
     }
     beginResetModel();
@@ -183,7 +184,7 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         if(playingSong.id == 0){
-            song.id = model[0].id;
+            song = model[0];
             playingSong = model[0];
             break;
         }
@@ -192,10 +193,10 @@ Song NextUpViewModel::getNextSong() {
         // TODO
         auto size = model.size();
         if(index == size-1){
-            song.id = model[0].id;
+            song = model[0];
             playingSong = model[0];
         }else{
-            song.id = model[index+1].id;
+            song = model[index+1];
             playingSong = model[index+1];
         }
         break;
@@ -204,7 +205,7 @@ Song NextUpViewModel::getNextSong() {
         if(playingSong.id == 0){
             return Song{};
         }
-        song.id=playingSong.id;
+        song=playingSong;
         // TODO
         break;
     }
@@ -212,14 +213,15 @@ Song NextUpViewModel::getNextSong() {
         // TODO
         std::uniform_int_distribution<unsigned> u(0,model.size()-1);
         auto index = u(e1);
-        while(playingSong.id == model[index].id){
+        while(playingSong == model[index]){
             index = u(e1);
         }
-        song.id = model[index].id;
+        song = model[index];
         playingSong = model[index];
         break;
     }
     }
+    emit playingSongChanged(song);
     return song;
 }
 
