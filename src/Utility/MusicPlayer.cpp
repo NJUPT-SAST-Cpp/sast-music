@@ -3,7 +3,7 @@
 #include "ViewModel/VolumeViewModel.h"
 #include <QAudioOutput>
 
-MusicPlayer::MusicPlayer(QObject* parent) : QMediaPlayer(parent), audioOutput(new QAudioOutput) {
+MusicPlayer::MusicPlayer(QObject* parent) : QMediaPlayer(parent), audioOutput(new QAudioOutput(this)) {
     // TODO: connect signals and slots
     audioOutput->setDevice(QMediaDevices::defaultAudioOutput());
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume());

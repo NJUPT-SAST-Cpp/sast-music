@@ -316,7 +316,7 @@ ScrollablePage {
                 width: parent.width
                 source: model.coverImgUrl
                 onClicked: {
-                    SongViewModel.loadSongs(model.playListId, true)
+                    SongViewModel.loadAndPlayAllSongs(model.playListId)
                 }
                 onShowSongList: {
                     SongViewModel.playlistId = model.playListId
