@@ -111,6 +111,7 @@ Rectangle {
                     rightMargin: 8
                 }
                 value: VolumeViewModel.volume
+                live: true
                 width: 84
                 active: true
                 activeColor: Qt.rgba(1, 1, 1, 0.7)
