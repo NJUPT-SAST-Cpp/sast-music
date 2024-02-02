@@ -65,7 +65,7 @@ QHash<int, QByteArray> NextUpViewModel::roleNames() const {
 }
 
 void NextUpViewModel::resetModel(const QList<Song>& newModel) {
-    if (model.count() == 0) {
+    if (newModel.count() == 0) {
         return;
     }
     beginResetModel();
