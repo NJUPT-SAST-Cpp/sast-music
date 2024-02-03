@@ -3,9 +3,9 @@
 
 #include <QString>
 
-struct Tools
-{
-    static QString milsec2Time(quint64 milisec);
+struct Tools {
+    static QString milsec2Time(quint64 milsec);
+    static int randomInt(int low, int high);
 };
 
 #endif // TOOLS_H

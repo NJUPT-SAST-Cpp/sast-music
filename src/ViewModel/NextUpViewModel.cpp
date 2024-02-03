@@ -179,15 +179,15 @@ Song NextUpViewModel::getNextSong() {
         break;
     }
     case PlayMode::ListRepeat: {
-        // TODO
+        song = model.first();
         break;
     }
     case PlayMode::RepeatOne: {
-        // TODO
+        song = playingSong;
         break;
     }
     case PlayMode::Shuffle: {
-        // TODO
+        song = model[Tools::randomInt(0, model.count() - 1)];
         break;
     }
     }
