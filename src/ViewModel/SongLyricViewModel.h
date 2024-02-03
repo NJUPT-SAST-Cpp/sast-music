@@ -2,6 +2,7 @@
 #define SONGLYRICVIEWMODEL_H
 
 #include "Model/SongLyric.h"
+#include "Model/Song.h"
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
@@ -29,13 +30,18 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE void loadSongLyric(SongId songId);
+    Q_INVOKABLE void loadSongLyric_outside(QVariant songId);
+
 
     bool getHasLyric() const;
     void setHasLyric(bool newHasLyric);
 
+    void fromsongtoid(Song song);
+    QList<SongLyric> getcorrectlyric(QList<SongLyricEntity> _result);
 signals:
     void loadSongLyricSuccess();
     void loadSongLyricFailed();
+    void loadSongLyricFailed(QString message);
 
     void hasLyricChanged();
 

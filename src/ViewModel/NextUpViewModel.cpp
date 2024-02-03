@@ -69,10 +69,7 @@ QHash<int, QByteArray> NextUpViewModel::roleNames() const {
 
 void NextUpViewModel::resetModel(const QList<Song>& newModel) {
     if (newModel.count() == 0) {
-<<<<<<< HEAD
         qDebug()<<"resetmodel failed!";
-=======
->>>>>>> upstream/main
         return;
     }
     beginResetModel();
