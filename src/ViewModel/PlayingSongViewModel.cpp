@@ -59,9 +59,7 @@ void PlayingSongViewModel::previous() {
 
 void PlayingSongViewModel::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
     if (status == QMediaPlayer::EndOfMedia) {
-        auto songId = NextUpViewModel::getInstance()->getNextSong().id;
-        if (songId != 0)
-            player->play(NextUpViewModel::getInstance()->getSongUrl(songId));
+        next();
     } else if (status == QMediaPlayer::NoMedia) {
         emit playSongFailed("No media");
     }
