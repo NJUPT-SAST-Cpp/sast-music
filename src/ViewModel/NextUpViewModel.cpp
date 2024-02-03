@@ -77,6 +77,7 @@ void NextUpViewModel::resetModel(const QList<Song>& newModel) {
     endResetModel();
     playingSong = model[0];
     emit playingSongChanged(playingSong);
+    //model.removeAt(model.indexOf(playingSong));
     loadSongsUrl(model);
 }
 
@@ -117,6 +118,17 @@ void NextUpViewModel::removeModel(const Song& song) {
         return;
     playingSong = model[index];
     emit playingSongChanged(playingSong);
+    beginRemoveRows(QModelIndex(), index, index);
+    model.removeAt(index);
+    endRemoveRows();
+    emit loadSongsUrlSuccess();
+}
+
+void NextUpViewModel::removeModelforall(const Song& song) {
+    auto index = model.indexOf(song);
+    if (index < 0)
+        return;
+    playingSong = model[index];
     beginRemoveRows(QModelIndex(), index, index);
     model.removeAt(index);
     endRemoveRows();

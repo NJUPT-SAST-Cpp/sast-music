@@ -26,8 +26,24 @@ PlayingSongViewModel::~PlayingSongViewModel() {
     save();
 }
 
+PlayingSongViewModel* PlayingSongViewModel::getInstance() {
+    static PlayingSongViewModel instance;
+    return &instance;
+}
+
 PlayingSongViewModel* PlayingSongViewModel::create(QQmlEngine*, QJSEngine*) {
-    return new PlayingSongViewModel();
+    auto instance = getInstance();
+    QJSEngine::setObjectOwnership(instance, QQmlEngine::CppOwnership);
+    return instance;
+    // return new PlayingSongViewModel();
+}
+
+quint64 PlayingSongViewModel::getposition(){
+    return player->position();
+}
+
+bool PlayingSongViewModel::getrealplay(){
+    return player->isPlaying();
 }
 
 void PlayingSongViewModel::playSong() {
@@ -37,6 +53,7 @@ void PlayingSongViewModel::playSong() {
     if (songUrl.isEmpty())
         return;
     player->play(songUrl);
+    qDebug()<<"songid"<<songId;
     setPlaying(true);
 }
 
@@ -197,6 +214,7 @@ void PlayingSongViewModel::setTimeStamp(quint64 newTimeStamp) {
     if (timeStamp == newTimeStamp)
         return;
     timeStamp = newTimeStamp;
+    qDebug()<<"setTimeStamp:"<<timeStamp;
     player->setPosition(timeStamp);
     emit timeStampChanged();
 }

@@ -23,16 +23,40 @@ Rectangle {
         tintOpacity: 0
         tintColor: Qt.rgba(0, 0, 0, 0.39)
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/main
     MouseArea {
         anchors.fill: parent
     }
     Loader {
+        id: toploader
         anchors.fill: parent
-        sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
+        //sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
+        sourceComponent: com_no_lyric_music
+        // Component.onCompleted: {
+        //     console.log(SongLyricViewModel.hasLyric)
+        // }
+    }
+
+    // Rectangle {
+    //     id: w1
+    //     Component.onCompleted: {
+    //         SongLyricViewModel.loadSongLyric(PlayingSongViewModel.songId)
+    //         console.log(SongLyricViewModel.hasLyric + "2222222222222")
+    //     }
+    // }
+    Connections {
+        target: SongLyricViewModel
+        function onLoadSongLyricSuccess() {
+            toploader.sourceComponent = com_lyric_music
+            console.log("reset!!!!!     " + SongLyricViewModel.hasLyric)
+        }
+    }
+
+    Connections {
+        target: NextUpViewModel
+        function onPlayingSongChanged() {
+            toploader.sourceComponent = com_no_lyric_music
+            console.log("onPlayingSongChanged loadSongLyric")
+        }
     }
     Component {
         id: com_lyric_music
@@ -41,10 +65,60 @@ Rectangle {
             height: rec_lyrics.height
             RowLayout {
                 spacing: 50
-                Loader {
-                    sourceComponent: com_no_lyric_music
-                }
+                // Loader {
+                //     sourceComponent: com_no_lyric_music
+                // }
                 // TODO: lyrics
+                Rectangle {
+                    id: lyric_background1
+                    width: rec_lyrics.width / 2
+                    height: rec_lyrics.width
+                    ListView {
+                        id: lyricsList
+                        width: parent.width
+                        height: parent.height
+                        model: SongLyricViewModel
+
+                        // delegate: Item {
+                        //     width: lyricsList.width
+                        //     height: textItem.height
+
+                        //     Text {
+                        //         id: textItem
+                        //         width: parent.width
+                        //         text: TrLyric
+                        //         anchors.verticalCenter: parent.verticalCenter
+                        //         font.pixelSize: 20
+                        //         //     Component.onCompleted: {
+                        //         //         console.log("index: " + index + " lryic: " + TrLyric)
+                        //         //     }
+                        //     }
+
+                        //     Behavior on y {
+                        //         NumberAnimation {
+                        //             duration: 1000
+                        //         }
+                        //     }
+                        // }
+                        // Component.onCompleted: {
+                        //     // SongLyricViewModel.loadSongLyric(
+                        //     //             PlayingSongViewModel.songId)
+                        //     console.log(SongLyricViewModel.hasLyric + "2222222222222")
+                        // }
+                        delegate: LyricBlock {
+                            width: lyric_background1.width
+                            lyric: model.Lyric
+                            trlyric: model.TrLyric
+                            nowplay: (SongLyricViewModel.currentplayindex == index) ? true : false
+                            onPlayClicked: {
+                                console.log(index + " " + SongLyricViewModel.changeindex(
+                                                index))
+                                PlayingSongViewModel.timeStamp = SongLyricViewModel.changeindex(
+                                            index) * 1000
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -285,16 +359,12 @@ Rectangle {
                     iconHeight: 16
                     hoverColor: Qt.rgba(1, 1, 1, 0.08)
                     onClicked: {
-<<<<<<< HEAD
-
-=======
                         if (NextUpViewModel.playMode === NextUpViewModel.RepeatOne)
                             NextUpViewModel.playMode = NextUpViewModel.PlayOnce
                         else if (NextUpViewModel.playMode === NextUpViewModel.PlayOnce)
                             NextUpViewModel.playMode = NextUpViewModel.ListRepeat
                         else
                             NextUpViewModel.playMode = NextUpViewModel.RepeatOne
->>>>>>> upstream/main
                     }
                 }
                 IconButton {

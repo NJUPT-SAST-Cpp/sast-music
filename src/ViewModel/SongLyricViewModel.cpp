@@ -1,6 +1,16 @@
 #include "SongLyricViewModel.h"
+#include "NextUpViewModel.h"
+#include "PlayingSongViewModel.h"
 
-SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {}
+SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {
+    connect(NextUpViewModel::getInstance(),&NextUpViewModel::playingSongChanged,this,&SongLyricViewModel::fromsongtoid);
+    connect(NextUpViewModel::getInstance(),&NextUpViewModel::playingSongChanged,this,&SongLyricViewModel::resettime);
+    connect(PlayingSongViewModel::getInstance(),&PlayingSongViewModel::playingChanged,
+             this,&SongLyricViewModel::changetimestate);
+    connect(&time,&QTimer::timeout,this,&SongLyricViewModel::changecurrentindexauto);
+
+    time.setInterval(500);
+}
 
 SongLyricViewModel* SongLyricViewModel::create(QQmlEngine*, QJSEngine*) {
     return new SongLyricViewModel();
@@ -18,7 +28,6 @@ int SongLyricViewModel::rowCount(const QModelIndex& parent) const {
 QVariant SongLyricViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-
     // FIXME: Implement me!
     auto element = model[index.row()];
     switch (role) {
@@ -185,6 +194,53 @@ void SongLyricViewModel::loadSongLyric_outside(QVariant songId) {
     loadSongLyric(songId.toUInt());
 }
 
+
+int SongLyricViewModel::changeindex(int index){
+    if(currentplayindex == index){
+        return model[currentplayindex].timeStamp;
+    }
+    setCurrentplayindex(index);
+    return model[currentplayindex].timeStamp;
+}
+
+void SongLyricViewModel::changecurrentindexauto(){
+    //quint64 nowtime = timeStamp/1000;
+    nowtime = PlayingSongViewModel::getInstance()->getposition()/1000;
+    qDebug()<<"nowtime:"<<nowtime;
+    if(hasLyric && PlayingSongViewModel::getInstance()->getPlaying() && nowtime >= model[currentplayindex+1].timeStamp){
+        currentplayindex++;
+        emit currentplayindexChanged();
+    }
+}
+
+void SongLyricViewModel::changetimestate(){
+    if(timesate){
+        //qDebug()<<" "<<test<<":"<<"change timestate to stop!";
+        time.stop();
+        test++;
+    }
+    else{
+        time.start();
+        //qDebug()<<" "<<test<<":"<<"change timestate to open!";
+        test++;
+    }
+    timesate = !timesate;
+}
+
+void SongLyricViewModel::resettime(){
+    // if(timesate) {
+    //     time.stop();
+    //     qDebug()<<" "<<test<<":"<<"reset timestate to stop!";
+    //     test++;
+    // }
+    // timesate = false;
+    nowtime = 0;
+    currentplayindex = -1;
+    emit currentplayindexChanged();
+}
+
+
+
 void SongLyricViewModel::fromsongtoid(Song song){
     loadSongLyric(song.id);
 }
@@ -199,3 +255,17 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
     hasLyric = newHasLyric;
     emit hasLyricChanged();
 }
+
+int SongLyricViewModel::getCurrentplayindex() const {
+    return currentplayindex;
+}
+
+void SongLyricViewModel::setCurrentplayindex(int newcurrentplayindex) {
+    if (currentplayindex == newcurrentplayindex)
+        return;
+    currentplayindex = newcurrentplayindex;
+    emit currentplayindexChanged();
+}
+
+
+

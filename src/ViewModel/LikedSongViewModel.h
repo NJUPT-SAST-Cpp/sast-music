@@ -7,6 +7,9 @@
 #include <Utility/NeteaseCloudMusic>
 #include <qtmetamacros.h>
 
+#include <SongLyricViewModel.h>
+
+
 class LikedSongViewModel : public QAbstractListModel {
     Q_OBJECT
     QML_NAMED_ELEMENT(LikedSongViewModel)
@@ -50,6 +53,8 @@ signals:
 private:
     QList<Song> model;
     QList<Song> allLikedSongs;
+
+    //SongLyricViewModel test;
 
     int count = 0;
     Q_PROPERTY(int count READ getCount WRITE setCount NOTIFY countChanged FINAL)

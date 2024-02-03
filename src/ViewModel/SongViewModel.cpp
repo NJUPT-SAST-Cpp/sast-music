@@ -69,6 +69,7 @@ QHash<int, QByteArray> SongViewModel::roleNames() const {
 void SongViewModel::loadSongs(PlaylistId playListId) {
     CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
         if (result.isErr()) {
+            qDebug()<<result.unwrapErr().message;
             emit loadSongsFailed(result.unwrapErr().message);
             return;
         }
@@ -81,7 +82,7 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         endResetModel();
         setCount(songs.count());
         emit loadSongsSuccess();
-        //emit prepareForPlaying();
+        emit prepareForPlaying();
     });
 }
 
@@ -96,7 +97,7 @@ void SongViewModel::playSongByIndex(int index) {
 void SongViewModel::playAllSongs() {
     NextUpViewModel::getInstance()->resetModel(model);
     auto song =NextUpViewModel::getInstance()->getPlayingSong();
-    NextUpViewModel::getInstance()->removeModel(song);
+    NextUpViewModel::getInstance()->removeModelforall(song);
     // bool first = true;
     // for (const auto& song : model) {
     //     NextUpViewModel::getInstance()->appendModel2(song,first);
@@ -106,7 +107,7 @@ void SongViewModel::playAllSongs() {
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
     loadSongs(playListId);
-    emit prepareForPlaying();
+    //emit prepareForPlaying();
 }
 
 void SongViewModel::resetModel(const QList<Song>& model) {

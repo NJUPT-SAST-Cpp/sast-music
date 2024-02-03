@@ -48,6 +48,10 @@ public:
     void removeModel(int index);
     void removeModel(const Song& song);
 
+    void removeModelforall(const Song& song);
+
+
+
     Song getPlayingSong();
 
     void loadSongsUrl(const QList<Song>& songs);
