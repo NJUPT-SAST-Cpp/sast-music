@@ -166,8 +166,10 @@ BlurRectangle {
         handleVisible: item_mouse_slider.containsMouse
         onValueChanged: {
             VolumeViewModel.volume = value
+            console.log("volume:" + VolumeViewModel.volume)
         }
     }
+
     MouseArea {
         id: item_mouse_slider
         propagateComposedEvents: true

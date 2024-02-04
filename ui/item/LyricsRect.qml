@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 2.5
+import QtQuick.Controls 2.5
 import QtQuick.Layouts
 import FluentUI
 import sast_music
@@ -25,29 +25,19 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        onWheel: wheel => wheel.accepted = true
     }
     Loader {
         id: toploader
         anchors.fill: parent
         //sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
         sourceComponent: com_no_lyric_music
-        // Component.onCompleted: {
-        //     console.log(SongLyricViewModel.hasLyric)
-        // }
     }
 
-    // Rectangle {
-    //     id: w1
-    //     Component.onCompleted: {
-    //         SongLyricViewModel.loadSongLyric(PlayingSongViewModel.songId)
-    //         console.log(SongLyricViewModel.hasLyric + "2222222222222")
-    //     }
-    // }
     Connections {
         target: SongLyricViewModel
         function onLoadSongLyricSuccess() {
             toploader.sourceComponent = com_lyric_music
-            console.log("reset!!!!!     " + SongLyricViewModel.hasLyric)
         }
     }
 
@@ -55,69 +45,82 @@ Rectangle {
         target: NextUpViewModel
         function onPlayingSongChanged() {
             toploader.sourceComponent = com_no_lyric_music
-            console.log("onPlayingSongChanged loadSongLyric")
+            //console.log("onPlayingSongChanged loadSongLyric")
         }
     }
+
     Component {
         id: com_lyric_music
         Item {
             width: rec_lyrics.width
             height: rec_lyrics.height
-            RowLayout {
-                spacing: 50
-                // Loader {
-                //     sourceComponent: com_no_lyric_music
-                // }
-                // TODO: lyrics
-                Rectangle {
-                    id: lyric_background1
-                    width: rec_lyrics.width / 2
-                    height: rec_lyrics.width
-                    ListView {
-                        id: lyricsList
-                        width: parent.width
-                        height: parent.height
-                        model: SongLyricViewModel
 
-                        // delegate: Item {
-                        //     width: lyricsList.width
-                        //     height: textItem.height
+            Connections {
+                target: SongLyricViewModel
+                function onCurrentplayindexChanged() {
+                    lyricsList.positionViewAtIndex(
+                                ((SongLyricViewModel.currentplayindex - 4
+                                  >= 0) ? SongLyricViewModel.currentplayindex : 0),
+                                ListView.Center)
+                }
+            }
 
-                        //     Text {
-                        //         id: textItem
-                        //         width: parent.width
-                        //         text: TrLyric
-                        //         anchors.verticalCenter: parent.verticalCenter
-                        //         font.pixelSize: 20
-                        //         //     Component.onCompleted: {
-                        //         //         console.log("index: " + index + " lryic: " + TrLyric)
-                        //         //     }
-                        //     }
-
-                        //     Behavior on y {
-                        //         NumberAnimation {
-                        //             duration: 1000
-                        //         }
-                        //     }
-                        // }
-                        // Component.onCompleted: {
-                        //     // SongLyricViewModel.loadSongLyric(
-                        //     //             PlayingSongViewModel.songId)
-                        //     console.log(SongLyricViewModel.hasLyric + "2222222222222")
-                        // }
-                        delegate: LyricBlock {
-                            width: lyric_background1.width
-                            lyric: model.Lyric
-                            trlyric: model.TrLyric
-                            nowplay: (SongLyricViewModel.currentplayindex == index) ? true : false
-                            onPlayClicked: {
-                                console.log(index + " " + SongLyricViewModel.changeindex(
-                                                index))
-                                PlayingSongViewModel.timeStamp = SongLyricViewModel.changeindex(
-                                            index) * 1000
-                            }
-                        }
+            ListView {
+                id: lyricsList
+                width: parent.width / 2
+                height: parent.height
+                model: SongLyricViewModel
+                clip: true
+                ScrollBar.vertical: ScrollBar {}
+                ScrollBar.horizontal: ScrollBar {}
+                implicitHeight: 0
+                highlightRangeMode: ListView.ApplyRange
+                //flickDeceleration: 0
+                //boundsMovement: Flickable.StopAtBounds
+                delegate: LyricBlock {
+                    width: parent.width
+                    lyric: model.Lyric
+                    trlyric: model.TrLyric
+                    ishowtrlyric: SongLyricViewModel.showtrlyric()
+                    nowplay: (SongLyricViewModel.currentplayindex == index) ? true : false
+                    onPlayClicked: {
+                        PlayingSongViewModel.timeStamp = SongLyricViewModel.changeindex(
+                                    index) * 1000
                     }
+                }
+                anchors {
+                    right: parent.right
+                }
+            }
+            // }
+            // Rectangle {
+            //     width: parent.width / 2
+            //     height: parent.height
+            // anchors {
+            //     left: parent.left
+            // }
+            //     color: "transparent"
+            //     MouseArea {
+            //         anchors.fill: parent
+
+            //     }
+            //     Loader {
+            //         id: lyricloader
+            //         sourceComponent: com_no_lyric_music
+            //         Component.onCompleted: {
+            //             lyricloader.item.width = parent.width
+            //         }
+            //     }
+            // }
+            Loader {
+                id: lyricloader
+                sourceComponent: com_no_lyric_music
+                anchors {
+                    left: parent.left
+                }
+                Component.onCompleted: {
+                    lyricloader.item.width = parent.width / 2
+                    lyricloader.item.anchors.left = parent.left
                 }
             }
         }

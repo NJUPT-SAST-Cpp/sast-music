@@ -160,6 +160,7 @@ QList<SongLyric> SongLyricViewModel::getcorrectlyric(QList<SongLyricEntity> _res
 void SongLyricViewModel::loadSongLyric(SongId songId) {
     // FIXME: Implement me!
     hasLyric=false;
+    notchinese = false;
     emit hasLyricChanged();
     qDebug()<<"start loadSongLyric!";
     CloudMusicClient::getInstance()->getSongLyric(songId,  [this](Result<SongLyricEntity> result) {
@@ -184,9 +185,13 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         //     qDebug()<<"\n";
         // }
         hasLyric = true;
+        if(model.size()>0 && model[0].trLyric.isEmpty() != true){
+            notchinese = true;
+        }
         emit hasLyricChanged();
         emit loadSongLyricSuccess();
         qDebug()<<"loadSongLyricSuccess!";
+        maxindex = model.size();
     });
 }
 
@@ -206,10 +211,23 @@ int SongLyricViewModel::changeindex(int index){
 void SongLyricViewModel::changecurrentindexauto(){
     //quint64 nowtime = timeStamp/1000;
     nowtime = PlayingSongViewModel::getInstance()->getposition()/1000;
-    qDebug()<<"nowtime:"<<nowtime;
-    if(hasLyric && PlayingSongViewModel::getInstance()->getPlaying() && nowtime >= model[currentplayindex+1].timeStamp){
-        currentplayindex++;
-        emit currentplayindexChanged();
+    //qDebug()<<"nowtime:"<<nowtime;
+    // if(hasLyric && PlayingSongViewModel::getInstance()->getPlaying() && nowtime >= model[currentplayindex+1].timeStamp){
+    //     currentplayindex++;
+    //     emit currentplayindexChanged();
+    // }
+    for(int i=0;i<=model.size()-1;i++){
+        if(nowtime>=model[i].timeStamp){
+            if(i == model.size()-1){
+                setCurrentplayindex(i);
+                break;
+            }else{
+                if(nowtime < model[i+1].timeStamp){
+                    setCurrentplayindex(i);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -245,6 +263,11 @@ void SongLyricViewModel::fromsongtoid(Song song){
     loadSongLyric(song.id);
 }
 
+bool SongLyricViewModel::showtrlyric(){
+    if(isshowtrlyric == false) return false;
+    if(notchinese == true) return true;
+}
+
 bool SongLyricViewModel::getHasLyric() const {
     return hasLyric;
 }
@@ -267,5 +290,14 @@ void SongLyricViewModel::setCurrentplayindex(int newcurrentplayindex) {
     emit currentplayindexChanged();
 }
 
+int SongLyricViewModel::getMaxindex() const {
+    return maxindex;
+}
 
+void SongLyricViewModel::setMaxindex(int newMaxindex) {
+    if (maxindex == newMaxindex)
+        return;
+    maxindex = newMaxindex;
+    emit maxindexChanged();
+}
 

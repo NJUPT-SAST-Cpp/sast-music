@@ -36,6 +36,7 @@ public:
     Q_INVOKABLE void loadSongLyric_outside(QVariant songId);
 
     Q_INVOKABLE int changeindex(int index);
+    Q_INVOKABLE bool showtrlyric();
 
 
     bool getHasLyric() const;
@@ -43,6 +44,9 @@ public:
 
     int getCurrentplayindex() const;
     void setCurrentplayindex(int newcurrentplayindex);
+
+    int getMaxindex() const;
+    void setMaxindex(int newMaxindex);
 
     void fromsongtoid(Song song);
     QList<SongLyric> getcorrectlyric(QList<SongLyricEntity> _result);
@@ -57,21 +61,25 @@ signals:
     void hasLyricChanged();
 
     void currentplayindexChanged();
+    void maxindexChanged();
 
 private:
     QList<SongLyric> model;
     bool hasLyric = false;
 
     int currentplayindex = -1;
+    int maxindex = -1;
     QTimer time;
     int nowtime = 0;
     bool timesate = false;
     bool nowlryicok =false;
-
+    bool notchinese = false;
+    bool isshowtrlyric = true;
     int test = 0;
 
     Q_PROPERTY(bool hasLyric READ getHasLyric WRITE setHasLyric NOTIFY hasLyricChanged FINAL)
     Q_PROPERTY(int currentplayindex READ getCurrentplayindex WRITE setCurrentplayindex NOTIFY currentplayindexChanged FINAL)
+    Q_PROPERTY(int maxindex READ getMaxindex WRITE setMaxindex NOTIFY maxindexChanged FINAL)
 
 };
 
