@@ -8,6 +8,9 @@
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     e1.seed(time(0));
+    auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
+    auto songUrl = SettingsUtils::getInstance()->value("SongUrl").toString();
+    songUrls[songId] = QUrl(songUrl);
 }
 
 NextUpViewModel* NextUpViewModel::getInstance() {
@@ -90,6 +93,7 @@ void NextUpViewModel::homingModel() {
 }
 
 void NextUpViewModel::appendModel(const Song& song) {
+    homingModel();
     auto index = model.indexOf(song);
     if (index >= 0) {
         removeModel(index);

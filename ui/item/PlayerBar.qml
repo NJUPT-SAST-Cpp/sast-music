@@ -55,7 +55,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.bold: true
         font.pixelSize: 16
         anchors {
@@ -72,7 +72,7 @@ BlurRectangle {
         width: 100
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.pixelSize: 12
         anchors {
             left: image_song.right
@@ -179,8 +179,8 @@ BlurRectangle {
             rightMargin: 10
             top: parent.top
             bottom: parent.bottom
-            topMargin: 30
-            bottomMargin: 15
+            topMargin: 20
+            bottomMargin: 20
         }
         onClicked: mouse => mouse.accepted = false
         onPressAndHold: mouse => mouse.accepted = false

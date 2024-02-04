@@ -26,7 +26,7 @@ ScrollablePage {
     Text {
         id: text_LoginToNetease
         text: "Login to Netease"
-        font.family: "MiSans"
+        
         font.pixelSize: 24
         font.bold: true
         Layout.alignment: Qt.AlignHCenter
@@ -71,7 +71,7 @@ ScrollablePage {
                 return "未知错误"
             }
         }
-        font.family: "MiSans"
+        
         font.pixelSize: 18
         font.bold: false
         Layout.alignment: Qt.AlignHCenter
