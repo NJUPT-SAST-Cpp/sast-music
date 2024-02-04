@@ -56,6 +56,8 @@ public:
 
     void loadSongsUrl(const QList<Song>& songs);
 
+    void loadSongsUrlnotemit(const QList<Song>& songs);
+
     QUrl getSongUrl(NeteaseCloudMusic::SongId songId);
 
     Q_INVOKABLE void playSongByIndex(qsizetype index);

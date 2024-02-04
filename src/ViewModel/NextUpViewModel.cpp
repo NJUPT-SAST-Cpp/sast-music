@@ -177,6 +177,45 @@ void NextUpViewModel::loadSongsUrl(const QList<Song>& songs) {
     });
 }
 
+void NextUpViewModel::loadSongsUrlnotemit(const QList<Song>& songs) {
+    QList<NeteaseCloudMusic::SongId> songIds;
+    for (const auto& song : songs) {
+        songIds.push_back(song.id);
+    }
+    QString level;
+    switch (SettingsUtils::getInstance()->value("MusicQualityIndex").toInt()) {
+    case 0:
+        level = u"standard"_qs;
+        break;
+    case 1:
+        level = u"higher"_qs;
+        break;
+    case 2:
+        level = u"exhigh"_qs;
+        break;
+    case 3:
+        level = u"lossless"_qs;
+        break;
+    case 4:
+        level = u"hires"_qs;
+        break;
+    default:
+        level = u"standard"_qs;
+    }
+    CloudMusicClient::getInstance()->getSongsUrl(songIds, level, [this](Result<ManySongUrlInfoEntity> result) {
+        if (result.isErr()) {
+            emit loadSongsUrlFailed(result.unwrapErr().message);
+            return;
+        }
+        auto songUrls = result.unwrap().data;
+        for (const auto& songUrl : songUrls) {
+            this->songUrls[songUrl.id] = songUrl.url;
+        }
+        //emit loadSongsUrlSuccess();
+    });
+}
+
+
 QUrl NextUpViewModel::getSongUrl(NeteaseCloudMusic::SongId songId) {
     return songUrls[songId];
 }

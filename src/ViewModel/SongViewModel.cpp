@@ -82,6 +82,27 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
         endResetModel();
         setCount(songs.count());
         emit loadSongsSuccess();
+        //emit prepareForPlaying();
+    });
+}
+
+
+void SongViewModel::loadSongsoutside(PlaylistId playListId) {
+    CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
+        if (result.isErr()) {
+            qDebug()<<result.unwrapErr().message;
+            emit loadSongsFailed(result.unwrapErr().message);
+            return;
+        }
+        auto songs = result.unwrap().tracks;
+        beginResetModel();
+        model.clear();
+        for (const auto& song : songs) {
+            model.emplace_back(song);
+        }
+        endResetModel();
+        setCount(songs.count());
+        emit loadSongsSuccess();
         emit prepareForPlaying();
     });
 }
@@ -106,7 +127,7 @@ void SongViewModel::playAllSongs() {
 }
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
-    loadSongs(playListId);
+    loadSongsoutside(playListId);
     //emit prepareForPlaying();
 }
 

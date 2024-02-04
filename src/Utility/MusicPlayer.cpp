@@ -31,4 +31,5 @@ void MusicPlayer::onAudioOutputDeviceChanged() {
 
 void MusicPlayer::onVolumeChanged() {
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
+    //qDebug()<<"cpp:onVolumeChanged";
 }

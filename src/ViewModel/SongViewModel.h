@@ -39,6 +39,8 @@ public:
     Q_INVOKABLE void playAllSongs();
     Q_INVOKABLE void loadAndPlayAllSongs(PlaylistId playListId);
 
+    Q_INVOKABLE void loadSongsoutside(PlaylistId playListId);
+
     void resetModel(const QList<Song>& model);
 
     int getCount() const;
