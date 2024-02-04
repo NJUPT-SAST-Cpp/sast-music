@@ -176,8 +176,8 @@ BlurRectangle {
             rightMargin: 10
             top: parent.top
             bottom: parent.bottom
-            topMargin: 30
-            bottomMargin: 15
+            topMargin: 20
+            bottomMargin: 20
         }
         onClicked: mouse => mouse.accepted = false
         onPressAndHold: mouse => mouse.accepted = false
