@@ -87,7 +87,7 @@ void LikedSongViewModel::playSongByIndex(int index) {
 }
 
 void LikedSongViewModel::playAllSongs() {
-    // TODO
+    NextUpViewModel::getInstance()->resetModel(allLikedSongs);
 }
 
 int LikedSongViewModel::getCount() const {
