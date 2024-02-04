@@ -25,6 +25,7 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        onWheel: wheel => wheel.accepted = true
     }
     Loader {
         anchors.fill: parent
