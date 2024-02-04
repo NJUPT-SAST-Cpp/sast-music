@@ -27,7 +27,7 @@ ScrollablePage {
         Text {
             anchors.verticalCenter: avatar.verticalCenter
             text: UserProfileViewModel.nickname + "'s Liked Songs"
-            font.family: "MiSans"
+            
             font.weight: 700
             font.pixelSize: 42
         }

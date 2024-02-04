@@ -58,7 +58,7 @@ T.Slider {
         parent: control.handle
         visible: control.tooltipEnabled && (control.pressed || control.hovered)
         text: String(milsec2Time(valueAt(position)))
-        font.family: "MiSans"
+        
         font.pixelSize: 12
         font.weight: 500
     }
