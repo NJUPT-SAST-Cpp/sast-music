@@ -584,7 +584,7 @@ struct Deserializer<SongUrlInfoEntity> {
         if (!obj.contains("id") || !obj["id"].isDouble()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: id is not number"};
         }
-        if (!obj.contains("url") || !obj["url"].isString()) {
+        if (!obj.contains("url") || (!obj["url"].isString() && !obj["url"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: url is not string"};
         }
         if (!obj.contains("br") || !obj["br"].isDouble()) {
@@ -593,13 +593,13 @@ struct Deserializer<SongUrlInfoEntity> {
         if (!obj.contains("size") || !obj["size"].isDouble()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: size is not number"};
         }
-        if (!obj.contains("md5") || !obj["md5"].isString()) {
+        if (!obj.contains("md5") || (!obj["md5"].isString() && !obj["md5"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: md5 is not string"};
         }
-        if (!obj.contains("type") || !obj["type"].isString()) {
+        if (!obj.contains("type") || (!obj["type"].isString() && !obj["type"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: type is not string"};
         }
-        if (!obj.contains("level") || !obj["level"].isString()) {
+        if (!obj.contains("level") || (!obj["level"].isString() && !obj["level"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: level is not string"};
         }
         if (!obj.contains("payed") || !obj["payed"].isDouble()) {
