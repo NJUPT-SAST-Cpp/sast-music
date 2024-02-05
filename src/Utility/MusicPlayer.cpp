@@ -25,5 +25,5 @@ void MusicPlayer::onAudioOutputDeviceChanged() {
 }
 
 void MusicPlayer::onVolumeChanged() {
-    audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
+    audioOutput->setVolume(VolumeViewModel::getInstance()->volume() / 100.0);
 }

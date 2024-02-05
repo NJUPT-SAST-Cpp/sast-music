@@ -30,7 +30,8 @@ void PlayingSongViewModel::playSong() {
         return;
     songUrl = NextUpViewModel::getInstance()->getSongUrl(songId);
     if (songUrl.toString().isEmpty()) {
-        emit playSongFailed("Song url is empty");
+        emit playSongFailed("no copyright in song");
+        next();
         return;
     }
     player->play(songUrl);
