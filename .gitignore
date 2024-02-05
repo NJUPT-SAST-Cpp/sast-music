@@ -65,6 +65,7 @@ out
 .vscode
 .idea
 .clangd
+.cache
 
 # MacOS Finder files.
 .DS_Store
