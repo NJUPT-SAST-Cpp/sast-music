@@ -2,8 +2,10 @@
 #include "Service/NeteaseCloudMusic/CloudMusicClient.h"
 #include "Service/NeteaseCloudMusic/Response/BasicDef.h"
 #include "Utility/SettingsUtils.h"
+#include <Service/NeteaseCloudMusic/MusicLevel.h>
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
+#include <Utility/RandomUtils.h>
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
@@ -135,25 +137,23 @@ void NextUpViewModel::loadSongsUrl(const QList<Song>& songs) {
     for (const auto& song : songs) {
         songIds.push_back(song.id);
     }
-    QString level;
+    QStringView level;
     switch (SettingsUtils::getInstance()->value("MusicQualityIndex").toInt()) {
     case 0:
-        level = u"standard"_qs;
+        level = MusicLevel::Standard;
         break;
     case 1:
-        level = u"higher"_qs;
+        level = MusicLevel::Higher;
         break;
     case 2:
-        level = u"exhigh"_qs;
+        level = MusicLevel::ExHigh;
         break;
     case 3:
-        level = u"lossless"_qs;
+        level = MusicLevel::Lossless;
         break;
     case 4:
-        level = u"hires"_qs;
+        level = MusicLevel::HiRes;
         break;
-    default:
-        level = u"standard"_qs;
     }
     CloudMusicClient::getInstance()->getSongsUrl(songIds, level, [this](Result<ManySongUrlInfoEntity> result) {
         if (result.isErr()) {
@@ -186,15 +186,28 @@ Song NextUpViewModel::getNextSong() {
         break;
     }
     case PlayMode::ListRepeat: {
-        // TODO
+        // TODO (initially completed)
+        if (playingSong.id == model.last().id) {
+            song = model.first();
+        } else {
+            int cntIndex = model.indexOf(playingSong);
+
+            if (cntIndex == -1)
+                song = model.first();
+            else
+                song = model[cntIndex + 1];
+        }
         break;
     }
     case PlayMode::RepeatOne: {
-        // TODO
+        // TODO (initially completed)
+        song = playingSong;
         break;
     }
     case PlayMode::Shuffle: {
-        // TODO
+        // TODO (initially completed)
+        int random_index = randomInt(0, model.count());
+        song = model[random_index]
         break;
     }
     }
