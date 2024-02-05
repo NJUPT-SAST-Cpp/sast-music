@@ -180,7 +180,7 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         // qDebug()<<totallyric.translation.lyric;
         // qDebug()<<totallyric.karaoke.lyric;
         // qDebug()<<totallyric.Romaji.lyric;
-        //qDebug()<<totallyric.trivial.lyric;
+        // qDebug()<<totallyric.trivial.lyric;
         QList<SongLyricEntity> qlisttotallyric;
         qlisttotallyric.append(totallyric);
         model.clear();
@@ -195,8 +195,11 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         if(model.size()>0 && model[0].trLyric.isEmpty() != true){
             notchinese = true;
         }
+        showtrlyric();
+
         emit hasLyricChanged();
         emit loadSongLyricSuccess();
+        emit outshowtrlyricChanged();
         qDebug()<<"loadSongLyricSuccess!";
         maxindex = model.size();
     });
@@ -270,10 +273,15 @@ void SongLyricViewModel::fromsongtoid(Song song){
     loadSongLyric(song.id);
 }
 
-bool SongLyricViewModel::showtrlyric(){
-    if(isshowtrlyric == false) return false;
-    if(notchinese == true) return true;
-    return true;
+void SongLyricViewModel::showtrlyric(){
+    if(isshowtrlyric == false){
+        outshowtrlyric=false;
+    }
+    if(notchinese == true){
+        outshowtrlyric=true;
+    }else{
+        outshowtrlyric=false;
+    }
 }
 
 bool SongLyricViewModel::getHasLyric() const {
@@ -309,3 +317,14 @@ void SongLyricViewModel::setMaxindex(int newMaxindex) {
     emit maxindexChanged();
 }
 
+
+bool SongLyricViewModel::getOutshowtrlyric()  {
+    return outshowtrlyric;
+}
+
+void SongLyricViewModel::setOutshowtrlyric(bool newOutshowtrlyric) {
+    if (outshowtrlyric == newOutshowtrlyric)
+        return;
+    outshowtrlyric = newOutshowtrlyric;
+    emit outshowtrlyricChanged();
+}

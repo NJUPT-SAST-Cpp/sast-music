@@ -131,6 +131,7 @@ void NextUpViewModel::removeModel(const Song& song) {
 }
 
 void NextUpViewModel::removeModelforall(const Song& song) {
+    //homingModel();
     auto index = model.indexOf(song);
     if (index < 0)
         return;
@@ -186,25 +187,23 @@ void NextUpViewModel::loadSongsUrlnotemit(const QList<Song>& songs) {
     for (const auto& song : songs) {
         songIds.push_back(song.id);
     }
-    QString level;
+    QStringView level;
     switch (SettingsUtils::getInstance()->value("MusicQualityIndex").toInt()) {
     case 0:
-        level = u"standard"_qs;
+        level = MusicLevel::Standard;
         break;
     case 1:
-        level = u"higher"_qs;
+        level = MusicLevel::Higher;
         break;
     case 2:
-        level = u"exhigh"_qs;
+        level = MusicLevel::ExHigh;
         break;
     case 3:
-        level = u"lossless"_qs;
+        level = MusicLevel::Lossless;
         break;
     case 4:
-        level = u"hires"_qs;
+        level = MusicLevel::HiRes;
         break;
-    default:
-        level = u"standard"_qs;
     }
     CloudMusicClient::getInstance()->getSongsUrl(songIds, level, [this](Result<ManySongUrlInfoEntity> result) {
         if (result.isErr()) {

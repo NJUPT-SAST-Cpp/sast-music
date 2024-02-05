@@ -35,7 +35,7 @@ Item {
         maximumLineCount: 1
         font.family: "MiSans"
         font.bold: true
-        font.pixelSize: ishowtrlyric ? 16 : 40
+        font.pixelSize: ishowtrlyric ? 16 : 32
         color: nowplay ? activeColor : "white" //"#000"
         anchors {
             left: parent.left

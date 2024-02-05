@@ -84,7 +84,7 @@ Rectangle {
                     width: lyricsList.width
                     lyric: model.Lyric
                     trlyric: model.TrLyric
-                    ishowtrlyric: SongLyricViewModel.showtrlyric()
+                    ishowtrlyric: SongLyricViewModel.outshowtrlyric
                     nowplay: (SongLyricViewModel.currentplayindex == index) ? true : false
                     onPlayClicked: {
                         PlayingSongViewModel.timeStamp = SongLyricViewModel.changeindex(
