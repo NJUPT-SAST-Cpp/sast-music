@@ -60,16 +60,20 @@ public:
 
             if (networkError != QNetworkReply::NoError) {
                 callback(Result<QJsonObject>(ErrorInfo{ErrorKind::NetworkError, reply->errorString()}));
+                reply->deleteLater();
+                return;
             }
             Result<QByteArray> decryptedResult =
                 TEncryption::decryptResponse(reply->rawHeader("Content-Type"), std::move(content));
             if (decryptedResult.isErr()) {
                 callback(Result<QJsonObject>(std::move(decryptedResult).unwrapErr()));
+                reply->deleteLater();
                 return;
             }
             auto jsonResult = QJsonDocument::fromJson(std::move(decryptedResult).unwrap());
             if (jsonResult.isNull()) {
                 callback(Result<QJsonObject>(ErrorInfo{ErrorKind::JsonParseError, "Failed to parse JSON"}));
+                reply->deleteLater();
                 return;
             }
             auto json = jsonResult.object();
