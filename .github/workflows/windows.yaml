@@ -41,12 +41,6 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           cache: ${{steps.cache-qt.outputs.cache-hit}}
           modules: ${{env.QT_MODULES}}
-      
-      - name: Setup Ninja
-        uses: ashutoshvarma/setup-ninja@master
-        with:
-          # ninja version to download. Default: 1.10.0
-          version: 1.11.1
 
       - name: msvc build
         id: build
