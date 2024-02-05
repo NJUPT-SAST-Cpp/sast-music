@@ -5,7 +5,6 @@
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Service/PersistentCookieJar.h>
 #include <Utility/SettingsUtils.h>
-#include <qguiapplication.h>
 
 int main(int argc, char* argv[]) {
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);

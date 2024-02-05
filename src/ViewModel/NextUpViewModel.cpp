@@ -9,6 +9,7 @@ NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
     auto songUrl = SettingsUtils::getInstance()->value("SongUrl").toString();
     songUrls[songId] = QUrl(songUrl);
+    playingSong.id = songId;
 }
 
 NextUpViewModel* NextUpViewModel::getInstance() {
@@ -73,11 +74,11 @@ void NextUpViewModel::resetModel(const QList<Song>& newModel) {
         return;
     }
     beginResetModel();
-    model = newModel;
+    model = newModel.sliced(1, newModel.count() - 1);
     endResetModel();
-    playingSong = model[0];
+    playingSong = newModel[0];
     emit playingSongChanged(playingSong);
-    loadSongsUrl(model);
+    loadSongsUrl(newModel);
 }
 
 void NextUpViewModel::homingModel() {
@@ -89,11 +90,11 @@ void NextUpViewModel::homingModel() {
 }
 
 void NextUpViewModel::appendModel(const Song& song) {
-    homingModel();
     auto index = model.indexOf(song);
     if (index >= 0) {
         removeModel(index);
     } else {
+        homingModel();
         playingSong = song;
         loadSongsUrl({song});
         emit playingSongChanged(playingSong);
@@ -101,6 +102,7 @@ void NextUpViewModel::appendModel(const Song& song) {
 }
 
 void NextUpViewModel::removeModel(int index) {
+    homingModel();
     if (index < 0 || index >= model.count())
         return;
     playingSong = model[index];
@@ -112,6 +114,7 @@ void NextUpViewModel::removeModel(int index) {
 }
 
 void NextUpViewModel::removeModel(const Song& song) {
+    homingModel();
     auto index = model.indexOf(song);
     if (index < 0)
         return;
@@ -159,7 +162,7 @@ void NextUpViewModel::loadSongsUrl(const QList<Song>& songs) {
         }
         auto songUrls = result.unwrap().data;
         for (const auto& songUrl : songUrls) {
-            this->songUrls[songUrl.id] = songUrl.url;
+            this->songUrls[songUrl.id] = QUrl(songUrl.url);
         }
         emit loadSongsUrlSuccess();
     });

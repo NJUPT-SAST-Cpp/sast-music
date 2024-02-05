@@ -16,8 +16,7 @@ void MusicPlayer::play(const QUrl& url) {
         setSource(url);
         oldUrl = url;
         QMediaPlayer::stop();
-        oldUrl = url;
-    };
+    }
     QMediaPlayer::play();
 }
 
