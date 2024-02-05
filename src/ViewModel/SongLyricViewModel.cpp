@@ -54,10 +54,17 @@ QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
 
 //先返回中文，然后是其他语言
 QList<SongLyric> SongLyricViewModel::getcorrectlyric(QList<SongLyricEntity> _result){
-    auto totallyric = _result.first();
-    auto origin = totallyric.trivial.lyric;
-    QString translation = totallyric.translation.lyric;
     QList<SongLyric> _return;
+    auto totallyric = _result.first();
+    if(totallyric.pureMusic){
+        SongLyric thislyric;
+        thislyric.lyric = "纯音乐，请享受";
+        thislyric.timeStamp =0;
+        _return.append(thislyric);
+        return _return;
+    }
+    auto origin = totallyric.trivial.value().lyric;
+    QString translation = totallyric.translation.value().lyric;
     int nowindexend,nowindexbegin,nowlyricbegin;
     nowindexend = 0;
     nowindexbegin = 0;
@@ -266,6 +273,7 @@ void SongLyricViewModel::fromsongtoid(Song song){
 bool SongLyricViewModel::showtrlyric(){
     if(isshowtrlyric == false) return false;
     if(notchinese == true) return true;
+    return true;
 }
 
 bool SongLyricViewModel::getHasLyric() const {

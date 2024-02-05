@@ -228,12 +228,12 @@ void PlayingSongViewModel::load() {
     duration = settings->value("Duration").toULongLong();
     timeStamp = settings->value("TimeStamp").toULongLong();
     songUrl = settings->value("SongUrl").toString();
-    QList<Song> songs;
-    Song lastplaysong;
-    lastplaysong.id=songId;
-    songs.append(lastplaysong);
-    NextUpViewModel::getInstance()->loadSongsUrlnotemit(songs);
-    auto timeStamptrue = timeStamp;
+    // QList<Song> songs;
+    // Song lastplaysong;
+    // lastplaysong.id=songId;
+    // songs.append(lastplaysong);
+    // NextUpViewModel::getInstance()->loadSongsUrlnotemit(songs);
+    // auto timeStamptrue = timeStamp;
 
 }
 

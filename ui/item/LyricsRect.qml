@@ -30,30 +30,33 @@ Rectangle {
     Loader {
         id: toploader
         anchors.fill: parent
-        //sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
-        sourceComponent: com_no_lyric_music
+        sourceComponent: SongLyricViewModel.hasLyric ? com_lyric_music : com_no_lyric_music
+        //sourceComponent: com_no_lyric_music
     }
 
-    Connections {
-        target: SongLyricViewModel
-        function onLoadSongLyricSuccess() {
-            toploader.sourceComponent = com_lyric_music
-        }
-    }
+    // Connections {
+    //     target: SongLyricViewModel
+    //     function onLoadSongLyricSuccess() {
+    //         toploader.sourceComponent = com_lyric_music
+    //     }
+    // }
 
-    Connections {
-        target: NextUpViewModel
-        function onPlayingSongChanged() {
-            toploader.sourceComponent = com_no_lyric_music
-            //console.log("onPlayingSongChanged loadSongLyric")
-        }
-    }
-
+    // Connections {
+    //     target: NextUpViewModel
+    //     function onPlayingSongChanged() {
+    //         toploader.sourceComponent = com_no_lyric_music
+    //         //console.log("onPlayingSongChanged loadSongLyric")
+    //     }
+    // }
     Component {
         id: com_lyric_music
         Item {
             width: rec_lyrics.width
             height: rec_lyrics.height
+
+            Component.onCompleted: {
+                console.log("有歌词页面加载！")
+            }
 
             Connections {
                 target: SongLyricViewModel
@@ -78,7 +81,7 @@ Rectangle {
                 //flickDeceleration: 0
                 //boundsMovement: Flickable.StopAtBounds
                 delegate: LyricBlock {
-                    width: parent.width
+                    width: lyricsList.width
                     lyric: model.Lyric
                     trlyric: model.TrLyric
                     ishowtrlyric: SongLyricViewModel.showtrlyric()
@@ -116,11 +119,11 @@ Rectangle {
                 id: lyricloader
                 sourceComponent: com_no_lyric_music
                 anchors {
-                    left: parent.left
+                    left: rec_lyrics.left
                 }
                 Component.onCompleted: {
-                    lyricloader.item.width = parent.width / 2
-                    lyricloader.item.anchors.left = parent.left
+                    lyricloader.item.cwidth = 2
+                    lyricloader.item.anchors.left = rec_lyrics.left
                 }
             }
         }
@@ -128,7 +131,12 @@ Rectangle {
     Component {
         id: com_no_lyric_music
         Item {
-            width: rec_lyrics.width
+            Component.onCompleted: {
+                console.log("没有歌词页面加载！")
+            }
+            property int dcwidth: rec_lyrics.width
+            property int cwidth: 1
+            width: dcwidth / cwidth
             height: rec_lyrics.height
             FluClip {
                 id: song_img
@@ -244,7 +252,7 @@ Rectangle {
             Text {
                 id: text_song
                 text: PlayingSongViewModel.name
-                
+
                 font.pixelSize: 22
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.95)
@@ -261,7 +269,7 @@ Rectangle {
             Text {
                 id: text_singer
                 text: PlayingSongViewModel.artists
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -284,7 +292,7 @@ Rectangle {
                 }
                 text: slider_progress.milsec2Time(
                           PlayingSongViewModel.timeStamp)
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -297,7 +305,7 @@ Rectangle {
                     topMargin: 22
                 }
                 text: PlayingSongViewModel.durationTime
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
