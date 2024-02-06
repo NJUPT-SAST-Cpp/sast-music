@@ -14,6 +14,9 @@ PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, p
     QObject::connect(NextUpViewModel::getInstance(), &NextUpViewModel::playingSongChanged, this,
                      &PlayingSongViewModel::setPlayingSong);
     // TODO: connect signals and slots
+    QObject::connect(player,&QMediaPlayer::mediaStatusChanged,this,&PlayingSongViewModel::onMediaStatusChanged);
+    QObject::connect(player,&QMediaPlayer::positionChanged,this,&PlayingSongViewModel::onMusicPositionChanged);
+    QObject::connect(player,&QMediaPlayer::playbackStateChanged,this,&PlayingSongViewModel::onPlayStateChanged);
 }
 
 PlayingSongViewModel::~PlayingSongViewModel() {
@@ -59,9 +62,7 @@ void PlayingSongViewModel::previous() {
 
 void PlayingSongViewModel::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
     if (status == QMediaPlayer::EndOfMedia) {
-        auto songId = NextUpViewModel::getInstance()->getNextSong().id;
-        if (songId != 0)
-            player->play(NextUpViewModel::getInstance()->getSongUrl(songId));
+        next();
     } else if (status == QMediaPlayer::NoMedia) {
         emit playSongFailed("No media");
     }
