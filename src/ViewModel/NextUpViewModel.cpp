@@ -207,7 +207,7 @@ Song NextUpViewModel::getNextSong() {
     case PlayMode::Shuffle: {
         // TODO (initially completed)
         int random_index = randomInt(0, model.count());
-        song = model[random_index]
+        song = model[random_index];
         break;
     }
     }
