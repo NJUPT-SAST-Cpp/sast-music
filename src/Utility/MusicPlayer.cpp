@@ -7,7 +7,7 @@
 MusicPlayer::MusicPlayer(QObject* parent) : QMediaPlayer(parent), audioOutput(new QAudioOutput(this)) {
     connect(VolumeViewModel::getInstance(), &VolumeViewModel::volumeChanged, this, &MusicPlayer::onVolumeChanged);
     connect(OutputDeviceViewModel::getInstance(),&OutputDeviceViewModel::currentIndexChanged,this,&MusicPlayer::onAudioOutputDeviceChanged);
-    
+
     audioOutput->setDevice(QMediaDevices::defaultAudioOutput());
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
     setAudioOutput(audioOutput);
@@ -28,6 +28,6 @@ void MusicPlayer::onAudioOutputDeviceChanged() {
 }
 
 void MusicPlayer::onVolumeChanged() {
-    audioOutput->setVolume(VolumeViewModel::getInstance()->volume()/100.0);
+    audioOutput->setVolume(VolumeViewModel::getInstance()->volume() / 100.0);
     qDebug()<<"Volume: "<<VolumeViewModel::getInstance()->volume();
 }
