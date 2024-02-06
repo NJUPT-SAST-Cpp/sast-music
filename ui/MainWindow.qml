@@ -92,8 +92,13 @@ ApplicationWindow {
             bottom: playerBar.top
         }
         value: PlayingSongViewModel.timeStamp
-        onValueChanged: {
-            PlayingSongViewModel.timeStamp = value
+        // onValueChanged: {
+        //     PlayingSongViewModel.timeStamp = value
+        // }
+        Binding{
+            target: PlayingSongViewModel
+            property: "timeStamp"
+            value: progress.value
         }
     }
 
