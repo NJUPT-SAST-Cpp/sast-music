@@ -5,6 +5,7 @@
 #include <Service/NeteaseCloudMusic/MusicLevel.h>
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
+#include <random>
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
@@ -186,14 +187,32 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO
+        auto index=model.indexOf(playingSong);
+        auto size=model.size();
+        if(index==size-1)
+            song.id=0;
+        else
+            song.id=index+1;
         break;
     }
     case PlayMode::RepeatOne: {
         // TODO
+        if(playingSong.id==0){
+            return Song{};
+        }
+        song.id=playingSong.id;
         break;
     }
     case PlayMode::Shuffle: {
         // TODO
+        std::random_device random;
+        std::mt19937 gen(random());
+        std::uniform_int_distribution<> distrib(0, model.size()-1);
+        auto index = distrib(gen);
+        while(playingSong.id == index){
+            index = distrib(gen);
+        }
+        song.id= index;
         break;
     }
     }
