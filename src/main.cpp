@@ -1,3 +1,4 @@
+#include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
@@ -14,6 +15,11 @@ int main(int argc, char* argv[]) {
 
     QGuiApplication app(argc, argv);
     QGuiApplication::setWindowIcon(QIcon(QStringLiteral(":/res/icon/app.ico")));
+
+    auto fontId = QFontDatabase::addApplicationFont(":/res/fonts/MiSans-Regular.ttf");
+    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+    if (!fontFamilies.empty())
+        QGuiApplication::setFont(QFont(fontFamilies[0]));
 
     // Construct cloud music client after setting organization name and domain
     // to make sure QSettings can work properly

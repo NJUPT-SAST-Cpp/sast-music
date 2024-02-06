@@ -28,11 +28,15 @@ PlayingSongViewModel* PlayingSongViewModel::create(QQmlEngine*, QJSEngine*) {
 }
 
 void PlayingSongViewModel::playSong() {
+    songId = NextUpViewModel::getInstance()->getPlayingSong().id;
     if (songId == 0)
         return;
     songUrl = NextUpViewModel::getInstance()->getSongUrl(songId);
-    if (songUrl.isEmpty())
+    if (songUrl.toString().isEmpty()) {
+        emit playSongFailed("no copyright in song");
+        next();
         return;
+    }
     player->play(songUrl);
 }
 

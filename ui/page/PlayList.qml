@@ -27,7 +27,7 @@ ScrollablePage {
                 elide: Text.ElideRight
                 wrapMode: Text.WordWrap
                 maximumLineCount: 2
-                font.family: "MiSans"
+                
                 font.bold: true
                 font.pixelSize: 36
                 width: parent.width
@@ -39,7 +39,7 @@ ScrollablePage {
                 text: "Playlist by " + SongViewModel.creatorName
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "MiSans"
+                
                 font.pixelSize: 18
                 width: page.width - 56 - 290
             }
@@ -51,7 +51,7 @@ ScrollablePage {
                       + SongViewModel.count + " Songs"
                 elide: Text.ElideRight
                 maximumLineCount: 1
-                font.family: "MiSans"
+                
                 font.pixelSize: 14
                 font.weight: 200
                 width: page.width - 56 - 290
@@ -62,7 +62,7 @@ ScrollablePage {
                 anchors.topMargin: 24
                 text: SongViewModel.description
                 wrapMode: Text.WordWrap
-                font.family: "MiSans"
+                
                 font.pixelSize: 14
                 font.weight: 200
                 width: page.width - 56 - 290 - 130

@@ -4,6 +4,8 @@ namespace NeteaseCloudMusic {
 namespace MusicLevel {
 // 标准
 constexpr QStringView Standard{u"standard"};
+// 较高
+constexpr QStringView Higher{u"higher"};
 // 极高
 constexpr QStringView ExHigh{u"exhigh"};
 // 无损

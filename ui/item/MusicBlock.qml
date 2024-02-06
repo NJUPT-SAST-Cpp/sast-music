@@ -51,7 +51,7 @@ Item {
         text: songTitle
         elide: Text.ElideRight
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.bold: true
         font.pixelSize: 16
         color: playing ? activeColor : "#000"
@@ -69,7 +69,7 @@ Item {
         elide: Text.ElideRight
         color: playing ? activeColor : "#7a7a7a"
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.bold: true
         font.pixelSize: 16
         anchors {
@@ -88,7 +88,7 @@ Item {
         elide: Text.ElideRight
         width: 520
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.pixelSize: 12
         color: playing ? activeColor : "#000"
         anchors {
@@ -105,7 +105,7 @@ Item {
         elide: Text.ElideRight
         width: 400
         maximumLineCount: 1
-        font.family: "MiSans"
+        
         font.pixelSize: 16
         color: playing ? activeColor : "#000"
         anchors {
