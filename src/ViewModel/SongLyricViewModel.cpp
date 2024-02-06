@@ -1,4 +1,6 @@
 #include "SongLyricViewModel.h"
+#include <Service/NeteaseCloudMusic/CloudMusicClient.h>
+#include <Utility/Result.hpp>
 
 SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {}
 
@@ -19,18 +21,47 @@ QVariant SongLyricViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
 
-    // FIXME: Implement me!
+    // FIXME: Implement me! (initially completed)
+    auto element = model[index.row()];
+    switch (role) {
+    case Role::Lyric:
+        return element.lyric;
+    case Role::TrLyric:
+        return element.trLyric;
+    case Role::TimeStamp:
+        return element.timeStamp;
+    }
+
     return QVariant();
 }
 
 QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
     static QHash<int, QByteArray> roles;
-    // FIXME: Implement me!
+
+    // FIXME: Implement me! (initially completed)
+    if (roles.isEmpty()) {
+        roles[Role::Lyric] = "lyric";
+        roles[Role::TrLyric] = "trLyric";
+        roles[Role::TimeStamp] = "timeStamp";
+    }
+
     return roles;
 }
 
 void SongLyricViewModel::loadSongLyric(SongId songId) {
-    // FIXME: Implement me!
+    // FIXME: Implement me! (initially completed)
+    CloudMusicClient::getInstance()->getSongLyric(songId, [this](Result<SongLyricEntity> result) {
+        if (result.isErr()) {
+            emit loadSongLyricFailed();
+            return;
+        }
+        auto entity = result.unwrap();
+        this->hasLyric = !entity.pureMusic;
+        if (this->hasLyric) {
+            // waiting for json parsing
+        }
+        emit loadSongLyricSuccess();
+    });
 }
 
 bool SongLyricViewModel::getHasLyric() const {
@@ -42,4 +73,11 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
         return;
     hasLyric = newHasLyric;
     emit hasLyricChanged();
+}
+
+// task5 function definition
+QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(QList<SongLyricEntity> entityList) {
+    // FIXME: Implement me!
+
+    return QList<SongLyric>();
 }
