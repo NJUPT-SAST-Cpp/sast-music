@@ -39,6 +39,8 @@ public:
 signals:
     void currentIndexChanged();
 
+//TODO: listen to system audio output device change
+
 private:
     explicit OutputDeviceViewModel(QObject* parent = nullptr);
 
