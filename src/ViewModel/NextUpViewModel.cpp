@@ -6,6 +6,7 @@
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
 #include <Utility/RandomUtils.h>
+#include "SongLyricViewModel.h"
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
@@ -187,6 +188,16 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO (initially completed)
+
+        // for testing task5 (In SongLyricViewModel.cpp)
+        std::thread t([this]() {
+            auto lyricVM_ptr = new SongLyricViewModel(this);
+            qDebug() << "Created!";
+            lyricVM_ptr->loadSongLyric(playingSong.id);
+            qDebug() << "Loaded!";
+        });
+        t.detach();
+
         if (playingSong.id == model.last().id) {
             song = model.first();
         } else {

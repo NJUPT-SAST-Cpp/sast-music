@@ -59,8 +59,13 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         auto entity = result.unwrap();
         this->hasLyric = !entity.pureMusic;
         if (this->hasLyric) {
-            // waiting for json parsing
-            
+            if (entity.trivial.has_value()) {
+                this->model = std::move(parseSongLyricEntity(entity.trivial->lyric));
+                if (model.isEmpty())
+                    this->hasLyric = false;
+            } else {
+                this->hasLyric = false;
+            }
         }
         emit loadSongLyricSuccess();
     });
@@ -78,8 +83,40 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
 }
 
 // task5 function definition
-QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(QString rawSongLyricData) {
-    // FIXME: Implement me!
+QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(const QString& rawSongLyricData) {
+    // FIXME: Implement me! (partially completed)
 
-    return QList<SongLyric>();
+    QList<SongLyric> SongLyricList;
+    qint64 first_index = 0;
+
+    // get rid of jsons of the header
+    auto strSize = rawSongLyricData.size();
+    for (; first_index < strSize; first_index++) {
+        // check [00:00.00] format
+        if (rawSongLyricData[first_index] == '[' && strSize - first_index >= 10) {
+            auto i = first_index;
+            if (rawSongLyricData[i + 1].isDigit() && rawSongLyricData[i + 2].isDigit()
+                && rawSongLyricData[i + 3] == ':' && rawSongLyricData[i + 6] == '.') {
+                break;
+            }
+        }
+    }
+
+    auto getLyricTimeStamp = [](const QString& timeStampStr) -> quint64{
+        return 0;
+    };
+
+    qDebug() << "Begin Sliced!" << "first_index = " << first_index;
+    auto&& SongLyricData = rawSongLyricData.mid(first_index, rawSongLyricData.size() - first_index);
+    qDebug() << "End Sliced!";
+
+    if (!SongLyricData.isEmpty()) {
+        qDebug() << "This is indeed not a pure music!";
+    }
+
+    qDebug() << "[rawSongLyricData Begin]";
+    qDebug() << SongLyricData;
+    qDebug() << "[rawSongLyricData End]";
+
+    return SongLyricList;
 }

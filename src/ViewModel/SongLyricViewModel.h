@@ -34,7 +34,7 @@ public:
     void setHasLyric(bool newHasLyric);
 
     // task5 function
-    QList<SongLyric> parseSongLyricEntity(QString rawSongLyricData);
+    QList<SongLyric> parseSongLyricEntity(const QString& rawSongLyricData);
 
 signals:
     void loadSongLyricSuccess();
