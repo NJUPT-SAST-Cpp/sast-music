@@ -5,7 +5,6 @@
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
-#include <Service/NeteaseCloudMusic/Response/SongLyricEntity.h>
 
 class SongLyricViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -35,7 +34,7 @@ public:
     void setHasLyric(bool newHasLyric);
 
     // task5 function
-    QList<SongLyric> parseSongLyricEntity(QList<SongLyricEntity> entityList);
+    QList<SongLyric> parseSongLyricEntity(QString rawSongLyricData);
 
 signals:
     void loadSongLyricSuccess();

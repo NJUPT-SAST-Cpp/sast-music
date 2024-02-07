@@ -1,5 +1,6 @@
 #include "SongLyricViewModel.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
+#include <Service/NeteaseCloudMusic/Response/SongLyricEntity.h>
 #include <Utility/Result.hpp>
 
 SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {}
@@ -59,6 +60,7 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         this->hasLyric = !entity.pureMusic;
         if (this->hasLyric) {
             // waiting for json parsing
+            
         }
         emit loadSongLyricSuccess();
     });
@@ -76,7 +78,7 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
 }
 
 // task5 function definition
-QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(QList<SongLyricEntity> entityList) {
+QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(QString rawSongLyricData) {
     // FIXME: Implement me!
 
     return QList<SongLyric>();
