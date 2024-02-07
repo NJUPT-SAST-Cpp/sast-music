@@ -2,9 +2,12 @@
 #include "Service/NeteaseCloudMusic/CloudMusicClient.h"
 #include "Service/NeteaseCloudMusic/Response/BasicDef.h"
 #include "Utility/SettingsUtils.h"
+#include "Utility\RandomUtils.h"
 #include <Service/NeteaseCloudMusic/MusicLevel.h>
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
+#include <qtypes.h>
+
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
@@ -36,7 +39,7 @@ int NextUpViewModel::rowCount(const QModelIndex& parent) const {
 QVariant NextUpViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-    auto element = model[index.row()];
+    auto& element = model[index.row()];
     switch (role) {
     case Role::SongId:
         return (int)element.id;
@@ -185,15 +188,16 @@ Song NextUpViewModel::getNextSong() {
         break;
     }
     case PlayMode::ListRepeat: {
-        // TODO
+        song=model.at(0);
         break;
     }
     case PlayMode::RepeatOne: {
-        // TODO
+        song = playingSong;
         break;
     }
     case PlayMode::Shuffle: {
-        // TODO
+        auto index = randomInt(0, model.count() - 1);
+        song=model.at(index);
         break;
     }
     }

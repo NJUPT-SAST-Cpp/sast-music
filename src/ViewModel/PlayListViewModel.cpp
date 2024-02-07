@@ -55,7 +55,7 @@ int PlayListViewModel::rowCount(const QModelIndex& parent) const {
 QVariant PlayListViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-    auto element = model[index.row()];
+    auto& element = model[index.row()];
     switch (role) {
     case Role::PlayListId:
         return (quint64)element.id;

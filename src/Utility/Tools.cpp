@@ -1,6 +1,6 @@
 #include "Tools.h"
 
-QString Tools::milsec2Time(quint64 milisec) {
+QString Tools::milsec2Time(const quint64& milisec) {
     int seconds = milisec / 1000;
     int minutes = seconds / 60;
     seconds %= 60;

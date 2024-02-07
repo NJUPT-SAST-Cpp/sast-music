@@ -23,7 +23,7 @@ int LikedSongViewModel::rowCount(const QModelIndex& parent) const {
 QVariant LikedSongViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-    auto element = model[index.row()];
+    auto& element = model[index.row()];
     switch (role) {
     case Role::SongId:
         return (int)element.id;
@@ -87,7 +87,7 @@ void LikedSongViewModel::playSongByIndex(int index) {
 }
 
 void LikedSongViewModel::playAllSongs() {
-    // TODO
+    NextUpViewModel::getInstance()->resetModel(allLikedSongs);
 }
 
 int LikedSongViewModel::getCount() const {

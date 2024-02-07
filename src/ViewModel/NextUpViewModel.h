@@ -41,8 +41,11 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void resetModel(const QList<Song>& newModel);
+    // push playing song to model bottom
     void homingModel();
+    // play external(model, possible) song
     void appendModel(const Song& song);
+    // push playing song, then removeFormModel and play correspond song
     void removeModel(int index);
     void removeModel(const Song& song);
 

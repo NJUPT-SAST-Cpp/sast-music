@@ -5,7 +5,7 @@
 
 struct Tools
 {
-    static QString milsec2Time(quint64 milisec);
+    static QString milsec2Time(const quint64& milisec);
 };
 
 #endif // TOOLS_H

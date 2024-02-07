@@ -76,7 +76,8 @@ private slots:
 private:
     MusicPlayer* player;
     QUrl songUrl;
-    bool playing = false; // playing status: playing or pause
+    // playing status: playing or pause
+    bool playing = false;
 
     SongId songId = 0;
     QString name;
@@ -84,9 +85,12 @@ private:
     QString artists;
     QString album;
     QString imgUrl;
-    QString durationTime = "0:00"; // possible abandon
-    quint64 duration = 0; // song length
-    quint64 timeStamp; // current song position
+	// may abandon
+    QString durationTime = "0:00";
+	// song length
+    quint64 duration = 0;
+	// current song position
+    quint64 timeStamp;
     Q_PROPERTY(SongId songId READ getSongId WRITE setSongId NOTIFY songIdChanged FINAL)
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged FINAL)
     Q_PROPERTY(QString alias READ getAlias WRITE setAlias NOTIFY aliasChanged FINAL)
