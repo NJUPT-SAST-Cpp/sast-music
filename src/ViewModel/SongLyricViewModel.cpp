@@ -84,39 +84,67 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
 
 // task5 function definition
 QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(const QString& rawSongLyricData) {
-    // FIXME: Implement me! (partially completed)
+    // FIXME: Implement me! (initially completed)
 
     QList<SongLyric> SongLyricList;
-    qint64 first_index = 0;
 
     // get rid of jsons of the header
+    qint64 first_index = 0;
     auto strSize = rawSongLyricData.size();
-    for (; first_index < strSize; first_index++) {
-        // check [00:00.00] format
-        if (rawSongLyricData[first_index] == '[' && strSize - first_index >= 10) {
+    for (; first_index < strSize; first_index++)
+        if (rawSongLyricData[first_index] == '[' && strSize - first_index >= 10) { // check [00:00.00] format
             auto i = first_index;
             if (rawSongLyricData[i + 1].isDigit() && rawSongLyricData[i + 2].isDigit()
                 && rawSongLyricData[i + 3] == ':' && rawSongLyricData[i + 6] == '.') {
                 break;
             }
         }
-    }
 
-    auto getLyricTimeStamp = [](const QString& timeStampStr) -> quint64{
-        return 0;
-    };
-
-    qDebug() << "Begin Sliced!" << "first_index = " << first_index;
-    auto&& SongLyricData = rawSongLyricData.mid(first_index, rawSongLyricData.size() - first_index);
-    qDebug() << "End Sliced!";
+    //qDebug() << "Begin Sliced!" << "first_index = " << first_index;
+    auto&& SongLyricData = rawSongLyricData.sliced(first_index, rawSongLyricData.size() - first_index);
+    //qDebug() << "End Sliced!";
 
     if (!SongLyricData.isEmpty()) {
-        qDebug() << "This is indeed not a pure music!";
+        //qDebug() << "This is indeed not a pure music!";
+
+        // lambda expression for parsing time stamp
+        auto getLyricTimeStamp = [](const QString& timeStampStr) -> quint64 {
+            quint64 timeStamp = 0;
+            // minutes
+            timeStamp += timeStampStr.sliced(0, 2).toULongLong() * 60 * 1000;
+            // seconds
+            timeStamp += timeStampStr.sliced(3, 2).toULongLong() * 1000;
+            // milliseconds
+            timeStamp += timeStampStr.sliced(6, 2).toULongLong();
+            return timeStamp;
+        };
+
+        qint64 timeStamp = -1;
+        qint64 lyric_start_index = 0;
+        qint64 index = 0;
+
+        for (; index < SongLyricData.size(); index++)
+            if (SongLyricData[index] == '[' && SongLyricData.size() - index >= 10)
+                if (SongLyricData[index + 3] == ':' && SongLyricData[index + 6] == '.') {
+                    if (timeStamp != -1) {
+                        SongLyricList.push_back({(quint64)timeStamp, SongLyricData.sliced(lyric_start_index, index - lyric_start_index), QString()});
+                    }
+                    timeStamp = (qint64)getLyricTimeStamp(SongLyricData.sliced(index + 1, 8));
+                    lyric_start_index = index + 10;
+                    continue;
+                }
+
+        if (index != lyric_start_index) {
+            SongLyricList.push_back({(quint64)timeStamp, SongLyricData.sliced(lyric_start_index, index - lyric_start_index), QString()});
+        }
     }
 
-    qDebug() << "[rawSongLyricData Begin]";
-    qDebug() << SongLyricData;
-    qDebug() << "[rawSongLyricData End]";
+//    qDebug() << "[rawSongLyricData Begin]";
+//    for (auto& iter : SongLyricList) {
+//        qDebug().noquote().nospace() << "TimeStamp = " << iter.timeStamp << "         " << iter.lyric;
+//    }
+//    qDebug().noquote().nospace() << SongLyricData;
+//    qDebug() << "[rawSongLyricData End]";
 
     return SongLyricList;
 }
