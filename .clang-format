@@ -12,3 +12,4 @@ BreakStringLiterals:              false
 IndentCaseLabels:	                false
 IndentWrappedFunctionNames:	      true
 MaxEmptyLinesToKeep:	            1
+AllowShortEnumsOnASingleLine:     false

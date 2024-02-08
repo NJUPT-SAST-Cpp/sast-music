@@ -47,7 +47,6 @@ void PlayingSongViewModel::play() {
 }
 
 void PlayingSongViewModel::pause() {
-    //setPlaying(false);
     player->pause();
 }
 

@@ -7,7 +7,13 @@
 struct SongLyric {
     quint64 timeStamp;
     QString lyric;
-    QString trLyric;
+    //QString trLyric; //abandon
+    enum LyricType{
+        Common,
+        Translation,
+        Karaoke,
+        Romaji
+    }type;
 };
 
 #endif // SONGLYRIC_H
