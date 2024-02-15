@@ -6,6 +6,8 @@
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
 
+#include <QRandomGenerator>
+
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
     auto songUrl = SettingsUtils::getInstance()->value("SongUrl").toString();
@@ -186,14 +188,20 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO
+        qint8 index = model.indexOf(NextUpViewModel::getPlayingSong());
+        bool reachEnd = ++index == model.length();
+        if (reachEnd) index=0;
+        song = model[index];
         break;
     }
     case PlayMode::RepeatOne: {
         // TODO
+        song = NextUpViewModel::getPlayingSong();
         break;
     }
     case PlayMode::Shuffle: {
         // TODO
+        song = model[QRandomGenerator::global()->bounded(0, model.count()-1)];
         break;
     }
     }
