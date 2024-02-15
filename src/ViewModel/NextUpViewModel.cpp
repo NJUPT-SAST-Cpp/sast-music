@@ -193,7 +193,7 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO
-        qint8 index = model.indexOf(NextUpViewModel::getPlayingSong());
+        qint8 index = model.indexOf(getPlayingSong());
         bool reachEnd = ++index == model.length();
         if (reachEnd) index=0;
         song = model[index];
