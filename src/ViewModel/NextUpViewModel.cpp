@@ -188,18 +188,11 @@ Song NextUpViewModel::getNextSong() {
     case PlayMode::ListRepeat: {
         // TODO
         auto index=model.indexOf(playingSong);
-        auto size=model.size();
-        if(index==size-1)
-            song.id=0;
-        else
-            song.id=index+1;
+        song=model[index+1];
         break;
     }
     case PlayMode::RepeatOne: {
         // TODO
-        if(playingSong.id==0){
-            return Song{};
-        }
         song.id=playingSong.id;
         break;
     }
@@ -209,10 +202,10 @@ Song NextUpViewModel::getNextSong() {
         std::mt19937 gen(random());
         std::uniform_int_distribution<> distrib(0, model.size()-1);
         auto index = distrib(gen);
-        while(playingSong.id == index){
+        while(playingSong.id == model[index].id){
             index = distrib(gen);
         }
-        song.id= index;
+        song=model[index];
         break;
     }
     }
