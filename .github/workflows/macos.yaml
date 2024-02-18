@@ -8,6 +8,12 @@ on:
       - "!**.md"
       - "!**.cmake"
       - ".github/**"
+  pull_request:
+    paths:
+      - "src/**"
+      - "!**.qml"
+      - "!**.md"
+      - "!**.cmake"  
   workflow_dispatch:
 
 permissions: write-all
@@ -17,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13]
+        os: [macos-latest]
         qt_ver: [6.6.1]
         qt_arch: [clang_64]
     env:
@@ -53,7 +59,7 @@ jobs:
       - name: pakage
         if: startsWith(github.event.ref, 'refs/tags/')
         run: |
-          sudo find /Users/runner/work/FluentUI/Qt/6.6.1/macos/qml -name "*.dSYM" | xargs rm -r
+          sudo find /Users/runner/work/sast-music/Qt/6.6.1/macos/qml -name "*.dSYM" | xargs rm -r
           sudo macdeployqt bin/release/sast_music.app -qmldir=. -verbose=1 -dmg
        
       - uses: actions/upload-artifact@v2

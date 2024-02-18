@@ -8,17 +8,19 @@ permissions:
 on:
   push:
     paths:
+      - "*.txt"
       - "src/**"
       - "!**.qml"
       - "!**.md"
       - "!**.cmake"
-
+      - ".github/**"
   pull_request:
     paths:
       - "src/**"
       - "!**.qml"
       - "!**.md"
-      - "!**.cmake"
+      - "!**.cmake"  
+  workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
@@ -36,10 +38,6 @@ jobs:
       with:
         version: '1.11.1'
 
-    # https://github.com/zhuzichu520/FluentUI/blob/06c9b4e3829af636234a98f946603d68c23f6459/.github/workflows/ubuntu.yml#L49-L50
-    - name: Install GL library (Ubuntu)
-      run: sudo apt-get install -y libxcb-cursor0 libgl1-mesa-dev libxcb1-dev libgtk-3-dev libxkbcommon-x11-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-sync-dev  libxcb-render-util0-dev libxcb-shm0-dev 
-    
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -65,3 +63,7 @@ jobs:
         thread-comments: ${{ github.event_name == 'pull_request' }}
         lines-changed-only: false
         files-changed-only: true
+
+    - name: Failed if needed
+      if: steps.linter.outputs.checks-failed > 0
+      run: exit 1
