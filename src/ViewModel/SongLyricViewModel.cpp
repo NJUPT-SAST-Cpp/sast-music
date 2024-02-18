@@ -1,4 +1,5 @@
 #include "SongLyricViewModel.h"
+#include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 
 SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {}
 
@@ -31,6 +32,36 @@ QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
 
 void SongLyricViewModel::loadSongLyric(SongId songId) {
     // FIXME: Implement me!
+    CloudMusicClient::getInstance()->getSongLyric(songId, [this](Result<SongLyricEntity> result) {
+        if (result.isErr()) {
+            qDebug() << "err";
+            emit loadSongLyricFailed();
+            return;
+        }
+        QString songlyric = result.unwrap().trivial->lyric;
+        QList<SongLyric> splitlyric = splitSongLyric(songlyric);
+
+        emit loadSongLyricSuccess();
+    });
+}
+
+QList<SongLyric> SongLyricViewModel::splitSongLyric(const QString StringLyric)
+{
+    QList<QString> splitStringLyric = StringLyric.split("\n");
+    QList<SongLyric> splitLyric;
+    QString StringLyricpiece, TimeStamptext;
+    qint64 timeStamp_ms;
+    SongLyric songLyric;
+    for (int i=0; i<splitStringLyric.count(); i++)
+    {
+        if (StringLyricpiece.compare("") == 0) continue;
+        StringLyricpiece = splitStringLyric[i];
+        TimeStamptext = StringLyricpiece.left(10);
+        songLyric.timeStamp = TimeStamptext.mid(1, 2).toInt()*60*6000 + TimeStamptext.mid(4, 5).toDouble()*1000;
+        songLyric.lyric = StringLyricpiece.right(StringLyricpiece.length()-10);
+        splitLyric.append(songLyric);
+    }
+    return splitLyric;
 }
 
 bool SongLyricViewModel::getHasLyric() const {

@@ -32,6 +32,7 @@ public:
 
     bool getHasLyric() const;
     void setHasLyric(bool newHasLyric);
+    QList<SongLyric> splitSongLyric(const QString StringLyric);
 
 signals:
     void loadSongLyricSuccess();
