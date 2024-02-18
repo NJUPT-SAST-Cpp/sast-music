@@ -57,7 +57,7 @@ QList<SongLyric> SongLyricViewModel::splitSongLyric(const QString StringLyric)
         if (StringLyricpiece.compare("") == 0) continue;
         StringLyricpiece = splitStringLyric[i];
         TimeStamptext = StringLyricpiece.left(10);
-        songLyric.timeStamp = TimeStamptext.mid(1, 2).toInt()*60*6000 + TimeStamptext.mid(4, 5).toDouble()*1000;
+        songLyric.timeStamp = TimeStamptext.mid(1, 2).toInt()*60*1000 + TimeStamptext.mid(4, 5).toDouble()*1000;
         songLyric.lyric = StringLyricpiece.right(StringLyricpiece.length()-10);
         splitLyric.append(songLyric);
     }
