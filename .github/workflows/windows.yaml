@@ -8,6 +8,12 @@ on:
       - "!**.md"
       - "!**.cmake"
       - ".github/**"
+  pull_request:
+    paths:
+      - "src/**"
+      - "!**.qml"
+      - "!**.md"
+      - "!**.cmake"  
   workflow_dispatch:
 
 permissions: write-all
@@ -19,7 +25,7 @@ jobs:
       matrix:
         os: [windows-2022]
         include:
-          - qt_ver: 6.6.1
+          - qt_ver: 6.6.2
             qt_arch: win64_msvc2019_64
             msvc_arch: x64
             qt_arch_isntall: msvc2019_64
