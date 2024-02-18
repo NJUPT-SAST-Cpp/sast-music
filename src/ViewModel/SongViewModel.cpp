@@ -88,7 +88,8 @@ void SongViewModel::playSongByIndex(int index) {
 }
 
 void SongViewModel::playAllSongs() {
-    // TODO
+    // TODO (initially completed)
+    NextUpViewModel::getInstance()->resetModel(model);
 }
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
