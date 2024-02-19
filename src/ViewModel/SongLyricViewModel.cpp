@@ -60,7 +60,7 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         this->hasLyric = !entity.pureMusic;
         if (this->hasLyric) {
             if (entity.trivial.has_value()) {
-                this->model = std::move(parseSongLyricEntity(entity.trivial->lyric));
+                this->model = parseSongLyricEntity(entity.trivial->lyric);
                 if (model.isEmpty())
                     this->hasLyric = false;
             } else {
