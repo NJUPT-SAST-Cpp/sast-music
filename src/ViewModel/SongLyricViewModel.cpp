@@ -100,21 +100,15 @@ QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(const QString& rawSong
             }
         }
 
-    //qDebug() << "Begin Sliced!" << "first_index = " << first_index;
     auto&& SongLyricData = rawSongLyricData.sliced(first_index, rawSongLyricData.size() - first_index);
-    //qDebug() << "End Sliced!";
 
     if (!SongLyricData.isEmpty()) {
-        //qDebug() << "This is indeed not a pure music!";
 
         // lambda expression for parsing time stamp
         auto getLyricTimeStamp = [](const QString& timeStampStr) -> quint64 {
             quint64 timeStamp = 0;
-            // minutes
             timeStamp += timeStampStr.sliced(0, 2).toULongLong() * 60 * 1000;
-            // seconds
             timeStamp += timeStampStr.sliced(3, 2).toULongLong() * 1000;
-            // milliseconds
             timeStamp += timeStampStr.sliced(6, 2).toULongLong();
             return timeStamp;
         };
@@ -138,13 +132,6 @@ QList<SongLyric> SongLyricViewModel::parseSongLyricEntity(const QString& rawSong
             SongLyricList.push_back({(quint64)timeStamp, SongLyricData.sliced(lyric_start_index, index - lyric_start_index), QString()});
         }
     }
-
-//    qDebug() << "[rawSongLyricData Begin]";
-//    for (auto& iter : SongLyricList) {
-//        qDebug().noquote().nospace() << "TimeStamp = " << iter.timeStamp << "         " << iter.lyric;
-//    }
-//    qDebug().noquote().nospace() << SongLyricData;
-//    qDebug() << "[rawSongLyricData End]";
 
     return SongLyricList;
 }
