@@ -8,6 +8,12 @@ on:
       - "!**.md"
       - "!**.cmake"
       - ".github/**"
+  pull_request:
+    paths:
+      - "src/**"
+      - "!**.qml"
+      - "!**.md"
+      - "!**.cmake"  
   workflow_dispatch:
 
 permissions: write-all
@@ -18,7 +24,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13]
-        qt_ver: [6.6.1]
+        qt_ver: [6.6.2]
         qt_arch: [clang_64]
     env:
       targetName: sast-music
