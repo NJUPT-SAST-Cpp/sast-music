@@ -1,7 +1,5 @@
 name: cpp-linter
 
-permissions: write-all
-
 on:
   push:
     paths:
@@ -25,6 +23,11 @@ env:
 jobs:
   cpp-linter:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      repository-projects: write
+      issues: write
+      pull-requests: write
     steps:
     - uses: actions/checkout@v4
       with:
