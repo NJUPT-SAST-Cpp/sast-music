@@ -1,9 +1,6 @@
 name: cpp-linter
 
-permissions:
-  checks: write
-  pull-requests: write
-  repository-projects: write
+permissions: write-all
 
 on:
   push:
