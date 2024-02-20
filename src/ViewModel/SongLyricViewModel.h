@@ -32,7 +32,8 @@ public:
 
     bool getHasLyric() const;
     void setHasLyric(bool newHasLyric);
-
+    quint64 convertoTimestamp(const QString timeString);
+    QList<SongLyric> getLyricList(QString strJson);
 signals:
     void loadSongLyricSuccess();
     void loadSongLyricFailed();

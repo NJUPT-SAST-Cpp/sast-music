@@ -44,15 +44,50 @@ QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
     }
     return roles;
 }
+quint64 SongLyricViewModel::convertoTimestamp(const QString timeString){
+    //00:00.00
+    int mm=timeString.left(2).toInt();
+    int ss=timeString.mid(3,2).toInt();
+    int ms=timeString.right(2).toInt();
+    quint64 totalmsStamp=mm*60*1000+ss*1000+ms;
+    return totalmsStamp;
+}
 
+
+QList<SongLyric> SongLyricViewModel::getLyricList(QString strJson){
+
+    QList<SongLyric> tmp;
+    QStringList parts=strJson.split('\n');
+    for(const QString&part:parts){
+        QString left=part.left(10);//[00:00.00 ]
+        QString right=part.right(part.length()-10);
+        QString timeStr=left.mid(1,8);
+        QString lyric=right;
+        quint64 timeStamp=convertoTimestamp(timeStr);
+        tmp.push_back({timeStamp,lyric,""});
+    }
+    return tmp;
+}
 void SongLyricViewModel::loadSongLyric(SongId songId) {
+
     // FIXME: Implement me!
     CloudMusicClient::getInstance()->getSongLyric(songId, [this](Result<SongLyricEntity> result){
     if (result.isErr()) {
         emit loadSongLyricFailed();
         return;
     }
-    
+    auto entire=result.unwrap();
+    if(entire.pureMusic)
+    {
+        setHasLyric(!entire.pureMusic);
+    }
+    else{
+        QString jsontrl=entire.trivial->lyric;
+        beginResetModel();
+        model=getLyricList(jsontrl);
+        endResetModel();
+        setHasLyric(!entire.pureMusic);
+    }
     emit loadSongLyricSuccess();
     });
 }
