@@ -63,6 +63,7 @@ jobs:
         thread-comments: ${{ github.event_name == 'pull_request' }}
         lines-changed-only: false
         files-changed-only: true
+        format-review: true
 
     - name: Failed if needed
       if: steps.linter.outputs.checks-failed > 0
