@@ -9,10 +9,15 @@
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
     e1.seed(time(0));
-    auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
-    auto songUrl = SettingsUtils::getInstance()->value("SongUrl").toString();
-    songUrls[songId] = QUrl(songUrl);
-    playingSong.id = songId;
+    auto settings = SettingsUtils::getInstance();
+    playingSong.id = settings->value("SongId").toULongLong();
+    playingSong.name = settings->value("Name").toString();
+    playingSong.alias = settings->value("Alias").toString();
+    playingSong.artists = settings->value("Artists").toString();
+    playingSong.album = settings->value("Album").toString();
+    playingSong.imgUrl = settings->value("ImgUrl").toString();
+    playingSong.duration = settings->value("Duration").toULongLong();
+    songUrls[playingSong.id] = QUrl(settings->value("SongUrl").toString());
 }
 
 NextUpViewModel* NextUpViewModel::getInstance() {

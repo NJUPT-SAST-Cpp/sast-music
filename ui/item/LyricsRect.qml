@@ -421,12 +421,11 @@ Rectangle {
                 }
                 IconButton {
                     iconUrl: "qrc:///res/img/shuffle.svg"
-                    iconColor: "#fff"
+                    iconColor: NextUpViewModel.playMode
+                               === NextUpViewModel.Shuffle ? "#335eea" : "#fff"
                     iconWidth: 16
                     iconHeight: 16
-                    hoverColor: NextUpViewModel.playMode
-                                === NextUpViewModel.Shuffle ? "#335eea" : Qt.rgba(
-                                                                  1, 1, 1, 0.08)
+                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
                     onClicked: {
                         if (NextUpViewModel.playMode === NextUpViewModel.Shuffle)
                             NextUpViewModel.playMode = NextUpViewModel.ListRepeat
