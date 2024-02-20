@@ -24,10 +24,10 @@ jobs:
   cpp-linter:
     runs-on: ubuntu-latest
     permissions:
-      checks: write
-      repository-projects: write
-      issues: write
-      pull-requests: write
+      checks: read|write
+      repository-projects: read|write
+      issues: read|write
+      pull-requests: read|write
     steps:
     - uses: actions/checkout@v4
       with:
