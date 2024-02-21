@@ -60,9 +60,9 @@ Rectangle {
                     delegate: LyricLine {
                         width: ListView.view.width
                         onLyricTapped: time => {
-                                           PlayingSongViewModel.timeStamp = time
-                                           lyric.centerCurrItem()
-                                       }
+                            PlayingSongViewModel.timeStamp = time;
+                            lyric.centerCurrItem();
+                        }
                     }
                     header: Item {
                         width: ListView.view.width
@@ -85,36 +85,34 @@ Rectangle {
                         running: false
                         interval: 5000
                         onTriggered: {
-                            lyric.autoCenter = true
-                            lyric.centerCurrItem()
+                            lyric.autoCenter = true;
+                            lyric.centerCurrItem();
                         }
                     }
 
                     onMovementStarted: {
-                        console.log("listview.move start")
-                        autoCenterTimer.running = false
-                        autoCenter = false
+                        console.log("listview.move start");
+                        autoCenterTimer.running = false;
+                        autoCenter = false;
                     }
 
                     onMovementEnded: {
-                        console.log("listview.move end")
-                        autoCenterTimer.running = true
+                        console.log("listview.move end");
+                        autoCenterTimer.running = true;
                     }
 
                     Connections {
                         target: PlayingSongViewModel
                         function onSongIdChanged() {
-                            SongLyricViewModel.currentLyricIndex = 0
+                            SongLyricViewModel.currentLyricIndex = 0;
                         }
                     }
 
                     function centerCurrItem() {
-                        positionViewAtIndex(
-                                    SongLyricViewModel.currentLyricIndex,
-                                    ListView.Center)
-                        // SongLyricViewModel.currentLyricIndex=SongLyricViewModel.currentLyricIndex
-                        // currentIndex++
-                        // currentIndex--
+                        positionViewAtIndex(SongLyricViewModel.currentLyricIndex, ListView.Center);
+                    // SongLyricViewModel.currentLyricIndex=SongLyricViewModel.currentLyricIndex
+                    // currentIndex++
+                    // currentIndex--
                     }
                 }
             }
@@ -141,14 +139,14 @@ Rectangle {
         hoverColor: Qt.rgba(1, 1, 1, 0.08)
         iconColor: hovered ? "#fff" : Qt.rgba(1, 1, 1, 0.28)
         onClicked: {
-            animationdown.start()
+            animationdown.start();
         }
         Connections {
             target: animationdown
             function onFinished() {
                 rec_lyrics.y = Qt.binding(() => {
-                                              return window.height
-                                          })
+                        return window.height;
+                    });
             }
         }
     }

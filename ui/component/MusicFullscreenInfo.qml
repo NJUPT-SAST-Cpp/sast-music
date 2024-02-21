@@ -57,7 +57,7 @@ Item {
             rightMargin: 8
         }
         onClicked: {
-            liked = !liked
+            liked = !liked;
         }
     }
     MusicSlider {
@@ -74,7 +74,7 @@ Item {
         activeColor: Qt.rgba(1, 1, 1, 0.7)
         handleVisible: item_mouse_slider_volume.containsMouse
         onValueChanged: {
-            VolumeViewModel.volume = value
+            VolumeViewModel.volume = value;
         }
     }
     MouseArea {
@@ -110,10 +110,10 @@ Item {
         }
         onClicked: {
             if (!mute) {
-                volumeValue = VolumeViewModel.volume
-                VolumeViewModel.volume = 0
+                volumeValue = VolumeViewModel.volume;
+                VolumeViewModel.volume = 0;
             } else {
-                VolumeViewModel.volume = volumeValue
+                VolumeViewModel.volume = volumeValue;
             }
         }
     }
@@ -158,8 +158,7 @@ Item {
             top: text_singer.bottom
             topMargin: 22
         }
-        text: slider_progress.milsec2Time(
-                  PlayingSongViewModel.timeStamp)
+        text: slider_progress.milsec2Time(PlayingSongViewModel.timeStamp)
 
         font.pixelSize: 14
         font.weight: 500
@@ -193,7 +192,7 @@ Item {
         to: PlayingSongViewModel.duration
         value: PlayingSongViewModel.timeStamp
         onValueChanged: {
-            PlayingSongViewModel.timeStamp = value
+            PlayingSongViewModel.timeStamp = value;
         }
     }
     MouseArea {
@@ -223,27 +222,26 @@ Item {
             iconUrl: {
                 switch (NextUpViewModel.playMode) {
                 case NextUpViewModel.PlayOnce:
-                    return "qrc:///res/img/repeat"
+                    return "qrc:///res/img/repeat";
                 case NextUpViewModel.ListRepeat:
-                    return "qrc:///res/img/repeat.svg"
+                    return "qrc:///res/img/repeat.svg";
                 case NextUpViewModel.RepeatOne:
-                    return "qrc:///res/img/repeat-1.svg"
+                    return "qrc:///res/img/repeat-1.svg";
                 case NextUpViewModel.Shuffle:
-                    return "qrc:///res/img/repeat.svg"
+                    return "qrc:///res/img/repeat.svg";
                 }
             }
-            iconColor: NextUpViewModel.playMode
-                       === NextUpViewModel.PlayOnce ? "#fff" : "#335eea"
+            iconColor: NextUpViewModel.playMode === NextUpViewModel.PlayOnce ? "#fff" : "#335eea"
             iconWidth: 16
             iconHeight: 16
             hoverColor: Qt.rgba(1, 1, 1, 0.08)
             onClicked: {
                 if (NextUpViewModel.playMode === NextUpViewModel.RepeatOne)
-                    NextUpViewModel.playMode = NextUpViewModel.PlayOnce
+                    NextUpViewModel.playMode = NextUpViewModel.PlayOnce;
                 else if (NextUpViewModel.playMode === NextUpViewModel.PlayOnce)
-                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat
+                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat;
                 else
-                    NextUpViewModel.playMode = NextUpViewModel.RepeatOne
+                    NextUpViewModel.playMode = NextUpViewModel.RepeatOne;
             }
         }
         IconButton {
@@ -255,7 +253,7 @@ Item {
             iconColor: "#fff"
             hoverColor: Qt.rgba(1, 1, 1, 0.08)
             onClicked: {
-                PlayingSongViewModel.previous()
+                PlayingSongViewModel.previous();
             }
         }
         IconButton {
@@ -270,8 +268,7 @@ Item {
             hoverColor: Qt.rgba(1, 1, 1, 0.08)
             iconUrl: playing ? "qrc:///res/img/pause.svg" : "qrc:///res/img/play.svg"
             onClicked: {
-                playing ? PlayingSongViewModel.pause(
-                              ) : PlayingSongViewModel.play()
+                playing ? PlayingSongViewModel.pause() : PlayingSongViewModel.play();
             }
             Layout.alignment: Qt.AlignCenter
         }
@@ -284,22 +281,20 @@ Item {
             iconColor: "#fff"
             hoverColor: Qt.rgba(1, 1, 1, 0.08)
             onClicked: {
-                PlayingSongViewModel.next()
+                PlayingSongViewModel.next();
             }
         }
         IconButton {
             iconUrl: "qrc:///res/img/shuffle.svg"
-            iconColor: "#fff"
+            iconColor: NextUpViewModel.playMode === NextUpViewModel.Shuffle ? "#335eea" : "#fff"
             iconWidth: 16
             iconHeight: 16
-            hoverColor: NextUpViewModel.playMode
-                        === NextUpViewModel.Shuffle ? "#335eea" : Qt.rgba(
-                                                          1, 1, 1, 0.08)
+            hoverColor: Qt.rgba(1, 1, 1, 0.08)
             onClicked: {
                 if (NextUpViewModel.playMode === NextUpViewModel.Shuffle)
-                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat
+                    NextUpViewModel.playMode = NextUpViewModel.ListRepeat;
                 else
-                    NextUpViewModel.playMode = NextUpViewModel.Shuffle
+                    NextUpViewModel.playMode = NextUpViewModel.Shuffle;
             }
         }
     }
