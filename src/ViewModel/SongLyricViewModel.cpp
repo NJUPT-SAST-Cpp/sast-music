@@ -2,9 +2,7 @@
 #include "Model/SongLyric.h"
 #include "PlayingSongViewModel.h"
 #include <algorithm>
-#include <climits>
 #include <exception>
-#include <iostream>
 #include <qdebug.h>
 #include <qsize.h>
 #include <qtypes.h>
@@ -13,7 +11,8 @@
 
 SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {
     connect(PlayingSongViewModel::getInstance(), &PlayingSongViewModel::timeStampChanged, this,
-                     &SongLyricViewModel::onTimestampChanged);
+            &SongLyricViewModel::onTimestampChanged);
+    connect(this, &SongLyricViewModel::hasLyricChanged, this, &SongLyricViewModel::switchLyricIndex);
     loadSongLyric(PlayingSongViewModel::getInstance()->getSongId());
 }
 
@@ -21,9 +20,9 @@ SongLyricViewModel* SongLyricViewModel::create(QQmlEngine*, QJSEngine*) {
     return getInstance();
 }
 
-SongLyricViewModel* SongLyricViewModel::getInstance(){
+SongLyricViewModel* SongLyricViewModel::getInstance() {
     static auto instance = new SongLyricViewModel();
-        return instance;
+    return instance;
 }
 
 int SongLyricViewModel::rowCount(const QModelIndex& parent) const {
@@ -92,7 +91,7 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         this->model = std::move(lyric);
         endResetModel();
         emit hasLyricChanged();
-        qDebug()<<"lyric updated: "<<hasLyric;
+        qDebug() << "lyric updated: " << hasLyric;
     });
 }
 
@@ -152,10 +151,10 @@ void SongLyricViewModel::switchLyricIndex() {
     const auto time = PlayingSongViewModel::getInstance()->getTimeStamp();
     qint64 index = 0;
     for (qsizetype i = 0; i < model.size(); i++) {
-        if (model.at(i).timeStamp<time&&model.at(i).timeStamp!=model.at(index).timeStamp) {
+        if (model.at(i).timeStamp <= time && model.at(i).timeStamp != model.at(index).timeStamp) {
             index = i;
         }
-        if (model.at(i).timeStamp>time){
+        if (model.at(i).timeStamp > time) {
             break;
         }
     }
@@ -178,7 +177,7 @@ void SongLyricViewModel::setHasLyric(bool newHasLyric) {
     emit hasLyricChanged();
 }
 
-void SongLyricViewModel::setCurrentLyricIndex(qint64 newValue){
+void SongLyricViewModel::setCurrentLyricIndex(qint64 newValue) {
     if (currentLyricIndex == newValue)
         return;
     currentLyricIndex = newValue;
