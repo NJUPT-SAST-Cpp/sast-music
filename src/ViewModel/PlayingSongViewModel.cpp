@@ -5,6 +5,7 @@
 #include <Utility/MusicPlayer.h>
 #include <Utility/SettingsUtils.h>
 #include <Utility/Tools.h>
+#include "SongLyricViewModel.h"
 
 PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, player(new MusicPlayer(this)) {
     load();
@@ -25,7 +26,12 @@ PlayingSongViewModel::~PlayingSongViewModel() {
 }
 
 PlayingSongViewModel* PlayingSongViewModel::create(QQmlEngine*, QJSEngine*) {
-    return new PlayingSongViewModel();
+    return getInstance();
+}
+
+PlayingSongViewModel* PlayingSongViewModel::getInstance(){
+    static auto instance = new PlayingSongViewModel();
+    return instance;
 }
 
 void PlayingSongViewModel::playSong() {
@@ -40,6 +46,7 @@ void PlayingSongViewModel::playSong() {
     }
     //setPlaying(true);
     player->play(songUrl);
+    SongLyricViewModel::getInstance()->loadSongLyric(songId);
 }
 
 void PlayingSongViewModel::play() {
@@ -55,6 +62,7 @@ void PlayingSongViewModel::next() {
     if (song.id == 0)
         return;
     player->play(NextUpViewModel::getInstance()->getSongUrl(song.id));
+    SongLyricViewModel::getInstance()->loadSongLyric(song.id);
     NextUpViewModel::getInstance()->removeModel(song);
 }
 
@@ -63,6 +71,7 @@ void PlayingSongViewModel::previous() {
     if (song.id == 0)
         return;
     player->play(NextUpViewModel::getInstance()->getSongUrl(song.id));
+    SongLyricViewModel::getInstance()->loadSongLyric(song.id);
     NextUpViewModel::getInstance()->removeModel(song);
 }
 

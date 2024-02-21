@@ -10,6 +10,7 @@
         <file>ui/component/SearchBox.qml</file>
         <file>ui/component/TextButton.qml</file>
         <file>ui/component/ToggleSwitch.qml</file>
+        <file>ui/component/LyricLine.qml</file>
         <file>ui/item/LyricsRect.qml</file>
         <file>ui/item/NavigationBar.qml</file>
         <file>ui/item/PlayerBar.qml</file>
@@ -27,5 +28,6 @@
         <file>ui/item/PlayListCover.qml</file>
         <file>ui/item/SystemTray.qml</file>
         <file>ui/page/LikedSongs.qml</file>
+        <file>ui/component/MusicFullscreenInfo.qml</file>
     </qresource>
 </RCC>

@@ -15,8 +15,8 @@ class PlayingSongViewModel : public QObject {
     QML_SINGLETON
 
 public:
-    explicit PlayingSongViewModel(QObject* parent = nullptr);
     static PlayingSongViewModel* create(QQmlEngine*, QJSEngine*);
+    static PlayingSongViewModel* getInstance();
     ~PlayingSongViewModel();
 
     Q_INVOKABLE void play();
@@ -74,6 +74,8 @@ private slots:
     void setPlayingSong(const Song& song);
 
 private:
+    explicit PlayingSongViewModel(QObject* parent = nullptr);
+    
     MusicPlayer* player;
     QUrl songUrl;
     // playing status: playing or pause
