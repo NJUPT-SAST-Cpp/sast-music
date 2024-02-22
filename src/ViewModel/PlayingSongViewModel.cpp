@@ -13,7 +13,14 @@ PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, p
                      &PlayingSongViewModel::playSong);
     QObject::connect(NextUpViewModel::getInstance(), &NextUpViewModel::playingSongChanged, this,
                      &PlayingSongViewModel::setPlayingSong);
-    // TODO: connect signals and slots
+
+    // TODO: connect signals and slots (initially completed)
+    QObject::connect(player, &MusicPlayer::mediaStatusChanged, this,
+                     &PlayingSongViewModel::onMediaStatusChanged);
+    QObject::connect(player, &MusicPlayer::positionChanged, this,
+                     &PlayingSongViewModel::onMusicPositionChanged);
+    QObject::connect(player, &MusicPlayer::playbackStateChanged, this,
+                     &PlayingSongViewModel::onPlayStateChanged);
 }
 
 PlayingSongViewModel::~PlayingSongViewModel() {
