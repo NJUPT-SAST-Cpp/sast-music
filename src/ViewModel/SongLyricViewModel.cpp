@@ -1,4 +1,6 @@
 #include "SongLyricViewModel.h"
+#include "Utility/Tools.h"
+#include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 
 SongLyricViewModel::SongLyricViewModel(QObject* parent) : QAbstractListModel(parent) {}
 
@@ -30,7 +32,20 @@ QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
 }
 
 void SongLyricViewModel::loadSongLyric(SongId songId) {
-    // FIXME: Implement me!
+    CloudMusicClient::getInstance()->getSongLyric(songId, [this](Result<SongLyricEntity> result) {
+        if (result.isErr()) {
+            emit loadSongLyricFailed(result.unwrapErr().message);
+            return;
+        }
+        auto entity = result.unwrap();
+        if (entity.pureMusic) {
+            setHasLyric(false);
+            return;
+        }
+        setHasLyric(true);
+        Tools::parseLyric(entity.trivial->lyric);
+        emit loadSongLyricSuccess();
+    });
 }
 
 bool SongLyricViewModel::getHasLyric() const {

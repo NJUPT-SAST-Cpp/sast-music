@@ -35,7 +35,7 @@ public:
 
 signals:
     void loadSongLyricSuccess();
-    void loadSongLyricFailed();
+    void loadSongLyricFailed(QString message);
 
     void hasLyricChanged();
 
