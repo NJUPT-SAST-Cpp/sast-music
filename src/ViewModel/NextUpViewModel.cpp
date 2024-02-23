@@ -1,3 +1,4 @@
+#include <QRandomGenerator>
 #include "NextUpViewModel.h"
 #include "Service/NeteaseCloudMusic/CloudMusicClient.h"
 #include "Service/NeteaseCloudMusic/Response/BasicDef.h"
@@ -191,15 +192,29 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO
+        int currentindex=model.indexOf(playingSong);
+        if(currentindex==model.size()-1)
+        {
+            song=model.first();
+        }//假如说现在播放的歌是在stream里的最后一首,那下一首就回归到第一首
+        else
+            song=model.at(currentindex+1);//不然就定位到列表下一首播放
         break;
     }
     case PlayMode::RepeatOne: {
         // TODO
+        song=NextUpViewModel::getPlayingSong();//获取当前播放的歌,等到当前歌曲播完时再次设置为当前歌曲
         break;
     }
     case PlayMode::Shuffle: {
         // TODO
-        break;
+        if(model.size()==1)
+        {
+            song=model.first();
+        }//列表只有一首歌那下一首还是当前这一手
+ else
+            song = model[QRandomGenerator::global()->bounded(0, model.count()-1)];//不然就用QRandomGenerator随机抽来播放,用qt自带的全局随机数生成器在范围(bound):0~(count-1)中生成一个随机数来确定为下一次播放的索引号,然后赋给Song类song对象
+    break;
     }
     }
     return song;

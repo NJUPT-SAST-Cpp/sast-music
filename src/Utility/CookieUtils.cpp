@@ -4,7 +4,7 @@ QString getCookieOrDefault(const QList<QNetworkCookie>& cookies, const QString& 
                                [&name](const QNetworkCookie& cookie) { return cookie.name() == name; });
     if (cookie != cookies.end()) {
         return QString::fromUtf8(cookie->value());
-    } else {
+    }else {
         return defaultValue;
     }
 }

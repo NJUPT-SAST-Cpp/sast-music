@@ -12,6 +12,7 @@ class SongLyricViewModel : public QAbstractListModel {
     QML_NAMED_ELEMENT(SongLyricViewModel)
 
 public:
+    QList<SongLyric>  SongLyricsp(const QString& stringLyric);
     explicit SongLyricViewModel(QObject* parent = nullptr);
     static SongLyricViewModel* create(QQmlEngine*, QJSEngine*);
 

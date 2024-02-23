@@ -5,6 +5,9 @@
 
 MusicPlayer::MusicPlayer(QObject* parent) : QMediaPlayer(parent), audioOutput(new QAudioOutput(this)) {
     // TODO: connect signals and slots
+    connect(OutputDeviceViewModel::getInstance(), &OutputDeviceViewModel::currentIndexChanged, this, &MusicPlayer::onAudioOutputDeviceChanged);
+    connect(VolumeViewModel::getInstance(), &VolumeViewModel::volumeChanged, this, &MusicPlayer::onVolumeChanged);
+ //分别连接信号槽,一方面当载入的设备发生变化的时候重新载入音频驱动和设备,第二方面当音量发生变化的时候就更新当前音频输出的音量大小
     audioOutput->setDevice(QMediaDevices::defaultAudioOutput());
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
     setAudioOutput(audioOutput);
@@ -27,3 +30,4 @@ void MusicPlayer::onAudioOutputDeviceChanged() {
 void MusicPlayer::onVolumeChanged() {
     audioOutput->setVolume(VolumeViewModel::getInstance()->volume() / 100.0);
 }
+

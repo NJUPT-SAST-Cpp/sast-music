@@ -89,6 +89,7 @@ void SongViewModel::playSongByIndex(int index) {
 
 void SongViewModel::playAllSongs() {
     // TODO
+    NextUpViewModel::getInstance()->resetModel(model);//调用resetmode去reset该model,创建从头顺序播放的单例
 }
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
