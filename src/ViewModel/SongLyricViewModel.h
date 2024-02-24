@@ -28,6 +28,8 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
+    QList<SongLyric> ProcessLyric (QString);
+
     Q_INVOKABLE void loadSongLyric(SongId songId);
 
     bool getHasLyric() const;

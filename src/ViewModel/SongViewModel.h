@@ -62,6 +62,8 @@ public:
     PlaylistId getPlaylistId() const;
     void setPlaylistId(PlaylistId newPlaylistId);
 
+
+
 signals:
     void loadSongsSuccess();
     void loadSongsFailed(QString message);
