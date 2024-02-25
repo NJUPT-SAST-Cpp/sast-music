@@ -28,6 +28,8 @@ ScrollablePage {
         Layout.fillWidth: true
         playing: true
         onLikedClicked: liked => {//TODO
+            liked = !liked
+            control.likedClicked(liked)
                         }
     }
 
@@ -64,6 +66,8 @@ ScrollablePage {
                 NextUpViewModel.playSongByIndex(index)
             }
             onLikedChanged: liked => {//TODO
+                liked = !liked
+                control.likedClicked(liked)
                             }
         }
     }

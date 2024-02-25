@@ -27,7 +27,7 @@ public:
         Duration,
     };
 
-    // Basic functionality:
+           // Basic functionality:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -38,6 +38,8 @@ public:
     Q_INVOKABLE void playSongByIndex(int index);
     Q_INVOKABLE void playAllSongs();
     Q_INVOKABLE void loadAndPlayAllSongs(PlaylistId playListId);
+
+    Q_INVOKABLE void loadSongsoutside(PlaylistId playListId);
 
     void resetModel(const QList<Song>& model);
 

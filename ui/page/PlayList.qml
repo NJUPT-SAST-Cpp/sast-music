@@ -109,6 +109,8 @@ ScrollablePage {
                     SongViewModel.playSongByIndex(index)
             }
             onLikedChanged: liked => {//TODO
+                 liked = !liked
+                 control.likedClicked(liked)
                             }
         }
     }

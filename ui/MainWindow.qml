@@ -180,12 +180,12 @@ ApplicationWindow {
 
     onClosing: event => {
                    var closeApp = settings.value("closeAppIndex", 0)
-                   if (closeApp == 0) {
+                   if (closeApp === 0) {
                        settings.setValue("closeAppIndex", 0)
                        dialog_close.open()
-                   } else if (closeApp == 1) {
+                   } else if (closeApp === 1) {
                        Qt.exit(0)
-                   } else if (closeApp == 2) {
+                   } else if (closeApp === 2) {
                        window.hide()
                    }
                    event.accepted = false

@@ -14,14 +14,33 @@ PlayingSongViewModel::PlayingSongViewModel(QObject* parent) : QObject{parent}, p
     QObject::connect(NextUpViewModel::getInstance(), &NextUpViewModel::playingSongChanged, this,
                      &PlayingSongViewModel::setPlayingSong);
     // TODO: connect signals and slots
+    QObject::connect(player, &MusicPlayer::mediaStatusChanged, this, &PlayingSongViewModel::onMediaStatusChanged);
+    QObject::connect(player, &MusicPlayer::positionChanged, this, &PlayingSongViewModel::onMusicPositionChanged);
+    QObject::connect(player, &MusicPlayer::playbackStateChanged, this, &PlayingSongViewModel::onPlayStateChanged);
 }
 
 PlayingSongViewModel::~PlayingSongViewModel() {
     save();
 }
 
+PlayingSongViewModel* PlayingSongViewModel::getInstance() {
+    static PlayingSongViewModel instance;
+    return &instance;
+}
+
 PlayingSongViewModel* PlayingSongViewModel::create(QQmlEngine*, QJSEngine*) {
-    return new PlayingSongViewModel();
+    auto instance = getInstance();
+    QJSEngine::setObjectOwnership(instance, QQmlEngine::CppOwnership);
+    return instance;
+    // return new PlayingSongViewModel();
+}
+
+quint64 PlayingSongViewModel::getweizhi(){
+    return player->position();
+}
+
+bool PlayingSongViewModel::getrealplay(){
+    return player->isPlaying();
 }
 
 void PlayingSongViewModel::playSong() {
@@ -35,6 +54,8 @@ void PlayingSongViewModel::playSong() {
         return;
     }
     player->play(songUrl);
+    qDebug()<<"songid"<<songId;
+    setPlaying(true);
 }
 
 void PlayingSongViewModel::play() {
@@ -43,6 +64,7 @@ void PlayingSongViewModel::play() {
 
 void PlayingSongViewModel::pause() {
     player->pause();
+    setPlaying(false);
 }
 
 void PlayingSongViewModel::next() {
@@ -191,6 +213,7 @@ void PlayingSongViewModel::setTimeStamp(quint64 newTimeStamp) {
     if (timeStamp == newTimeStamp)
         return;
     timeStamp = newTimeStamp;
+    qDebug()<<"setTimeStamp:"<<timeStamp;
     player->setPosition(timeStamp);
     emit timeStampChanged();
 }
@@ -206,6 +229,13 @@ void PlayingSongViewModel::load() {
     duration = settings->value("Duration").toULongLong();
     timeStamp = settings->value("TimeStamp").toULongLong();
     songUrl = settings->value("SongUrl").toString();
+    // QList<Song> songs;
+    // Song lastplaysong;
+    // lastplaysong.id=songId;
+    // songs.append(lastplaysong);
+    // NextUpViewModel::getInstance()->loadSongsUrlnotemit(songs);
+    // auto timeStamptrue = timeStamp;
+
 }
 
 void PlayingSongViewModel::save() {

@@ -15,8 +15,10 @@ class PlayingSongViewModel : public QObject {
     QML_SINGLETON
 
 public:
-    explicit PlayingSongViewModel(QObject* parent = nullptr);
+
     static PlayingSongViewModel* create(QQmlEngine*, QJSEngine*);
+    static PlayingSongViewModel* getInstance();
+
     ~PlayingSongViewModel();
 
     Q_INVOKABLE void play();
@@ -53,6 +55,9 @@ public:
     bool getPlaying() const;
     void setPlaying(bool newPlaying);
 
+    quint64 getweizhi();
+    bool getrealplay();
+
 signals:
     void playSongFailed(QString message);
 
@@ -74,6 +79,9 @@ private slots:
     void setPlayingSong(const Song& song);
 
 private:
+
+    explicit PlayingSongViewModel(QObject* parent = nullptr);
+
     MusicPlayer* player;
     QUrl songUrl;
     bool playing = false;

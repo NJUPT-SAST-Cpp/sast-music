@@ -5,17 +5,14 @@
 #include <Service/NeteaseCloudMusic/MusicLevel.h>
 #include <Utility/NeteaseCloudMusic>
 #include <Utility/Tools.h>
+#include <ctime>
 
 NextUpViewModel::NextUpViewModel(QObject* parent) : QAbstractListModel(parent) {
-    auto settings = SettingsUtils::getInstance();
-    playingSong.id = settings->value("SongId").toULongLong();
-    playingSong.name = settings->value("Name").toString();
-    playingSong.alias = settings->value("Alias").toString();
-    playingSong.artists = settings->value("Artists").toString();
-    playingSong.album = settings->value("Album").toString();
-    playingSong.imgUrl = settings->value("ImgUrl").toString();
-    playingSong.duration = settings->value("Duration").toULongLong();
-    songUrls[playingSong.id] = QUrl(settings->value("SongUrl").toString());
+    e1.seed(time(0));
+    auto songId = SettingsUtils::getInstance()->value("SongId").toULongLong();
+    auto songUrl = SettingsUtils::getInstance()->value("SongUrl").toString();
+    songUrls[songId] = QUrl(songUrl);
+    playingSong.id = songId;
 }
 
 NextUpViewModel* NextUpViewModel::getInstance() {
@@ -77,6 +74,7 @@ QHash<int, QByteArray> NextUpViewModel::roleNames() const {
 
 void NextUpViewModel::resetModel(const QList<Song>& newModel) {
     if (newModel.count() == 0) {
+        qDebug()<<"reset failed!";
         return;
     }
     beginResetModel();
@@ -120,12 +118,22 @@ void NextUpViewModel::removeModel(int index) {
 }
 
 void NextUpViewModel::removeModel(const Song& song) {
-    homingModel();
     auto index = model.indexOf(song);
     if (index < 0)
         return;
     playingSong = model[index];
     emit playingSongChanged(playingSong);
+    beginRemoveRows(QModelIndex(), index, index);
+    model.removeAt(index);
+    endRemoveRows();
+    emit loadSongsUrlSuccess();
+}
+
+void NextUpViewModel::removeModelforall(const Song& song) {
+    auto index = model.indexOf(song);
+    if (index < 0)
+        return;
+    playingSong = model[index];
     beginRemoveRows(QModelIndex(), index, index);
     model.removeAt(index);
     endRemoveRows();
@@ -172,6 +180,43 @@ void NextUpViewModel::loadSongsUrl(const QList<Song>& songs) {
     });
 }
 
+void NextUpViewModel::loadSongsUrlnotemit(const QList<Song>& songs) {
+    QList<NeteaseCloudMusic::SongId> songIds;
+    for (const auto& song : songs) {
+        songIds.push_back(song.id);
+    }
+    QStringView level;
+    switch (SettingsUtils::getInstance()->value("MusicQualityIndex").toInt()) {
+    case 0:
+        level = MusicLevel::Standard;
+        break;
+    case 1:
+        level = MusicLevel::Higher;
+        break;
+    case 2:
+        level = MusicLevel::ExHigh;
+        break;
+    case 3:
+        level = MusicLevel::Lossless;
+        break;
+    case 4:
+        level = MusicLevel::HiRes;
+        break;
+    }
+    CloudMusicClient::getInstance()->getSongsUrl(songIds, level, [this](Result<ManySongUrlInfoEntity> result) {
+        if (result.isErr()) {
+            emit loadSongsUrlFailed(result.unwrapErr().message);
+            return;
+        }
+        auto songUrls = result.unwrap().data;
+        for (const auto& songUrl : songUrls) {
+            this->songUrls[songUrl.id] = songUrl.url;
+        }
+        emit loadSongsUrlSuccess();
+    });
+}
+
+
 QUrl NextUpViewModel::getSongUrl(NeteaseCloudMusic::SongId songId) {
     return songUrls[songId];
 }
@@ -191,17 +236,36 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::ListRepeat: {
         // TODO
+        if(playingSong.id == 0){
+            song = model[0];
+            break;
+        }
+        auto num = model.indexOf(playingSong);
+        auto size = model.size();
+        if(num == size-1){
+            song = model[0];
+        }else{
+            song = model[num+1];
+        }
         break;
     }
     case PlayMode::RepeatOne: {
         // TODO
+        if(playingSong.id == 0){
+            return Song{};
+        }
+        song=playingSong;
         break;
     }
     case PlayMode::Shuffle: {
         // TODO
+        srand(unsigned(time(NULL)));
+        int num=rand()%model.size();
+        song = model[num];
         break;
+       }
     }
-    }
+    emit playingSongChanged(song);
     return song;
 }
 

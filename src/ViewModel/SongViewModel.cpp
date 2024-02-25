@@ -3,6 +3,8 @@
 #include "NextUpViewModel.h"
 #include <Service/NeteaseCloudMusic/CloudMusicClient.h>
 #include <Utility/Tools.h>
+#include <QDebug>
+
 using namespace NeteaseCloudMusic;
 
 SongViewModel::SongViewModel(QObject* parent) : QAbstractListModel(parent) {}
@@ -67,6 +69,7 @@ QHash<int, QByteArray> SongViewModel::roleNames() const {
 void SongViewModel::loadSongs(PlaylistId playListId) {
     CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
         if (result.isErr()) {
+            qDebug()<<result.unwrapErr().message;
             emit loadSongsFailed(result.unwrapErr().message);
             return;
         }
@@ -82,18 +85,40 @@ void SongViewModel::loadSongs(PlaylistId playListId) {
     });
 }
 
+
+void SongViewModel::loadSongsoutside(PlaylistId playListId) {
+    CloudMusicClient::getInstance()->getPlaylistDetail(playListId, [this](Result<PlaylistDetailEntity> result) {
+        if (result.isErr()) {
+            qDebug()<<result.unwrapErr().message;
+            emit loadSongsFailed(result.unwrapErr().message);
+            return;
+        }
+        auto songs = result.unwrap().tracks;
+        beginResetModel();
+        model.clear();
+        for (const auto& song : songs) {
+            model.emplace_back(song);
+        }
+        endResetModel();
+        setCount(songs.count());
+        emit loadSongsSuccess();
+        emit prepareForPlaying();
+    });
+}
+
 void SongViewModel::playSongByIndex(int index) {
     auto song = model[index];
     NextUpViewModel::getInstance()->appendModel(song);
 }
 
 void SongViewModel::playAllSongs() {
-    // TODO
+    NextUpViewModel::getInstance()->resetModel(model);
+    auto song =NextUpViewModel::getInstance()->getPlayingSong();
+    NextUpViewModel::getInstance()->removeModelforall(song);
 }
 
 void SongViewModel::loadAndPlayAllSongs(PlaylistId playListId) {
-    loadSongs(playListId);
-    emit prepareForPlaying();
+    loadSongsoutside(playListId);
 }
 
 void SongViewModel::resetModel(const QList<Song>& model) {

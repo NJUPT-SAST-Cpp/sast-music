@@ -45,7 +45,7 @@ ScrollablePage {
             spacing: 2
             Text {
                 text: UserProfileViewModel.nickname
-                
+
                 font.weight: 600
                 font.pixelSize: 20
             }
@@ -71,7 +71,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶SVIP"
-                        
+
                         font.pixelSize: 13
                     }
                 }
@@ -95,7 +95,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶VIP"
-                        
+
                         font.pixelSize: 13
                     }
                 }
@@ -106,7 +106,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Sound"
-        
+
         font.weight: 600
         font.pixelSize: 26
     }
@@ -122,7 +122,7 @@ ScrollablePage {
         Text {
             id: text_music_quality
             text: "Music Quality"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -136,7 +136,7 @@ ScrollablePage {
                 setSettingsValue("musicQualityIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("musicQualityIndex", 2) == 2)
+                if (getSettingsValue("musicQualityIndex", 2) === 2)
                     setSettingsValue("musicQualityIndex", 2)
             }
         }
@@ -148,7 +148,7 @@ ScrollablePage {
         Text {
             id: text_output_device
             text: "Audio Output device"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -174,7 +174,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Cache"
-        
+
         font.weight: 600
         font.pixelSize: 26
     }
@@ -191,7 +191,7 @@ ScrollablePage {
         Text {
             id: text_automatically_cache_songs
             text: "Automatically cache songs"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -203,7 +203,7 @@ ScrollablePage {
             onClicked: {
                 setSettingsValue("cacheOption", checked)
             }
-            checked: getSettingsValue("cacheOption", true) == "true"
+            checked: getSettingsValue("cacheOption", true) === "true"
             Component.onCompleted: {
                 if (getSettingsValue("cacheOption", true) === true)
                     setSettingsValue("cacheOption", true)
@@ -216,7 +216,7 @@ ScrollablePage {
         Text {
             id: text_cache_limit
             text: "Songs Cache limit"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -230,7 +230,7 @@ ScrollablePage {
                 setSettingsValue("cacheMemoryIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("cacheMemoryIndex", 5) == 5)
+                if (getSettingsValue("cacheMemoryIndex", 5) === 5)
                     setSettingsValue("cacheMemoryIndex", 5)
             }
         }
@@ -241,7 +241,7 @@ ScrollablePage {
         Text {
             id: text_cache_num
             text: "Cached 0 songs (0 GiB)"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -259,7 +259,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Lyrics"
-        
+
         font.weight: 600
         font.pixelSize: 26
     }
@@ -275,7 +275,7 @@ ScrollablePage {
         Text {
             id: text_show_translation
             text: "Show lyrics translation"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -283,8 +283,8 @@ ScrollablePage {
         }
         ToggleSwitch {
             id: btn_show_translation
-            checked: getSettingsValue("showTranslationOption", false) == "true"
-            disabled: true
+            checked: getSettingsValue("showTranslationOption", false) === "true"
+            disabled: false
             onClicked: {
                 setSettingsValue("showTranslationOption", checked)
             }
@@ -300,7 +300,7 @@ ScrollablePage {
         Text {
             id: text_font_size
             text: "Songs Cache limit"
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -314,7 +314,7 @@ ScrollablePage {
                 setSettingsValue("fontSizeIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("fontSizeIndex", 2) == 2)
+                if (getSettingsValue("fontSizeIndex", 2) === 2)
                     setSettingsValue("fontSizeIndex", 2)
             }
         }
@@ -323,7 +323,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Others"
-        
+
         font.weight: 600
         font.pixelSize: 26
     }
@@ -339,7 +339,7 @@ ScrollablePage {
         Text {
             id: text_close_app
             text: "Close App..."
-            
+
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -353,7 +353,7 @@ ScrollablePage {
                 setSettingsValue("closeAppIndex", currentIndex)
             }
             Component.onCompleted: {
-                if (getSettingsValue("closeAppIndex", 2) == 0)
+                if (getSettingsValue("closeAppIndex", 2) === 0)
                     setSettingsValue("closeAppIndex", 0)
             }
         }

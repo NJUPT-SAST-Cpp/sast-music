@@ -5,6 +5,7 @@
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
+#include <random>
 
 class NextUpViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -33,7 +34,7 @@ public:
         Duration,
     };
 
-    // Basic functionality:
+           // Basic functionality:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -46,9 +47,15 @@ public:
     void removeModel(int index);
     void removeModel(const Song& song);
 
+    void removeModelforall(const Song& song);
+
+
+
     Song getPlayingSong();
 
     void loadSongsUrl(const QList<Song>& songs);
+
+    void loadSongsUrlnotemit(const QList<Song>& songs);
 
     QUrl getSongUrl(NeteaseCloudMusic::SongId songId);
 
@@ -74,6 +81,10 @@ private:
     QHash<NeteaseCloudMusic::SongId, QUrl> songUrls;
     PlayMode playMode = PlayMode::ListRepeat;
     Q_PROPERTY(PlayMode playMode READ getPlayMode WRITE setPlayMode NOTIFY playModeChanged FINAL)
+
+
+    std::default_random_engine e1;
+
 };
 
 #endif // NEXTUPVIEWMODEL_H

@@ -2,9 +2,15 @@
 #define SONGLYRICVIEWMODEL_H
 
 #include "Model/SongLyric.h"
+// #include <QAbstractListModel>
+// #include <QtQml/QQmlEngine>
+// #include <Utility/NeteaseCloudMusic>
+#include "Service/NeteaseCloudMusic/Response/BasicDef.h"
 #include <QAbstractListModel>
 #include <QtQml/QQmlEngine>
 #include <Utility/NeteaseCloudMusic>
+#include <qtmetamacros.h>
+
 
 class SongLyricViewModel : public QAbstractListModel {
     Q_OBJECT
@@ -21,15 +27,18 @@ public:
         TrLyric,
     };
 
-    // Basic functionality:
+           // Basic functionality:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     QHash<int, QByteArray> roleNames() const override;
-
+    QList<SongLyric> getlyric(QList<SongLyricEntity> _result);
     Q_INVOKABLE void loadSongLyric(SongId songId);
 
+    void appendTranslation(const QString& translation, QList<SongLyric>& list);
+    void parseLyrics(const QString& lyrics, QList<SongLyric>& list);
+    quint64 getTimeStampFromString(const QString& str);
     bool getHasLyric() const;
     void setHasLyric(bool newHasLyric);
 

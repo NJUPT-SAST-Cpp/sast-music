@@ -42,6 +42,17 @@ Rectangle {
                     sourceComponent: com_no_lyric_music
                 }
                 // TODO: lyrics
+                Component.onCompleted: {
+                    console("有歌词，正在加载");
+                }
+                ListView{
+                    id:lyricshow
+                    width: parent.width / 2
+                    height: parent.height
+                    model: SongLyricViewModel
+                    clip: true
+
+                }
             }
         }
     }
@@ -164,7 +175,7 @@ Rectangle {
             Text {
                 id: text_song
                 text: PlayingSongViewModel.name
-                
+
                 font.pixelSize: 22
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.95)
@@ -181,7 +192,7 @@ Rectangle {
             Text {
                 id: text_singer
                 text: PlayingSongViewModel.artists
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -204,7 +215,7 @@ Rectangle {
                 }
                 text: slider_progress.milsec2Time(
                           PlayingSongViewModel.timeStamp)
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -217,7 +228,7 @@ Rectangle {
                     topMargin: 22
                 }
                 text: PlayingSongViewModel.durationTime
-                
+
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -333,11 +344,12 @@ Rectangle {
                 }
                 IconButton {
                     iconUrl: "qrc:///res/img/shuffle.svg"
-                    iconColor: NextUpViewModel.playMode
-                               === NextUpViewModel.Shuffle ? "#335eea" : "#fff"
+                    iconColor: "#fff"
                     iconWidth: 16
                     iconHeight: 16
-                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
+                    hoverColor: NextUpViewModel.playMode
+                                === NextUpViewModel.Shuffle ? "#335eea" : Qt.rgba(
+                                                                  1, 1, 1, 0.08)
                     onClicked: {
                         if (NextUpViewModel.playMode === NextUpViewModel.Shuffle)
                             NextUpViewModel.playMode = NextUpViewModel.ListRepeat
