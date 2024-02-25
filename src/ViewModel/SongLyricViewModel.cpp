@@ -19,7 +19,15 @@ int SongLyricViewModel::rowCount(const QModelIndex& parent) const {
 QVariant SongLyricViewModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid())
         return QVariant();
-
+    auto element = model[index.row()];
+    switch (role) {
+    case Role::TimeStamp:
+        return (int)element.timeStamp;
+    case Role::Lyric:
+        return element.lyric;
+    case Role::TrLyric:
+        return element.trLyric;
+    }
     // FIXME: Implement me!
     return QVariant();
 }
@@ -27,6 +35,11 @@ QVariant SongLyricViewModel::data(const QModelIndex& index, int role) const {
 QHash<int, QByteArray> SongLyricViewModel::roleNames() const {
     static QHash<int, QByteArray> roles;
     // FIXME: Implement me!
+    if (roles.isEmpty()) {
+        roles[Role::TimeStamp] = "timeStamp";
+        roles[Role::Lyric] = "lyric";
+        roles[Role::TrLyric] = "trLyric";
+    }
     return roles;
 }
 
