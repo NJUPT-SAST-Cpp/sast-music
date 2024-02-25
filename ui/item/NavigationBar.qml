@@ -134,7 +134,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/settings.svg"
             text: "Settings"
-            font.family: "MiSans"
+            
             font.bold: true
             onClicked: {
                 stackView.pushPage("qrc:///ui/page/Settings.qml")
@@ -144,7 +144,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: UserProfileViewModel.isLogin ? "qrc:///res/img/logout.svg" : "qrc:///res/img/login.svg"
             text: UserProfileViewModel.isLogin ? "Logout" : "Login"
-            font.family: "MiSans"
+            
             font.bold: true
             onClicked: {
                 if (!UserProfileViewModel.isLogin) {
@@ -159,7 +159,7 @@ BlurRectangle {
             iconSize: 20
             iconUrl: "qrc:///res/img/github.svg"
             text: "GitHub Repo"
-            font.family: "MiSans"
+            
             font.bold: true
             onClicked: {
                 Qt.openUrlExternally(

@@ -3,12 +3,13 @@
 namespace NeteaseCloudMusic {
 struct SongLyricEntity {
     // Trivial, json field: lrc
-    VersionedLyricEntity trivial;
+    std::optional<VersionedLyricEntity> trivial;
     // Translation, json field: tlyric
-    VersionedLyricEntity translation;
+    std::optional<VersionedLyricEntity> translation;
     // for Karaoke, json field: klyric
-    VersionedLyricEntity karaoke;
+    std::optional<VersionedLyricEntity> karaoke;
     // Romaji of Japanese, json field: romalrc
-    VersionedLyricEntity Romaji;
+    std::optional<VersionedLyricEntity> Romaji;
+    bool pureMusic;
 };
 } // namespace NeteaseCloudMusic

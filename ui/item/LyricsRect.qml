@@ -25,6 +25,7 @@ Rectangle {
     }
     MouseArea {
         anchors.fill: parent
+        onWheel: wheel => wheel.accepted = true
     }
     Loader {
         anchors.fill: parent
@@ -163,7 +164,7 @@ Rectangle {
             Text {
                 id: text_song
                 text: PlayingSongViewModel.name
-                font.family: "MiSans"
+                
                 font.pixelSize: 22
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.95)
@@ -180,7 +181,7 @@ Rectangle {
             Text {
                 id: text_singer
                 text: PlayingSongViewModel.artists
-                font.family: "MiSans"
+                
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -203,7 +204,7 @@ Rectangle {
                 }
                 text: slider_progress.milsec2Time(
                           PlayingSongViewModel.timeStamp)
-                font.family: "MiSans"
+                
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -216,7 +217,7 @@ Rectangle {
                     topMargin: 22
                 }
                 text: PlayingSongViewModel.durationTime
-                font.family: "MiSans"
+                
                 font.pixelSize: 14
                 font.weight: 500
                 color: Qt.rgba(1, 1, 1, 0.7)
@@ -332,12 +333,11 @@ Rectangle {
                 }
                 IconButton {
                     iconUrl: "qrc:///res/img/shuffle.svg"
-                    iconColor: "#fff"
+                    iconColor: NextUpViewModel.playMode
+                               === NextUpViewModel.Shuffle ? "#335eea" : "#fff"
                     iconWidth: 16
                     iconHeight: 16
-                    hoverColor: NextUpViewModel.playMode
-                                === NextUpViewModel.Shuffle ? "#335eea" : Qt.rgba(
-                                                                  1, 1, 1, 0.08)
+                    hoverColor: Qt.rgba(1, 1, 1, 0.08)
                     onClicked: {
                         if (NextUpViewModel.playMode === NextUpViewModel.Shuffle)
                             NextUpViewModel.playMode = NextUpViewModel.ListRepeat

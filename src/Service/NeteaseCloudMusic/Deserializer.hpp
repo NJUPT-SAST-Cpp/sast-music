@@ -584,7 +584,7 @@ struct Deserializer<SongUrlInfoEntity> {
         if (!obj.contains("id") || !obj["id"].isDouble()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: id is not number"};
         }
-        if (!obj.contains("url") || !obj["url"].isString()) {
+        if (!obj.contains("url") || (!obj["url"].isString() && !obj["url"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: url is not string"};
         }
         if (!obj.contains("br") || !obj["br"].isDouble()) {
@@ -593,13 +593,13 @@ struct Deserializer<SongUrlInfoEntity> {
         if (!obj.contains("size") || !obj["size"].isDouble()) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: size is not number"};
         }
-        if (!obj.contains("md5") || !obj["md5"].isString()) {
+        if (!obj.contains("md5") || (!obj["md5"].isString() && !obj["md5"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: md5 is not string"};
         }
-        if (!obj.contains("type") || !obj["type"].isString()) {
+        if (!obj.contains("type") || (!obj["type"].isString() && !obj["type"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: type is not string"};
         }
-        if (!obj.contains("level") || !obj["level"].isString()) {
+        if (!obj.contains("level") || (!obj["level"].isString() && !obj["level"].isNull())) {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: level is not string"};
         }
         if (!obj.contains("payed") || !obj["payed"].isDouble()) {
@@ -696,40 +696,45 @@ struct Deserializer<SongLyricEntity> {
             return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type"};
         }
         auto obj = value.toObject();
-
-        if (!obj.contains("lrc") || !obj["lrc"].isObject()) {
-            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: lrc is not object"};
+        std::optional<VersionedLyricEntity> lrc, tlyric, klyric, romalrc;
+        if (obj.contains("lrc") && obj["lrc"].isObject()) {
+            auto t = Deserializer<VersionedLyricEntity>::from(obj["lrc"]);
+            if (t.isOk()) {
+                lrc = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
         }
-        if (!obj.contains("tlyric") || !obj["tlyric"].isObject()) {
-            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: tlyric is not object"};
+        if (obj.contains("tlyric") && obj["tlyric"].isObject()) {
+            auto t = Deserializer<VersionedLyricEntity>::from(obj["tlyric"]);
+            if (t.isOk()) {
+                tlyric = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
         }
-        if (!obj.contains("klyric") || !obj["klyric"].isObject()) {
-            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: klyric is not object"};
+        if (obj.contains("klyric") && obj["klyric"].isObject()) {
+            auto t = Deserializer<VersionedLyricEntity>::from(obj["klyric"]);
+            if (t.isOk()) {
+                klyric = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
         }
-        if (!obj.contains("romalrc") || !obj["romalrc"].isObject()) {
-            return ErrorInfo{ErrorKind::JsonDeserializeError, "Invalid JSON type: romalrc is not object"};
+        if (obj.contains("romalrc") && obj["romalrc"].isObject()) {
+            auto t = Deserializer<VersionedLyricEntity>::from(obj["romalrc"]);
+            if (t.isOk()) {
+                romalrc = std::move(t).unwrap();
+            } else {
+                return std::move(t).unwrapErr();
+            }
         }
-        auto lrc = Deserializer<VersionedLyricEntity>::from(obj["lrc"]);
-        if (lrc.isErr()) {
-            return std::move(lrc).unwrapErr();
-        }
-        auto tlyric = Deserializer<VersionedLyricEntity>::from(obj["tlyric"]);
-        if (tlyric.isErr()) {
-            return std::move(tlyric).unwrapErr();
-        }
-        auto klyric = Deserializer<VersionedLyricEntity>::from(obj["klyric"]);
-        if (klyric.isErr()) {
-            return std::move(klyric).unwrapErr();
-        }
-        auto romalrc = Deserializer<VersionedLyricEntity>::from(obj["romalrc"]);
-        if (romalrc.isErr()) {
-            return std::move(romalrc).unwrapErr();
+        bool pureMusic = false;
+        if (obj.contains("pureMusic") && obj["pureMusic"].isBool()) {
+            pureMusic = obj["pureMusic"].toBool();
         }
         return SongLyricEntity{
-            std::move(lrc).unwrap(),
-            std::move(tlyric).unwrap(),
-            std::move(klyric).unwrap(),
-            std::move(romalrc).unwrap(),
+            std::move(lrc), std::move(tlyric), std::move(klyric), std::move(romalrc), pureMusic,
         };
     }
 };

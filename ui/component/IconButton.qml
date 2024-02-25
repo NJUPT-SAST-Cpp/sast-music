@@ -107,7 +107,7 @@ Item {
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                     visible: display !== Button.IconOnly
                     color: control.textColor
-                    font.family: "MiSans"
+                    
                     font.bold: true
                     font.pixelSize: 18
                 }

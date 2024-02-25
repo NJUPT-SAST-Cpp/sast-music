@@ -16,8 +16,7 @@ void MusicPlayer::play(const QUrl& url) {
         setSource(url);
         oldUrl = url;
         QMediaPlayer::stop();
-        oldUrl = url;
-    };
+    }
     QMediaPlayer::play();
 }
 
@@ -26,5 +25,5 @@ void MusicPlayer::onAudioOutputDeviceChanged() {
 }
 
 void MusicPlayer::onVolumeChanged() {
-    audioOutput->setVolume(VolumeViewModel::getInstance()->volume());
+    audioOutput->setVolume(VolumeViewModel::getInstance()->volume() / 100.0);
 }

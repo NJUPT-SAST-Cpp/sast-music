@@ -45,7 +45,7 @@ ScrollablePage {
             spacing: 2
             Text {
                 text: UserProfileViewModel.nickname
-                font.family: "MiSans"
+                
                 font.weight: 600
                 font.pixelSize: 20
             }
@@ -71,7 +71,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶SVIP"
-                        font.family: "MiSans"
+                        
                         font.pixelSize: 13
                     }
                 }
@@ -95,7 +95,7 @@ ScrollablePage {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: "黑胶VIP"
-                        font.family: "MiSans"
+                        
                         font.pixelSize: 13
                     }
                 }
@@ -106,7 +106,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Sound"
-        font.family: "MiSans"
+        
         font.weight: 600
         font.pixelSize: 26
     }
@@ -122,7 +122,7 @@ ScrollablePage {
         Text {
             id: text_music_quality
             text: "Music Quality"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -148,7 +148,7 @@ ScrollablePage {
         Text {
             id: text_output_device
             text: "Audio Output device"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -174,7 +174,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Cache"
-        font.family: "MiSans"
+        
         font.weight: 600
         font.pixelSize: 26
     }
@@ -191,7 +191,7 @@ ScrollablePage {
         Text {
             id: text_automatically_cache_songs
             text: "Automatically cache songs"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -216,7 +216,7 @@ ScrollablePage {
         Text {
             id: text_cache_limit
             text: "Songs Cache limit"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -241,7 +241,7 @@ ScrollablePage {
         Text {
             id: text_cache_num
             text: "Cached 0 songs (0 GiB)"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -259,7 +259,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Lyrics"
-        font.family: "MiSans"
+        
         font.weight: 600
         font.pixelSize: 26
     }
@@ -275,7 +275,7 @@ ScrollablePage {
         Text {
             id: text_show_translation
             text: "Show lyrics translation"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -300,7 +300,7 @@ ScrollablePage {
         Text {
             id: text_font_size
             text: "Songs Cache limit"
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
@@ -323,7 +323,7 @@ ScrollablePage {
     Text {
         Layout.topMargin: 48
         text: "Others"
-        font.family: "MiSans"
+        
         font.weight: 600
         font.pixelSize: 26
     }
@@ -339,7 +339,7 @@ ScrollablePage {
         Text {
             id: text_close_app
             text: "Close App..."
-            font.family: "MiSans"
+            
             font.weight: 500
             font.pixelSize: 16
             color: fontColor
