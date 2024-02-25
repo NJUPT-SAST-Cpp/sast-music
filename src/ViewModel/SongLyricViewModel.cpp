@@ -73,14 +73,8 @@ void SongLyricViewModel::loadSongLyric(SongId songId) {
         }
 
 
-        if (lyricEntity.pureMusic) {
-
-            qDebug() << "这是一首纯音乐.";
-            emit loadSongLyricSuccess();
-        } else {
-
-            emit loadSongLyricSuccess();
-        }
+        setHasLyric(!lyricEntity.pureMusic);
+               emit loadSongLyricSuccess();
     });
 }
 
