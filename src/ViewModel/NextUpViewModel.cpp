@@ -208,11 +208,7 @@ Song NextUpViewModel::getNextSong() {
     }
     case PlayMode::Shuffle: {
         // TODO
-        if(model.size()==1)
-        {
-            song=model.first();
-        }//列表只有一首歌那下一首还是当前这一手
- else
+
             song = model[QRandomGenerator::global()->bounded(0, model.count()-1)];//不然就用QRandomGenerator随机抽来播放,用qt自带的全局随机数生成器在范围(bound):0~(count-1)中生成一个随机数来确定为下一次播放的索引号,然后赋给Song类song对象
     break;
     }
