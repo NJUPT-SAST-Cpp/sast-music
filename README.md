@@ -12,55 +12,39 @@
 <p align="center">
 <img src="https://img.shields.io/badge/frame-Qt6.6.1-blue">
 <img src="https://img.shields.io/badge/std-C++17-yellow">
-<img src="https://img.shields.io/badge/platform-Windows-white">
-<img src="https://img.shields.io/badge/platform-Linux-green">
-<img src="https://img.shields.io/badge/platform-macOS-orange">
+<img src="https://img.shields.io/badge/platform-Windows|Linux|macOS-green">
 </p>
 
-## 简介
+## Brief
 
-桌面端云音乐播放器，使用Qt6编写
+基于 Qt6 的桌面端云音乐播放器
 
-## Build
+> [!IMPORTANT]
+>
+> 本项目仅供交流学习使用，请于下载后 24 小时内删除
 
-fork 本仓库后，执行以下命令
+## Preview
 
-> [!NOTE]
-> 请将 `<YOUR_USERNAME>/<YOUR_REPO_NAME>` 更换为你的用户名和仓库地址
+![](docs/image1.png)
+![](docs/image2.png)
+![](docs/image3.png)
+![](docs/image4.png)
+
+## Clone
 
 ```bash
-git clone --recursive https://github.com/<YOUR_USERNAME>/<YOUR_REPO_NAME>.git 
+git clone --recursive https://github.com/NJUPT-SAST/sast-evento.git
+```
+
+注意：本项目使用了子模块，所以请确保使用 `--recursive` 参数来克隆仓库，或者在克隆后执行以下命令：
+
+```bash
+git submodule update --init --recursive
 ```
 
 Use your IDE (QtCreator or CLion) to open. Only `CMake` support.
 
 ### 已知问题及解决方法
-
-- **Linux平台CMake生成报错**
-    
-    保证目录下存在build文件夹后再执行CMake，或执行第二遍CMake
-
-- **Linux平台编译报错，无法创建文件夹 `/usr/lib/qt6/qml/FluentUI`**
-  
-    ```shell
-    sudo chmod 777 /usr/lib/qt6/qml
-    ```
-
-- **Linux平台运行报错：`use incomplete Qt library(5.15)`**
-
-    将 `libs/FluentUI/CMakeLists.txt` 中
-
-    ```cmake
-    find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
-    ```
-   
-    改为
-   
-    ```cmake
-    find_package(QT NAMES Qt6REQUIRED COMPONENTS Core)
-    ```
-
-    重新编译后再将其改回去
 
 - **CMake `find_package` 报错**
     
