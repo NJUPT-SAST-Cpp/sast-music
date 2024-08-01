@@ -9,6 +9,12 @@ using namespace NeteaseCloudMusic;
 UserProfileViewModel::UserProfileViewModel(QObject* parent) : QObject(parent) {
     isLogin = !(SettingsUtils::getInstance()->value("Cookies").isNull() &&
                 SettingsUtils::getInstance()->value("Cookies").toByteArray().isEmpty());
+    connect(this, &UserProfileViewModel::isLoginChanged, this, [this]() {
+        if (!isLogin) {
+            setUserProfileModel(UserProfile());
+            emit loadUserProfileSuccess();
+        }
+    });
 }
 
 UserProfileViewModel* UserProfileViewModel::create(QQmlEngine*, QJSEngine*) {
@@ -24,6 +30,7 @@ void UserProfileViewModel::loadUserProfile() {
         auto entity = result.unwrap();
         if (!entity.account.has_value() || entity.account.value().anonimousUser) {
             setIsLogin(false);
+            return;
         } else {
             setIsLogin(true);
         }
@@ -59,7 +66,7 @@ bool UserProfileViewModel::getDefaultAvatar() const {
     return userProfileModel.defaultAvatar;
 }
 
-void UserProfileViewModel::setUserProfileModel(const UserProfile& model) {
+void UserProfileViewModel::setUserProfileModel(UserProfile model) {
     userProfileModel = std::move(model);
     emit userIdChanged();
     emit nicknameChanged();
