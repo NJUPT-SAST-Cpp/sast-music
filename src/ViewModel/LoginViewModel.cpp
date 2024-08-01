@@ -32,7 +32,6 @@ void LoginViewModel::logout() {
             emit logoutFailed(result.unwrapErr().message);
             return;
         }
-        auto entity = result.unwrap();
         emit logoutSuccess();
     });
 }

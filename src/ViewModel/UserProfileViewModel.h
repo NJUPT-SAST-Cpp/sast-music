@@ -27,7 +27,7 @@ public:
 
     bool getDefaultAvatar() const;
 
-    void setUserProfileModel(const UserProfile& model);
+    void setUserProfileModel(UserProfile model);
 
 signals:
     void isLoginChanged();

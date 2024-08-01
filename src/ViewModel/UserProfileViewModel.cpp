@@ -16,6 +16,11 @@ UserProfileViewModel* UserProfileViewModel::create(QQmlEngine*, QJSEngine*) {
 }
 
 void UserProfileViewModel::loadUserProfile() {
+    if (!getIsLogin()) { // when logout
+        setUserProfileModel(UserProfile());
+        emit loadUserProfileSuccess();
+        return;
+    }
     CloudMusicClient::getInstance()->getLoginStatus([=](Result<LoginStatusEntity> result) {
         if (result.isErr()) {
             emit loadUserProfileFailed(result.unwrapErr().message);
@@ -59,7 +64,7 @@ bool UserProfileViewModel::getDefaultAvatar() const {
     return userProfileModel.defaultAvatar;
 }
 
-void UserProfileViewModel::setUserProfileModel(const UserProfile& model) {
+void UserProfileViewModel::setUserProfileModel(UserProfile model) {
     userProfileModel = std::move(model);
     emit userIdChanged();
     emit nicknameChanged();
