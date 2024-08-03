@@ -33,7 +33,7 @@
 ## Clone
 
 ```bash
-git clone --recursive https://github.com/NJUPT-SAST/sast-evento.git
+git clone --recursive https://github.com/NJUPT-SAST-Cpp/sast-music.git
 ```
 
 注意：本项目使用了子模块，所以请确保使用 `--recursive` 参数来克隆仓库，或者在克隆后执行以下命令：

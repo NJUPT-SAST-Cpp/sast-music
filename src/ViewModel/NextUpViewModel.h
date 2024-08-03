@@ -69,7 +69,7 @@ signals:
 private:
     explicit NextUpViewModel(QObject* parent = nullptr);
 
-    QList<Song> model;
+    QList<Song> model; // model for "Play Queue"
     Song playingSong;
     QHash<NeteaseCloudMusic::SongId, QUrl> songUrls;
     PlayMode playMode = PlayMode::ListRepeat;

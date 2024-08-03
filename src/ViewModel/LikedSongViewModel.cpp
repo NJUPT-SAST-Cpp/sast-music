@@ -82,7 +82,7 @@ void LikedSongViewModel::loadAllLikedSongs() {
 }
 
 void LikedSongViewModel::playSongByIndex(int index) {
-    auto song = model[index];
+    auto song = allLikedSongs[index];
     NextUpViewModel::getInstance()->appendModel(song);
 }
 

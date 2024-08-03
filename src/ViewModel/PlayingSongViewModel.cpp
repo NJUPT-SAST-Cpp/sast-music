@@ -74,7 +74,7 @@ void PlayingSongViewModel::onMusicPositionChanged(qint64 position) {
     emit timeStampChanged();
 }
 
-void PlayingSongViewModel::onPlayStateChanged(QMediaPlayer::PlaybackState status) {
+void PlayingSongViewModel::onPlaybackStateChanged(QMediaPlayer::PlaybackState status) {
     if (status == QMediaPlayer::PlayingState) {
         setPlaying(true);
     } else {

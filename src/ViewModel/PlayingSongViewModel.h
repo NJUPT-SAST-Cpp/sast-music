@@ -69,7 +69,7 @@ signals:
 private slots:
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
     void onMusicPositionChanged(qint64 position);
-    void onPlayStateChanged(QMediaPlayer::PlaybackState status);
+    void onPlaybackStateChanged(QMediaPlayer::PlaybackState status);
     void playSong();
     void setPlayingSong(const Song& song);
 
